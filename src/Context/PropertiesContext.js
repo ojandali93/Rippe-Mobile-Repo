@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { createContext, useContext, useState } from 'react';
 
-import { properties } from '../Api/Zillow'
+import { properties } from '../Api/zillow'
 
 export const PropertiesContext = createContext(null)
 

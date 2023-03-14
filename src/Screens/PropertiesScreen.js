@@ -3,9 +3,7 @@ import {Text, View} from 'react-native'
 import { PropertiesContext } from '../Context/PropertiesContext'
 
 import { collection, addDoc } from "firebase/firestore";
-import { db } from '../../firebaseTesting';
-
-
+import { db } from '../Api/firebaseTesting';
 
 const PropertiesScreen = () => {
 
