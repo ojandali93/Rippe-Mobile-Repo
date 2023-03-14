@@ -7,3 +7,5 @@ const properties = {
     'X-RapidAPI-Host': 'zillow56.p.rapidapi.com'
   }
 };
+
+module.exports = {properties}

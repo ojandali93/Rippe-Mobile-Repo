@@ -4,13 +4,16 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import BottomTabNavigation from './src/Navigation/BottomTabNavigation';
+import { PropertiesContextProvider } from './src/Context/PropertiesContext';
 
 export default function App() {
   return (
-    <NavigationContainer style={styles.container}>
-      <StatusBar style="auto" /> 
-      <BottomTabNavigation />
-    </NavigationContainer>
+    <PropertiesContextProvider>
+      <NavigationContainer style={styles.container}>
+        <StatusBar style="auto" /> 
+        <BottomTabNavigation />
+      </NavigationContainer>
+    </PropertiesContextProvider>
   );
 }
 
