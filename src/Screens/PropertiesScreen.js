@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import {Text, View} from 'react-native'
+import {Text, View, Image, StyleSheet} from 'react-native'
 import { PropertiesContext } from '../Context/PropertiesContext'
 
 import { collection, addDoc } from "firebase/firestore";
@@ -13,25 +13,16 @@ const PropertiesScreen = () => {
     getProperties()
   }, [])
 
-  const addProductionDb = () => {
-    const collectionRef = collection(db, 'Properties')
-    addDoc(collectionRef, {
-      property: propertyList[0]
-    }).then((response) => {
-      console.log(response)
-    }).catch((error) => {
-      console.error(error)
-    })
-  }
 
   const displayPropertyList = () => {
-    addProductionDb()
+    // addProductionDb()
     return(
       <View>
         {
           propertyList.map((property) => {
             return(
               <View key={property.zpid}> 
+                <Image style={styles.image} source={{uri: property.imgSrc}}/>
                 <Text>{property.zpid}</Text>
               </View>
             )
@@ -49,5 +40,12 @@ const PropertiesScreen = () => {
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  image: {
+    height: 150,
+    width: '100%'
+  }
+})
 
 export default PropertiesScreen
