@@ -5,15 +5,18 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import BottomTabNavigation from './src/Navigation/BottomTabNavigation';
 import { PropertiesContextProvider } from './src/Context/PropertiesContext';
+import { InvestmentContextProvider } from './src/Context/InvestmentContext';
 
 export default function App() {
   return (
-    <PropertiesContextProvider>
-      <NavigationContainer style={styles.container}>
-        <StatusBar style="auto" /> 
-        <BottomTabNavigation />
-      </NavigationContainer>
-    </PropertiesContextProvider>
+    <InvestmentContextProvider>
+      <PropertiesContextProvider>
+        <NavigationContainer style={styles.container}>
+          <StatusBar style="auto" /> 
+          <BottomTabNavigation />
+        </NavigationContainer>
+      </PropertiesContextProvider>
+    </InvestmentContextProvider>
   );
 }
 
