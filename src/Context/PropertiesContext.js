@@ -1,21 +1,24 @@
 import axios from 'axios'
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { properties, singleProperty } from '../Api/zillow'
+import { properties, singleProperty } from '../Api/zillowApi'
 
 import { InvestmentContext } from './InvestmentContext';
+import { SearchFilterContext } from './SearchFilterContext';
 
 export const PropertiesContext = createContext(null)
 
 export const PropertiesContextProvider = ({children}) => {
 
-  const [propertyList, setPropertyList] = useState([])
+  const [results, setResults] = useState([])
+
   const [resultsPerPage, setResultsPerPage] = useState(null)
   const [totalPages, setTotalPages] = useState(null)
   const [totalResultsCount, setTotalResultsCount] = useState(null)
   
-  // const [counter, setCounter] = useState(0)
-  const [resultsLength, setResultsLength] = useState(5)
-  const [loading, isLoading] = useState(true)
+  const [loading, setLoading] = useState(true)
+  // const [resultsLength, setResultsLength] = useState(2)
+  
+  let resultsLength = 2
   let counter = 0
 
   const {calculateDownPaymentAmount} = useContext(InvestmentContext)
@@ -25,10 +28,16 @@ export const PropertiesContextProvider = ({children}) => {
   const {calculatePropertyTaxAnnual} = useContext(InvestmentContext)
   const {calculateHomeInsuranceAmount} = useContext(InvestmentContext)
 
+  const {currentSearch, sort} = useContext(SearchFilterContext)
+
   const getProperties = () => {
-    console.log('get properties')
+    setLoading(true)
+    currentSearch === '' 
+      ? properties.params.location = 'Los Angeles, CA' 
+      : properties.params.location = currentSearch
+    properties.params.sortSelection = sort
+    console.log(properties)
     axios.request(properties).then(function (response) {
-      // let listResponse = response.data.results
       generateUrlList(response.data.results)
     }).catch(function (error) {
       console.log(error);
@@ -49,19 +58,13 @@ export const PropertiesContextProvider = ({children}) => {
       }
       requestList.push(requestObject)
     }
-    setResultsLength(5)
     makeNewRequest(requestList)
   }
-
+  
   const makeNewRequest = (requestList) => {
-    console.log('making a request')
-    console.log('counter: ', counter)
     if(counter < resultsLength){
-      console.log('counter: ', counter)
       axios.request(requestList[counter])
         .then((response) => {
-          console.log('mortgage rate: ', response.data.mortgageRates.thirtyYearFixedRate)
-          console.log('price: ', response.data.price)
           let downPaymentAmount = calculateDownPaymentAmount(response.data.price, 20)
           let downPaymentPercent = calculateDownPaymentPercent(response.data.price, downPaymentAmount)
           let loanAmount = calculateLoanAmount(response.data.price, downPaymentAmount)
@@ -90,26 +93,6 @@ export const PropertiesContextProvider = ({children}) => {
           let currentCashOnCashReturn = ((yearlyCashFlow / downPaymentAmount) * 100).toFixed(2)
           let year1ReturnOnInvestment = ((yearlyNetOperatingIncome / downPaymentAmount) * 100).toFixed(2)
 
-          // console.log('zpid', response.data.zpid)
-          // console.log('down payment $: ', downPaymentAmount)
-          // console.log('down payment %: ', downPaymentPercent)
-          // console.log('loan amount: ', loanAmount)
-          // console.log('mortgage amount: ', mortgageAmount)
-
-          // console.log('monthly tax amount: ', monthlyTaxAmount)
-          // console.log('home insurance: ', homeInsurance)
-          // console.log('rent estimate: ', monthlyRevenue)
-          // console.log('expense amount: ', expenses)
-          // console.log('hoa: ', hoaFee)
-          
-          console.log('NOI: ', netOperatingIncome)
-          console.log('Yearly NOI: ', yearlyNetOperatingIncome)
-          console.log('CF: ', monthlyCashFLow)
-          console.log('Yearly CFt: ', yearlyCashFlow)
-          console.log('CAP: ', currentCapRate)
-          console.log('CoCR: ', currentCashOnCashReturn)
-          console.log('ROI: ', year1ReturnOnInvestment)
-
           let propertyDetails = response.data
           propertyDetails.investment = {
             downPaymentAmount: downPaymentAmount,
@@ -129,8 +112,8 @@ export const PropertiesContextProvider = ({children}) => {
             year1ReturnOnInvestment: year1ReturnOnInvestment,
             monthlyExpensesWithoutMortgage: monthlyExpensesWithoutMortgage,
           }
-          console.log('data: ', propertyDetails.investment)
-          setPropertyList(propertyList => [...propertyList, propertyDetails])
+          setResults(results => [...results, propertyDetails])
+          setLoading(false)
           counter++
           makeNewRequest(requestList)
         })
@@ -142,16 +125,13 @@ export const PropertiesContextProvider = ({children}) => {
     }
   }
 
-  useEffect(() => {
-    console.log(propertyList.length)
-  }, [propertyList])
-  
   return(
-    <PropertiesContext.Provider value={{propertyList,
+    <PropertiesContext.Provider value={{results,
                                         resultsPerPage,
                                         totalPages,
                                         totalResultsCount,
-                                        setPropertyList,
+                                        loading,
+                                        setResults,
                                         setResultsPerPage,
                                         setTotalPages,
                                         setTotalResultsCount,
@@ -161,23 +141,3 @@ export const PropertiesContextProvider = ({children}) => {
   )
 
 }
-
-  // const getSinglePropertyDetails = (zpid) => {
-  //   console.log('get single property')
-  //   singleProperty.params.zpid = zpid
-  //   axios.request(singleProperty).then(function (response) {
-  //     // setPropertyList(response.data.results)
-  //     console.log(response.data.price)
-  //   }).catch(function (error) {
-  //     console.log(error);
-  //   });
-  // }
-
-  // async function sendBatchRequests(urls) {
-  //   const requests = urls.map(url => axios.request(url));
-  //   axios.all(requests).then((responses) => {
-  //     responses.forEach((resp) => {
-  //       console.info(resp.data.price);
-  //     });
-  //   });
-  // }

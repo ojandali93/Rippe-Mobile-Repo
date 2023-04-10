@@ -6,17 +6,20 @@ import { NavigationContainer } from '@react-navigation/native';
 import BottomTabNavigation from './src/Navigation/BottomTabNavigation';
 import { PropertiesContextProvider } from './src/Context/PropertiesContext';
 import { InvestmentContextProvider } from './src/Context/InvestmentContext';
+import { SearchFilterContextProvider } from './src/Context/SearchFilterContext';
 
 export default function App() {
   return (
-    <InvestmentContextProvider>
-      <PropertiesContextProvider>
-        <NavigationContainer style={styles.container}>
-          <StatusBar style="auto" /> 
-          <BottomTabNavigation />
-        </NavigationContainer>
-      </PropertiesContextProvider>
-    </InvestmentContextProvider>
+    <SearchFilterContextProvider>
+      <InvestmentContextProvider>
+        <PropertiesContextProvider>
+          <NavigationContainer style={styles.container}>
+            <StatusBar style="auto" /> 
+            <BottomTabNavigation />
+          </NavigationContainer>
+        </PropertiesContextProvider>
+      </InvestmentContextProvider>
+    </SearchFilterContextProvider>
   );
 }
 
