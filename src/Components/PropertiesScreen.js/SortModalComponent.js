@@ -12,12 +12,12 @@ const SortModalComponent = () => {
   const {setResults, getProperties} = useContext(PropertiesContext)
 
   const updateSort = (sort) => {
+    setAccessSort(!accessSort)
     setSort(sort)
   }
 
   useEffect(() => {
     setResults([])
-    setAccessSort(!accessSort)
     getProperties()
   }, [sort])
 

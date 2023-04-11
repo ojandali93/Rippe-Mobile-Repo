@@ -1,7 +1,8 @@
 import React, { useContext, useEffect } from 'react'
 import {Text, View, Image, StyleSheet, Dimensions, ScrollView} from 'react-native'
 import { PropertiesContext } from '../Context/PropertiesContext'
-import SearchComponent from '../Components/PropertiesScreen.js/SearchComponent'
+
+import TopbarComponent from '../Components/PropertiesScreen.js/TopbarComponent'
 import ResultsComponent from '../Components/PropertiesScreen.js/ResultsComponent'
 
 
@@ -31,7 +32,7 @@ const PropertiesScreen = () => {
 
   return (
     <View>
-      <SearchComponent />
+      <TopbarComponent />
       {
         loading ? displayLoading() : displayPropertyList()
       }

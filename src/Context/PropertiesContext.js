@@ -29,6 +29,13 @@ export const PropertiesContextProvider = ({children}) => {
   const {calculateHomeInsuranceAmount} = useContext(InvestmentContext)
 
   const {currentSearch, sort} = useContext(SearchFilterContext)
+  const {isSingleFamily} = useContext(SearchFilterContext)
+  const {isMultiFamily} = useContext(SearchFilterContext)
+  const {isApartment} = useContext(SearchFilterContext)
+  const {isCondo} = useContext(SearchFilterContext)
+  const {isManufactured} = useContext(SearchFilterContext)
+  const {isTownhouse} = useContext(SearchFilterContext)
+  const {isLotLand} = useContext(SearchFilterContext)
 
   const getProperties = () => {
     setLoading(true)
@@ -36,6 +43,13 @@ export const PropertiesContextProvider = ({children}) => {
       ? properties.params.location = 'Los Angeles, CA' 
       : properties.params.location = currentSearch
     properties.params.sortSelection = sort
+    properties.params.isSingleFamily = isSingleFamily
+    properties.params.isMultiFamily = isMultiFamily
+    properties.params.isApartment = isApartment
+    properties.params.isCondo = isCondo
+    properties.params.isManufactured = isManufactured
+    properties.params.isTownhouse = isTownhouse
+    properties.params.isLotLand = isLotLand
     console.log(properties)
     axios.request(properties).then(function (response) {
       generateUrlList(response.data.results)

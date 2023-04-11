@@ -9,7 +9,6 @@ import { PropertiesContext } from '../../Context/PropertiesContext'
 const SearchComponent = () => {
 
   const {currentSearch, setCurrentSearch} = useContext(SearchFilterContext)
-  const {sort, setSort} = useContext(SearchFilterContext)
   const {setResults, getProperties} = useContext(PropertiesContext)
 
   const clearSearch = () => {
@@ -31,7 +30,6 @@ const SearchComponent = () => {
           Search
         </Text>
       </TouchableOpacity>
-      <SortModalComponent />
     </View>
   )
 }
