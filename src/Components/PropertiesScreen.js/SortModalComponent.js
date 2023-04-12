@@ -14,12 +14,9 @@ const SortModalComponent = () => {
   const updateSort = (sort) => {
     setAccessSort(!accessSort)
     setSort(sort)
-  }
-
-  useEffect(() => {
     setResults([])
     getProperties()
-  }, [sort])
+  }
 
   return (
     <View>

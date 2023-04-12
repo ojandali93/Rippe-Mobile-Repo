@@ -37,11 +37,58 @@ export const PropertiesContextProvider = ({children}) => {
   const {isTownhouse} = useContext(SearchFilterContext)
   const {isLotLand} = useContext(SearchFilterContext)
 
+  const {beds} = useContext(SearchFilterContext)
+  const {baths} = useContext(SearchFilterContext)
+  const {priceMin} = useContext(SearchFilterContext)
+  const {priceMax} = useContext(SearchFilterContext)
+  const {maxHoa} = useContext(SearchFilterContext)
+  const {sqftMin} = useContext(SearchFilterContext)
+  const {sqftMax} = useContext(SearchFilterContext)
+
+  const {hasPool} = useContext(SearchFilterContext)
+  const {hasGarage} = useContext(SearchFilterContext)
+  const {hasAC} = useContext(SearchFilterContext)
+  const {isSingleStory} = useContext(SearchFilterContext)
+
+  const {cityView} = useContext(SearchFilterContext)
+  const {mountainView} = useContext(SearchFilterContext)
+  const {waterView} = useContext(SearchFilterContext)
+  const {waterFront} = useContext(SearchFilterContext)
+
   const getProperties = () => {
     setLoading(true)
     currentSearch === '' 
       ? properties.params.location = 'Los Angeles, CA' 
       : properties.params.location = currentSearch
+    priceMin === null
+      ? null 
+      : properties.params.price_min = priceMin
+    priceMax === null
+      ? null 
+      : properties.params.price_max = priceMax
+    maxHoa === null
+      ? null 
+      : properties.params.hoa_max = maxHoa
+    sqftMin === null
+      ? null 
+      : properties.params.sqft_min = sqftMin
+    sqftMax === null
+      ? null 
+      : properties.params.sqft_max = sqftMax
+    beds === null
+      ? null 
+      : properties.params.beds_min = beds
+    baths === null
+      ? null 
+      : properties.params.baths_min = baths
+    properties.params.hasPool = hasPool
+    properties.params.hasGarage = hasGarage
+    properties.params.hasAirConditioning = hasAC
+    properties.params.singleStory = isSingleStory
+    properties.params.isCityView = cityView
+    properties.params.isMountainView = mountainView
+    properties.params.isWaterView = waterView
+    properties.params.isWaterfront = waterFront
     properties.params.sortSelection = sort
     properties.params.isSingleFamily = isSingleFamily
     properties.params.isMultiFamily = isMultiFamily

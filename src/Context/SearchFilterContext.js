@@ -16,6 +16,27 @@ export const SearchFilterContextProvider = ({children}) => {
   const [isTownhouse, setIsTownhouse] = useState(true)
   const [isLotLand, setIsLotLand] = useState(false)
 
+  const [beds, setBeds] = useState(null)
+  const [baths, setBaths] = useState(null)
+
+  const [priceMin, setPriceMin] = useState(null)
+  const [priceMax, setPriceMax] = useState(null)
+
+  const [maxHoa, setMaxHoa] = useState(null)
+
+  const [sqftMin, setSqftMin] = useState(null)
+  const [sqftMax, setSqftMax] = useState(null)
+
+  const [hasPool, setHasPool] = useState(false)
+  const [hasGarage, setHasGarage] = useState(false)
+  const [hasAC, setHasAC] = useState(false)
+  const [isSingleStory, setIsSingleStory] = useState(false)
+
+  const [cityView, setCityView] =  useState(false)
+  const [mountainView, setMountainView] = useState(false)
+  const [waterView, setWaterView] = useState(false)
+  const [waterFront, setWaterFront] = useState(false)
+
   return(
     <SearchFilterContext.Provider value={{currentSearch,
                                           sort,
@@ -26,6 +47,21 @@ export const SearchFilterContextProvider = ({children}) => {
                                           isManufactured,
                                           isTownhouse,
                                           isLotLand,
+                                          beds,
+                                          baths,
+                                          priceMin,
+                                          priceMax,
+                                          maxHoa,
+                                          sqftMin,
+                                          sqftMax,
+                                          hasPool,
+                                          hasGarage,
+                                          hasAC,
+                                          isSingleStory,
+                                          cityView,
+                                          mountainView,
+                                          waterView,
+                                          waterFront,
                                           setCurrentSearch,
                                           setSort,
                                           setIsSingleFamily,
@@ -34,7 +70,22 @@ export const SearchFilterContextProvider = ({children}) => {
                                           setIsCondo,
                                           setIsManufactured,
                                           setIsTownhouse,
-                                          setIsLotLand}}>
+                                          setIsLotLand,
+                                          setBeds, 
+                                          setBaths,
+                                          setPriceMin,
+                                          setPriceMax,
+                                          setMaxHoa,
+                                          setSqftMin,
+                                          setSqftMax,
+                                          setHasPool,
+                                          setHasGarage,
+                                          setHasAC,
+                                          setIsSingleStory,
+                                          setCityView,
+                                          setMountainView,
+                                          setWaterView,
+                                          setWaterFront}}>
       {children}
     </SearchFilterContext.Provider>
   )
