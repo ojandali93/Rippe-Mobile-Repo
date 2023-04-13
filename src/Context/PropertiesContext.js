@@ -14,6 +14,7 @@ export const PropertiesContextProvider = ({children}) => {
   const [resultsPerPage, setResultsPerPage] = useState(null)
   const [totalPages, setTotalPages] = useState(null)
   const [totalResultsCount, setTotalResultsCount] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1)
   
   const [loading, setLoading] = useState(true)
   // const [resultsLength, setResultsLength] = useState(2)
@@ -100,11 +101,12 @@ export const PropertiesContextProvider = ({children}) => {
     properties.params.isCondo = isCondo
     properties.params.isManufactured = isManufactured
     properties.params.isTownhouse = isTownhouse
-    properties.params.isLotLand = isLotLand
+    properties.params.page = currentPage
     console.log(properties)
     axios.request(properties).then(function (response) {
       setCityLat(response.data.results[0].latitude)
       setCityLong(response.data.results[0].longitude)
+      setTotalPages(response.data.totalPages)
       generateUrlList(response.data.results)
     }).catch(function (error) {
       console.log(error);
@@ -202,13 +204,15 @@ export const PropertiesContextProvider = ({children}) => {
                                         loading,
                                         cityLat, 
                                         cityLong,
+                                        currentPage,
                                         setResults,
                                         setResultsPerPage,
                                         setTotalPages,
                                         setTotalResultsCount,
                                         getProperties,
                                         setViewMaps,
-                                        setLoading}}>
+                                        setLoading,
+                                        setCurrentPage}}>
       {children}
     </PropertiesContext.Provider>
   )

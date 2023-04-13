@@ -5,6 +5,7 @@ import SearchComponent from './SearchComponent'
 import SortModalComponent from './SortModalComponent'
 import FilterModalComponent from './FilterModalComponent'
 import { PropertiesContext } from '../../Context/PropertiesContext'
+import PageNavigatorComponent from './PageNavigatorComponent'
 
 const TopbarComponent = () => {
 
@@ -15,6 +16,7 @@ const TopbarComponent = () => {
       <SearchComponent />
       <SortModalComponent />
       <FilterModalComponent />
+      <PageNavigatorComponent />
       <View>
         <Text onPress={() => {setViewMaps(!viewMaps)}}>
           Switch View
