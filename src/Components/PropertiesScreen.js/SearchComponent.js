@@ -9,11 +9,17 @@ import { PropertiesContext } from '../../Context/PropertiesContext'
 const SearchComponent = () => {
 
   const {currentSearch, setCurrentSearch} = useContext(SearchFilterContext)
+  const {setActiveSearch} = useContext(SearchFilterContext)
   const {setResults, getProperties} = useContext(PropertiesContext)
 
   const clearSearch = () => {
+    setActiveSearch(currentSearch)
     setResults([])
     getProperties()
+  }
+
+  const updateSearch = (value) => {
+    setCurrentSearch(value)
   }
 
   return (
@@ -21,7 +27,7 @@ const SearchComponent = () => {
       <View>
         <TextInput
           style={styles.input}
-          onChangeText={setCurrentSearch}
+          onChangeText={(value) => updateSearch(value)}
           value={currentSearch}
         />
       </View>

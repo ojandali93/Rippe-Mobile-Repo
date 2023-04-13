@@ -33,7 +33,8 @@ export const PropertiesContextProvider = ({children}) => {
   const {calculatePropertyTaxAnnual} = useContext(InvestmentContext)
   const {calculateHomeInsuranceAmount} = useContext(InvestmentContext)
   
-  const {currentSearch, sort} = useContext(SearchFilterContext)
+  const {currentSearch, setCurrentSearch} = useContext(SearchFilterContext)
+  const {activeSearch, sort} = useContext(SearchFilterContext)
   const {isSingleFamily} = useContext(SearchFilterContext)
   const {isMultiFamily} = useContext(SearchFilterContext)
   const {isApartment} = useContext(SearchFilterContext)
@@ -62,9 +63,11 @@ export const PropertiesContextProvider = ({children}) => {
 
   const getProperties = () => {
     setLoading(true)
-    currentSearch === '' 
-      ? properties.params.location = 'Los Angeles, CA'
-      : properties.params.location = currentSearch
+    activeSearch === ''
+      ? currentSearch === '' 
+        ? properties.params.location = 'Los Angeles, CA'
+        : properties.params.location = currentSearch
+      : properties.params.location = activeSearch
     priceMin === null
       ? null 
       : properties.params.price_min = priceMin
@@ -102,7 +105,8 @@ export const PropertiesContextProvider = ({children}) => {
     properties.params.isManufactured = isManufactured
     properties.params.isTownhouse = isTownhouse
     properties.params.page = currentPage
-    console.log(properties)
+    console.log('active', activeSearch)
+    console.log('current', currentSearch)
     axios.request(properties).then(function (response) {
       setCityLat(response.data.results[0].latitude)
       setCityLong(response.data.results[0].longitude)
@@ -183,6 +187,7 @@ export const PropertiesContextProvider = ({children}) => {
           }
           setResults(results => [...results, propertyDetails])
           setLoading(false)
+          setCurrentSearch('')
           counter++
           makeNewRequest(requestList)
         })

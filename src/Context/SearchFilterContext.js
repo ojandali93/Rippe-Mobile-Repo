@@ -6,6 +6,7 @@ export const SearchFilterContext = createContext(null)
 export const SearchFilterContextProvider = ({children}) => {
   
   const [currentSearch, setCurrentSearch] = useState('')
+  const [activeSearch, setActiveSearch] = useState('Los Angeles, CA')
   const [sort, setSort] = useState('priorityscore')
 
   const [isSingleFamily, setIsSingleFamily] = useState(true)
@@ -62,6 +63,7 @@ export const SearchFilterContextProvider = ({children}) => {
                                           mountainView,
                                           waterView,
                                           waterFront,
+                                          activeSearch,
                                           setCurrentSearch,
                                           setSort,
                                           setIsSingleFamily,
@@ -85,7 +87,8 @@ export const SearchFilterContextProvider = ({children}) => {
                                           setCityView,
                                           setMountainView,
                                           setWaterView,
-                                          setWaterFront}}>
+                                          setWaterFront,
+                                          setActiveSearch}}>
       {children}
     </SearchFilterContext.Provider>
   )
