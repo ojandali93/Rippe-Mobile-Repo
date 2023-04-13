@@ -21,13 +21,17 @@ export const PropertiesContextProvider = ({children}) => {
   let resultsLength = 2
   let counter = 0
 
+  const [viewMaps, setViewMaps] = useState(false)
+  const [cityLat, setCityLat] = useState(118.2437)
+  const [cityLong, setCityLong] = useState(34.0522)
+  
   const {calculateDownPaymentAmount} = useContext(InvestmentContext)
   const {calculateDownPaymentPercent} = useContext(InvestmentContext)
   const {calculateLoanAmount} = useContext(InvestmentContext)
   const {calculateMortgageAmount} = useContext(InvestmentContext)
   const {calculatePropertyTaxAnnual} = useContext(InvestmentContext)
   const {calculateHomeInsuranceAmount} = useContext(InvestmentContext)
-
+  
   const {currentSearch, sort} = useContext(SearchFilterContext)
   const {isSingleFamily} = useContext(SearchFilterContext)
   const {isMultiFamily} = useContext(SearchFilterContext)
@@ -58,7 +62,7 @@ export const PropertiesContextProvider = ({children}) => {
   const getProperties = () => {
     setLoading(true)
     currentSearch === '' 
-      ? properties.params.location = 'Los Angeles, CA' 
+      ? properties.params.location = 'Los Angeles, CA'
       : properties.params.location = currentSearch
     priceMin === null
       ? null 
@@ -99,6 +103,8 @@ export const PropertiesContextProvider = ({children}) => {
     properties.params.isLotLand = isLotLand
     console.log(properties)
     axios.request(properties).then(function (response) {
+      setCityLat(response.data.results[0].latitude)
+      setCityLong(response.data.results[0].longitude)
       generateUrlList(response.data.results)
     }).catch(function (error) {
       console.log(error);
@@ -192,11 +198,17 @@ export const PropertiesContextProvider = ({children}) => {
                                         totalPages,
                                         totalResultsCount,
                                         loading,
+                                        viewMaps,
+                                        loading,
+                                        cityLat, 
+                                        cityLong,
                                         setResults,
                                         setResultsPerPage,
                                         setTotalPages,
                                         setTotalResultsCount,
-                                        getProperties}}>
+                                        getProperties,
+                                        setViewMaps,
+                                        setLoading}}>
       {children}
     </PropertiesContext.Provider>
   )

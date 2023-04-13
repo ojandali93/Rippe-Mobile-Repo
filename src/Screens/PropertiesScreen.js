@@ -1,14 +1,15 @@
 import React, { useContext, useEffect } from 'react'
-import {Text, View, Image, StyleSheet, Dimensions, ScrollView} from 'react-native'
+import {Text, View, Image, StyleSheet} from 'react-native'
 import { PropertiesContext } from '../Context/PropertiesContext'
 
 import TopbarComponent from '../Components/PropertiesScreen.js/TopbarComponent'
 import ResultsComponent from '../Components/PropertiesScreen.js/ResultsComponent'
+import MainMapsConponents from '../Components/PropertiesScreen.js/MainMapsConponents'
 
 
 const PropertiesScreen = () => {
 
-  const {results, getProperties, loading} = useContext(PropertiesContext)
+  const {viewMaps, getProperties, loading} = useContext(PropertiesContext)
 
   useEffect(() => {
     getProperties()
@@ -30,17 +31,33 @@ const PropertiesScreen = () => {
     )
   }
 
+  const displayMap = () => {
+    return(
+      <View style={styles.map}>
+        <MainMapsConponents />
+      </View>
+    )
+  }
+
   return (
     <View>
       <TopbarComponent />
       {
-        loading ? displayLoading() : displayPropertyList()
+        loading 
+          ? displayLoading() 
+          : viewMaps === false 
+            ? displayPropertyList()
+            : displayMap()
       }
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+  map: {
+    height: 400,
+    width: 400,
+  }
 })
 
 export default PropertiesScreen
