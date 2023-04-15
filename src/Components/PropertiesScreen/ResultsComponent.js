@@ -1,21 +1,30 @@
 import React, { useContext, useEffect } from 'react'
-import {Text, View, Image, StyleSheet, Dimensions, ScrollView} from 'react-native'
+import {Text, View, Image, StyleSheet, Dimensions, ScrollView, TouchableOpacity} from 'react-native'
 import { PropertiesContext } from '../../Context/PropertiesContext'
+import { useNavigation } from '@react-navigation/native'
+import { PropertyContext } from '../../Context/PropertyContext'
 
 const deviceWidth = Dimensions.get('window').width
 const aspectWidth = deviceWidth - 16
 const aspectHeight = (deviceWidth / 1.78) + 1
 
 const ResultsComponent = () => {
+  const navigation = useNavigation()
 
   const {results} = useContext(PropertiesContext)
+  const {setProperty, setPropertyDetails} = useContext(PropertyContext)
+
+  const goToPropertyPage = (property) => {
+    setProperty(property)
+    navigation.navigate('PropertyScreen')
+  }
 
   return (
     <ScrollView>
     {
       results.map((property) => {
         return(
-          <View key={property.zpid}> 
+          <TouchableOpacity onPress={() => {goToPropertyPage(property)}} key={property.zpid}> 
             <Image style={{height: aspectHeight, width: aspectWidth}} source={{uri: property.hiResImageLink}}/>
             <View>
               <View>
@@ -59,7 +68,7 @@ const ResultsComponent = () => {
                 <Text>Year 1 ROI: {property.investment.year1ReturnOnInvestment}</Text>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         )
       })
     }

@@ -2,9 +2,9 @@ import React, { useContext, useEffect } from 'react'
 import {Text, View, Image, StyleSheet} from 'react-native'
 import { PropertiesContext } from '../Context/PropertiesContext'
 
-import TopbarComponent from '../Components/PropertiesScreen.js/TopbarComponent'
-import ResultsComponent from '../Components/PropertiesScreen.js/ResultsComponent'
-import MainMapsConponents from '../Components/PropertiesScreen.js/MainMapsConponents'
+import TopbarComponent from '../Components/PropertiesScreen/TopbarComponent'
+import ResultsComponent from '../Components/PropertiesScreen/ResultsComponent'
+import MainMapsConponents from '../Components/PropertiesScreen/MainMapsConponents'
 
 
 const PropertiesScreen = () => {

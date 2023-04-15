@@ -90,7 +90,7 @@ export const PropertiesContextProvider = ({children}) => {
       ? null 
       : properties.params.baths_min = baths
     properties.params.hasPool = hasPool
-    properties.params.hasGarage = hasGarage
+    properties.params.hasGarage = hasGarage 
     properties.params.hasAirConditioning = hasAC
     properties.params.singleStory = isSingleStory
     properties.params.isCityView = cityView
