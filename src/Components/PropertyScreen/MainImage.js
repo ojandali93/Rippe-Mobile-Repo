@@ -13,7 +13,7 @@ const MainImage = () => {
 
   return (
     <View>
-      <Image style={{height: aspectHeight, width: aspectWidth}} source={{uri: mainImage}} />
+      <Image key={mainImage} style={{height: aspectHeight, width: aspectWidth}} source={{uri: mainImage}} />
     </View>
   )
 }

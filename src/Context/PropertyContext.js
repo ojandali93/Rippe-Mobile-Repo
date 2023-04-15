@@ -25,7 +25,8 @@ export const PropertyContextProvider = ({children}) => {
                                       mainImage, 
                                       images,
                                       setProperty, 
-                                      setPropertyDetails}}>
+                                      setPropertyDetails,
+                                      setMainImage}}>
       {children}
     </PropertyContext.Provider>
   )

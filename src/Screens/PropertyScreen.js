@@ -3,6 +3,7 @@ import { PropertyContext } from '../Context/PropertyContext'
 import { Text, View } from 'react-native'
 
 import MainImage from '../Components/PropertyScreen/MainImage'
+import ImageCarousel from '../Components/PropertyScreen/ImageCarousel'
 
 const PropertyScreen = () => {
 
@@ -17,6 +18,7 @@ const PropertyScreen = () => {
       <View>
         <Text>Loaded Property</Text>
         <MainImage />
+        <ImageCarousel />
       </View>
     )
   }
