@@ -4,6 +4,7 @@ import { Text, View } from 'react-native'
 
 import MainImage from '../Components/PropertyScreen/MainImage'
 import ImageCarousel from '../Components/PropertyScreen/ImageCarousel'
+import QuickSummaryComponent from '../Components/PropertyScreen/QuickSummaryComponent'
 
 const PropertyScreen = () => {
 
@@ -19,6 +20,7 @@ const PropertyScreen = () => {
         <Text>Loaded Property</Text>
         <MainImage />
         <ImageCarousel />
+        <QuickSummaryComponent />
       </View>
     )
   }

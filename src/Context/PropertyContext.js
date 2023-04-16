@@ -17,6 +17,7 @@ export const PropertyContextProvider = ({children}) => {
     setMainImage(property.hiResImageLink)
     setImages(property.big)
     setLoading(false)
+    
   }
 
   return(
