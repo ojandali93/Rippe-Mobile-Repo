@@ -1,10 +1,12 @@
 import React, { useContext, useEffect } from 'react'
 import { PropertyContext } from '../Context/PropertyContext'
-import { Text, View } from 'react-native'
+import { Text, View, ScrollView } from 'react-native'
 
 import MainImage from '../Components/PropertyScreen/MainImage'
 import ImageCarousel from '../Components/PropertyScreen/ImageCarousel'
 import QuickSummaryComponent from '../Components/PropertyScreen/QuickSummaryComponent'
+import RevenueComponent from '../Components/PropertyScreen/RevenueComponent'
+import ExpensesComponent from '../Components/PropertyScreen/ExpensesComponent'
 
 const PropertyScreen = () => {
 
@@ -17,10 +19,14 @@ const PropertyScreen = () => {
   const displayProperty = () => {
     return(
       <View>
-        <Text>Loaded Property</Text>
-        <MainImage />
-        <ImageCarousel />
-        <QuickSummaryComponent />
+        <ScrollView>
+          <Text>Loaded Property</Text>
+          <MainImage />
+          <ImageCarousel />
+          <QuickSummaryComponent />
+          <RevenueComponent />
+          <ExpensesComponent />
+        </ScrollView>
       </View>
     )
   }
