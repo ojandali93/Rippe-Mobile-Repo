@@ -3,6 +3,8 @@ import {View, Text, TextInput} from 'react-native'
 import { PropertyContext } from '../../Context/PropertyContext'
 
 import MortgageComponent from '../ExpensesComponent/MortgageComponent'
+import PropertyTaxComponent from '../ExpensesComponent/PropertyTaxComponent'
+import MortgageInsuranceComponent from '../ExpensesComponent/MortgageInsuranceComponent'
 
 const ExpensesComponent = () => {
 
@@ -14,6 +16,8 @@ const ExpensesComponent = () => {
         Expenses
       </Text>
       <MortgageComponent />
+      <PropertyTaxComponent />
+      <MortgageInsuranceComponent />
     </View>
   )
 }

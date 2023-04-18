@@ -16,6 +16,7 @@ export const PropertyContextProvider = ({children}) => {
   const [mortgage, setMortgage] = useState(0)
   const [mortgageInsurance, setMortgageInsurance] = useState(0)
   const [propertyTax, setPropertyTax] = useState(0)
+  const [propertyTaxRate, setPropertyTaxRate] = useState(0)
   const [hoa, setHoa] = useState(0)
   const [homeInsurance, setHomeInsurance] = useState(0)
   const [utilities, setUtilities] = useState(0)
@@ -23,7 +24,7 @@ export const PropertyContextProvider = ({children}) => {
 
   const [homePrice, setHomePrice] = useState(0)
   const [downPaymentAmount, setDownPaymentAmount] = useState(0)
-  const [downPaymentPercent, setDownPaymentPercent] = useState(0)
+  const [downPaymentPercent, setDownPaymentPercent] = useState(20)
   const [loanAmount, setLoanAmount] = useState(0)
   const [interestRate, setInterestRate] = useState(0)
   const [loanTerm, setLoanTerm] = useState(0)
@@ -37,10 +38,17 @@ export const PropertyContextProvider = ({children}) => {
     setLoading(false)
     setRevenue(property.rentZestimate)
     setHomePrice(property.price)
-    setDownPaymentPercent(20)
     setInterestRate(property.mortgageRates.thirtyYearFixedRate)
     setLoanTerm(30)
+    setPropertyTaxRate(property.propertyTaxRate)
+    setPropertyTax(Math.round((property.propertyTaxRate/100) * property.price))
+    setLoanAmount(Math.round(property.price * (1 - (downPaymentPercent / 100))))
   }
+
+  useEffect(() => {
+    parseInt(downPaymentPercent) < 20
+      ? setHomeInsurance(Math.round((loanAmount * 0.0058) / 12)) : setHomeInsurance(0)
+  }, [downPaymentPercent])
 
   return(
     <PropertyContext.Provider value={{property, 
@@ -56,6 +64,9 @@ export const PropertyContextProvider = ({children}) => {
                                       loanAmount, 
                                       interestRate, 
                                       loanTerm,
+                                      propertyTax,
+                                      propertyTaxRate,
+                                      homeInsurance, 
                                       setProperty, 
                                       setPropertyDetails,
                                       setMainImage,
@@ -67,7 +78,10 @@ export const PropertyContextProvider = ({children}) => {
                                       setDownPaymentPercent,
                                       setLoanAmount,
                                       setLoanTerm,
-                                      setInterestRate}}>
+                                      setInterestRate,
+                                      setPropertyTax,
+                                      setPropertyTaxRate,
+                                      setHomeInsurance}}>
       {children}
     </PropertyContext.Provider>
   )
