@@ -29,6 +29,17 @@ export const PropertyContextProvider = ({children}) => {
   const [interestRate, setInterestRate] = useState(0)
   const [loanTerm, setLoanTerm] = useState(0)
 
+  const [water, setWater] = useState(0)
+  const [trash, setTrash] = useState(0)
+  const [electricity, setElectricity] = useState(0)
+  const [gas, setGas] = useState(0)
+
+  const [maintenance, setMaintenance] = useState(0)
+  const [management, setManagement] = useState(0)
+  const [repairs, setRepairs] = useState(0)
+  const [homeWarranty, setHomeWarranty] = useState(0)
+  const [other, setOther] = useState(0)
+
   const [loading, setLoading] = useState(false)
 
   const setPropertyDetails = () => {
@@ -43,12 +54,17 @@ export const PropertyContextProvider = ({children}) => {
     setPropertyTaxRate(property.propertyTaxRate)
     setPropertyTax(Math.round((property.propertyTaxRate/100) * property.price))
     setLoanAmount(Math.round(property.price * (1 - (downPaymentPercent / 100))))
+    property.resoFacts.hoaFee === null ? setHoa(0) : setHoa(property.resoFacts.hoaFee)
   }
 
   useEffect(() => {
     parseInt(downPaymentPercent) < 20
       ? setHomeInsurance(Math.round((loanAmount * 0.0058) / 12)) : setHomeInsurance(0)
   }, [downPaymentPercent])
+
+  useEffect(() => {
+    setUtilities(parseInt(gas) + parseInt(electricity) + parseInt(trash) + parseInt(water))
+  }, [gas, electricity, trash, water])
 
   return(
     <PropertyContext.Provider value={{property, 
@@ -66,7 +82,19 @@ export const PropertyContextProvider = ({children}) => {
                                       loanTerm,
                                       propertyTax,
                                       propertyTaxRate,
-                                      homeInsurance, 
+                                      homeInsurance,
+                                      hoa, 
+                                      water, 
+                                      electricity, 
+                                      gas, 
+                                      trash,
+                                      utilities,
+                                      maintenance,
+                                      management,
+                                      repairs,
+                                      homeWarranty,
+                                      other,
+                                      otherExpenses,
                                       setProperty, 
                                       setPropertyDetails,
                                       setMainImage,
@@ -81,7 +109,19 @@ export const PropertyContextProvider = ({children}) => {
                                       setInterestRate,
                                       setPropertyTax,
                                       setPropertyTaxRate,
-                                      setHomeInsurance}}>
+                                      setHomeInsurance,
+                                      setHoa,
+                                      setTrash,
+                                      setGas,
+                                      setWater,
+                                      setElectricity,
+                                      setUtilities,
+                                      setMaintenance,
+                                      setManagement,
+                                      setRepairs,
+                                      setHomeWarranty,
+                                      setOther,
+                                      setOtherExpenses}}>
       {children}
     </PropertyContext.Provider>
   )

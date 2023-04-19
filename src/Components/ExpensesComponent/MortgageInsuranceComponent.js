@@ -9,7 +9,7 @@ const MortgageInsuranceComponent = () => {
   return (
     <View>
       <View>
-        <Text>Home Insurance: {homeInsurance}</Text>
+        <Text>Mortgage Insurance: {homeInsurance}</Text>
       </View>
     </View>
   )

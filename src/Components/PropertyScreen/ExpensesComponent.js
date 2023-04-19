@@ -5,6 +5,9 @@ import { PropertyContext } from '../../Context/PropertyContext'
 import MortgageComponent from '../ExpensesComponent/MortgageComponent'
 import PropertyTaxComponent from '../ExpensesComponent/PropertyTaxComponent'
 import MortgageInsuranceComponent from '../ExpensesComponent/MortgageInsuranceComponent'
+import HoaComponent from '../ExpensesComponent/HoaComponent'
+import UtilitiesComponent from '../ExpensesComponent/UtilitiesComponent'
+import AdditionalExpensesComponent from '../ExpensesComponent/AdditionalExpensesComponent'
 
 const ExpensesComponent = () => {
 
@@ -18,6 +21,9 @@ const ExpensesComponent = () => {
       <MortgageComponent />
       <PropertyTaxComponent />
       <MortgageInsuranceComponent />
+      <HoaComponent />
+      <UtilitiesComponent />
+      <AdditionalExpensesComponent />
     </View>
   )
 }
