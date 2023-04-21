@@ -1,9 +1,17 @@
 import axios from 'axios'
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { InvestmentContext } from './InvestmentContext';
 
 export const PropertyContext = createContext(null)
 
 export const PropertyContextProvider = ({children}) => {
+
+  const {calculateDownPaymentAmount,
+          calculateDownPaymentPercent,
+          calculateLoanAmount,
+          calculateMortgageAmount,
+          calculatePropertyTaxAnnual,
+          calculateHomeInsuranceAmount} = useContext(InvestmentContext)
 
   const [property, setProperty] = useState('')
 
@@ -12,6 +20,8 @@ export const PropertyContextProvider = ({children}) => {
 
   const [revenue, setRevenue] = useState(0)
   const [additionalRevenue, setAdditionalRevenue] = useState(0)
+
+  const [totalExpenses, setTotalExpenses] = useState(0)
 
   const [mortgage, setMortgage] = useState(0)
   const [mortgageInsurance, setMortgageInsurance] = useState(0)
@@ -27,7 +37,7 @@ export const PropertyContextProvider = ({children}) => {
   const [downPaymentPercent, setDownPaymentPercent] = useState(20)
   const [loanAmount, setLoanAmount] = useState(0)
   const [interestRate, setInterestRate] = useState(0)
-  const [loanTerm, setLoanTerm] = useState(0)
+  const [loanTerm, setLoanTerm] = useState(30)
 
   const [water, setWater] = useState(0)
   const [trash, setTrash] = useState(0)
@@ -40,31 +50,34 @@ export const PropertyContextProvider = ({children}) => {
   const [homeWarranty, setHomeWarranty] = useState(0)
   const [other, setOther] = useState(0)
 
+  const [] = useState(0)
+
   const [loading, setLoading] = useState(false)
 
   const setPropertyDetails = () => {
     setLoading(true)
     setMainImage(property.hiResImageLink)
     setImages(property.big)
-    setLoading(false)
-    setRevenue(property.rentZestimate)
-    setHomePrice(property.price)
-    setInterestRate(property.mortgageRates.thirtyYearFixedRate)
-    setLoanTerm(30)
     setPropertyTaxRate(property.propertyTaxRate)
-    setPropertyTax(Math.round((property.propertyTaxRate/100) * property.price))
-    setLoanAmount(Math.round(property.price * (1 - (downPaymentPercent / 100))))
-    property.resoFacts.hoaFee === null ? setHoa(0) : setHoa(property.resoFacts.hoaFee)
+    setPropertyTax(Math.round(((property.propertyTaxRate/100) * property.price) / 12))
+    setRevenue(property.rentZestimate)
+    property.monthlyHoaFee === null 
+      ? setHoa(0) 
+      : setHoa(property.monthlyHoaFee)
+    setHomePrice(property.price)
+    setLoanTerm(30)
+    setInterestRate(property.mortgageRates.thirtyYearFixedRate)
+    setDownPaymentAmount(calculateDownPaymentAmount(property.price, 20))
+    setDownPaymentPercent(calculateDownPaymentPercent(property.price, (property.price * .2)))
+    setLoanAmount(calculateLoanAmount(property.price, (property.price * .2)))
+    setMortgage(calculateMortgageAmount((property.price * .8), 30, property.mortgageRates.thirtyYearFixedRate))
+    setLoading(false)
   }
 
   useEffect(() => {
     parseInt(downPaymentPercent) < 20
       ? setHomeInsurance(Math.round((loanAmount * 0.0058) / 12)) : setHomeInsurance(0)
   }, [downPaymentPercent])
-
-  useEffect(() => {
-    setUtilities(parseInt(gas) + parseInt(electricity) + parseInt(trash) + parseInt(water))
-  }, [gas, electricity, trash, water])
 
   return(
     <PropertyContext.Provider value={{property, 
@@ -95,6 +108,7 @@ export const PropertyContextProvider = ({children}) => {
                                       homeWarranty,
                                       other,
                                       otherExpenses,
+                                      totalExpenses,
                                       setProperty, 
                                       setPropertyDetails,
                                       setMainImage,
@@ -121,7 +135,8 @@ export const PropertyContextProvider = ({children}) => {
                                       setRepairs,
                                       setHomeWarranty,
                                       setOther,
-                                      setOtherExpenses}}>
+                                      setOtherExpenses,
+                                      setTotalExpenses}}>
       {children}
     </PropertyContext.Provider>
   )

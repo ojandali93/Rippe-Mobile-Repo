@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {View, Text, TextInput} from 'react-native'
 import { PropertyContext } from '../../Context/PropertyContext'
 
@@ -11,12 +11,23 @@ import AdditionalExpensesComponent from '../ExpensesComponent/AdditionalExpenses
 
 const ExpensesComponent = () => {
 
-  const {mortgage, setMortgage} = useContext(PropertyContext)
+  const {totalExpenses, setTotalExpenses} = useContext(PropertyContext)
+  const {homeInsurance} = useContext(PropertyContext)
+  const {utilities} = useContext(PropertyContext)
+  const {otherExpenses} = useContext(PropertyContext)
+  const {hoa} = useContext(PropertyContext)
+  const {propertyTax} = useContext(PropertyContext)
+  const {mortgage} = useContext(PropertyContext)
+
+  useEffect(() => {
+    setTotalExpenses(parseInt(homeInsurance) + parseInt(utilities) + parseInt(mortgage) + 
+      parseInt(otherExpenses) + parseInt(hoa) + parseInt(propertyTax))
+  }, [homeInsurance, utilities, otherExpenses, hoa, propertyTax, mortgage])
 
   return (
     <View>
       <Text>
-        Expenses
+        Expenses: {totalExpenses}
       </Text>
       <MortgageComponent />
       <PropertyTaxComponent />

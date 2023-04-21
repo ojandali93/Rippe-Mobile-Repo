@@ -1,26 +1,31 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {View, Text, TextInput} from 'react-native'
 import { PropertyContext } from '../../Context/PropertyContext'
 
 const AdditionalExpensesComponent = () => {
 
-  const {otherExpenses} = useContext(PropertyContext)
+  const {otherExpenses, setOtherExpenses} = useContext(PropertyContext)
   const {maintenance, setMaintenance} = useContext(PropertyContext)
   const {management, setManagement} = useContext(PropertyContext)
   const {repairs, setRepairs} = useContext(PropertyContext)
   const {homeWarranty, setHomeWarranty} = useContext(PropertyContext)
   const {other, setOther} = useContext(PropertyContext)
 
+  useEffect(() => {
+    setOtherExpenses(parseInt(maintenance) + parseInt(management) + 
+      parseInt(repairs) + parseInt(homeWarranty) + parseInt(other))
+  }, [maintenance, management, repairs, homeWarranty, other])
+
   return (
     <View>
       <View>
         <Text>
-          Other Expenses: {otherExpenses}
+          Other Expenses: {parseInt(otherExpenses)}
         </Text>
       </View>
       <View>
         <Text>
-          maintenance {'(Annual)'}: {maintenance}
+          maintenance {'(Annual)'}: {parseInt(maintenance)}
         </Text>
         <TextInput
           value={maintenance.toString()}
@@ -30,7 +35,7 @@ const AdditionalExpensesComponent = () => {
 
       <View>
         <Text>
-          Management {'(Annual)'}: {management}
+          Management {'(Annual)'}: {parseInt(management)}
         </Text>
         <TextInput
           value={management.toString()}
@@ -39,7 +44,7 @@ const AdditionalExpensesComponent = () => {
       </View>
       <View>
         <Text>
-          Repairs {'(Annual)'}: {repairs}
+          Repairs {'(Annual)'}: {parseInt(repairs)}
         </Text>
         <TextInput
           value={repairs.toString()}
@@ -48,7 +53,7 @@ const AdditionalExpensesComponent = () => {
       </View>
       <View>
         <Text>
-          Home Warranty {'(Annual)'}: {homeWarranty}
+          Home Warranty {'(Annual)'}: {parseInt(homeWarranty)}
         </Text>
         <TextInput
           value={homeWarranty.toString()}
@@ -57,7 +62,7 @@ const AdditionalExpensesComponent = () => {
       </View>
       <View>
         <Text>
-          Other {'(Annual)'}: {other}
+          Other {'(Annual)'}: {parseInt(other)}
         </Text>
         <TextInput
           value={other.toString()}

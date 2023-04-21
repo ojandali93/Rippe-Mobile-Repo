@@ -1,10 +1,24 @@
 import React, { useContext } from 'react'
 import {View, Text, TextInput} from 'react-native'
 import { PropertyContext } from '../../Context/PropertyContext'
+import { InvestmentContext } from '../../Context/InvestmentContext'
+import RNPickerSelect from 'react-native-picker-select'
 
 const MortgageComponent = () => {
 
-  const {mortgage} = useContext(PropertyContext)
+  const loanOptions = [
+    {
+      'label': '30 Year Fixed',
+      'value': 30
+    },
+    {
+      'label': '15 Year Fixed',
+      'value': 15
+    }
+  ]
+
+  const {property} = useContext(PropertyContext)
+  const {mortgage, setMortgage} = useContext(PropertyContext)
   const {homePrice, setHomePrice} = useContext(PropertyContext)
   const {downPaymentAmount, setDownPaymentAmount} = useContext(PropertyContext)
   const {downPaymentPercent, setDownPaymentPercent} = useContext(PropertyContext)
@@ -12,28 +26,90 @@ const MortgageComponent = () => {
   const {interestRate, setInterestRate} = useContext(PropertyContext)
   const {loanTerm, setLoanTerm} = useContext(PropertyContext)
 
+  const {calculateDownPaymentAmount,
+          calculateDownPaymentPercent,
+          calculateLoanAmount,
+          calculateMortgageAmount,
+          calculatePropertyTaxAnnual,
+          calculateHomeInsuranceAmount} = useContext(InvestmentContext)
+
   const updateHomePrice = (value) => {
     setHomePrice(value)
+    let newDownPayment = calculateDownPaymentAmount(value, downPaymentPercent)
+    let newLoanAmount = calculateLoanAmount(value, newDownPayment)
+    setDownPaymentAmount(newDownPayment)
+    setLoanAmount(newLoanAmount)
+    setMortgage(calculateMortgageAmount(newLoanAmount, loanTerm, interestRate))
   }
 
   const updateHDownPaymentAmount = (value) => {
     setDownPaymentAmount(value)
+    let newDownPaymentPercent = calculateDownPaymentPercent(homePrice, value)
+    let newLoanAmount = calculateLoanAmount(homePrice, value)
+    setDownPaymentPercent(newDownPaymentPercent)
+    setLoanAmount(newLoanAmount)
+    setMortgage(calculateMortgageAmount(newLoanAmount, loanTerm, interestRate))
   }
 
   const updateDownPaymentPercent = (value) => {
+    value > 0 ? null : value = 0
     setDownPaymentPercent(value)
-  }
-
-  const updateLoanAmount = (value) => {
-    setLoanAmount(value)
+    let newDownPaymentAmount = calculateDownPaymentAmount(homePrice, value) 
+    let newLoanAmount = calculateLoanAmount(homePrice, newDownPaymentAmount)
+    setDownPaymentAmount(newDownPaymentAmount)
+    setLoanAmount(newLoanAmount)
+    setMortgage(calculateMortgageAmount(newLoanAmount, loanTerm, interestRate))
   }
 
   const updateInterestRate = (value) => {
     setInterestRate(value)
+    let newMortgageAmount = calculateMortgageAmount(loanAmount, loanTerm, parseFloat(value))
+    setMortgage(newMortgageAmount)
   }
   
   const updateLoanTerm = (value) => {
-    setLoanTerm(value)
+    console.log(value)
+    let newIterestRate
+    value === 30 ? () => {
+      console.log(property.mortgageRates.thirtyYearFixedRate)
+      setLoanTerm(30)
+      newIterestRate = property.mortgageRates.thirtyYearFixedRate
+      setInterestRate(property.mortgageRates.thirtyYearFixedRate) 
+      
+    } : null
+    value === 15 ? () => {
+      console.log(property.mortgageRates.fifteenYearFixedRate)
+      setLoanTerm(15)
+      newIterestRate = property.mortgageRates.fifteenYearFixedRate
+      setInterestRate(property.mortgageRates.fifteenYearFixedRate) 
+    } : null
+    value === 5 ? () => {
+      console.log(property.mortgageRates.arm5Rate)
+      setLoanTerm(5)
+      newIterestRate = property.mortgageRates.arm5Rate
+      setInterestRate(property.mortgageRates.arm5Rate) 
+    } : null
+    console.log(newIterestRate)
+    let newMortgageAmount = calculateMortgageAmount(loanAmount, loanTerm, newIterestRate)
+    setMortgage(newMortgageAmount)
+  }
+
+  const updateLoanTerms = (value) => {
+    console.log(value)
+    let newInterestRate
+    if(value === 30){
+      setLoanTerm(30)
+      newInterestRate = property.mortgageRates.thirtyYearFixedRate
+      setInterestRate(property.mortgageRates.thirtyYearFixedRate)
+    }
+    if(value === 15){
+      setLoanTerm(15)
+      newInterestRate = property.mortgageRates.fifteenYearFixedRate
+      setInterestRate(property.mortgageRates.fifteenYearFixedRate)
+    }
+    console.log(newInterestRate)
+    let newMortgageAmount = calculateMortgageAmount(loanAmount, loanTerm, newInterestRate)
+    setMortgage(newMortgageAmount)
   }
 
   return (
@@ -73,12 +149,18 @@ const MortgageComponent = () => {
       </View>
       <View>
         <Text>
-          Loan Program: {loanTerm}
+          Loan Program: 
+          {
+            loanTerm === 30 ? <Text>30 Year Fixed</Text> : null
+          }
+          {
+            loanTerm === 15 ? <Text>15 Year Fixed</Text> : null
+          }
         </Text>
-        <TextInput
-          inputMode='decimal'
-          value={loanTerm.toString()}
-          onChangeText={(value) => {updateLoanTerm(value)}}
+        <RNPickerSelect 
+          value={loanTerm}
+          onValueChange={(value) => updateLoanTerms(value)}
+          items={loanOptions}
         />
       </View>
       <View>

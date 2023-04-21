@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {View, Text, TextInput} from 'react-native'
 import { PropertyContext } from '../../Context/PropertyContext'
 
@@ -8,7 +8,11 @@ const UtilitiesComponent = () => {
   const {trash, setTrash} = useContext(PropertyContext)
   const {electricity, setElectricity} = useContext(PropertyContext)
   const {gas, setGas} = useContext(PropertyContext)
-  const {utilities} = useContext(PropertyContext)
+  const {utilities, setUtilities} = useContext(PropertyContext)
+
+  useEffect(() => {
+    setUtilities(parseInt(gas) + parseInt(electricity) + parseInt(trash) + parseInt(water))
+  }, [gas, electricity, trash, water])
 
   return (
     <View>
@@ -19,7 +23,7 @@ const UtilitiesComponent = () => {
       </View>
       <View>
         <Text>
-          Gas Expenses: {gas}
+          Gas Expenses: {parseInt(gas)}
         </Text>
         <TextInput
           value={gas.toString()}
@@ -28,7 +32,7 @@ const UtilitiesComponent = () => {
       </View>
       <View>
         <Text>
-          Water Expenses: {water}
+          Water Expenses: {parseInt(water)}
         </Text>
         <TextInput
           value={water.toString()}
@@ -37,7 +41,7 @@ const UtilitiesComponent = () => {
       </View>
       <View>
         <Text>
-          Trash Expenses: {trash}
+          Trash Expenses: {parseInt(trash)}
         </Text>
         <TextInput
           value={trash.toString()}
@@ -46,7 +50,7 @@ const UtilitiesComponent = () => {
       </View>
       <View>
         <Text>
-          Electricity Expenses: {electricity}
+          Electricity Expenses: {parseInt(electricity)}
         </Text>
         <TextInput
           value={electricity.toString()}
