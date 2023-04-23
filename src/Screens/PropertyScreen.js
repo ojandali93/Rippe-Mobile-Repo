@@ -7,6 +7,7 @@ import ImageCarousel from '../Components/PropertyScreen/ImageCarousel'
 import QuickSummaryComponent from '../Components/PropertyScreen/QuickSummaryComponent'
 import RevenueComponent from '../Components/PropertyScreen/RevenueComponent'
 import ExpensesComponent from '../Components/PropertyScreen/ExpensesComponent'
+import InvestmentMetricCompnent from '../Components/PropertyScreen/InvestmentMetricCompnent'
 
 const PropertyScreen = () => {
 
@@ -26,6 +27,7 @@ const PropertyScreen = () => {
           <QuickSummaryComponent />
           <RevenueComponent />
           <ExpensesComponent />
+          <InvestmentMetricCompnent />
         </ScrollView>
       </View>
     )
