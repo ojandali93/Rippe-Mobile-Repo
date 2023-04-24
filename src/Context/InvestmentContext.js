@@ -1,6 +1,5 @@
 import axios from 'axios'
 import React, { createContext, useContext, useState } from 'react';
-import { PropertyContext } from './PropertyContext';
 
 export const InvestmentContext = createContext(null)
 

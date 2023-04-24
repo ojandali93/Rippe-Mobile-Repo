@@ -8,6 +8,11 @@ import QuickSummaryComponent from '../Components/PropertyScreen/QuickSummaryComp
 import RevenueComponent from '../Components/PropertyScreen/RevenueComponent'
 import ExpensesComponent from '../Components/PropertyScreen/ExpensesComponent'
 import InvestmentMetricCompnent from '../Components/PropertyScreen/InvestmentMetricCompnent'
+import DetailsComponent from '../Components/PropertyScreen/DetailsComponent'
+import DescriptionComponent from '../Components/PropertyScreen/DescriptionComponent'
+import ListingDetailsComponent from '../Components/PropertyScreen/ListingDetailsComponent'
+import OpenHouseComponent from '../Components/PropertyScreen/OpenHouseComponent'
+import ScheduleTourComponent from '../Components/PropertyScreen/ScheduleTourComponent'
 
 const PropertyScreen = () => {
 
@@ -28,6 +33,11 @@ const PropertyScreen = () => {
           <RevenueComponent />
           <ExpensesComponent />
           <InvestmentMetricCompnent />
+          <DetailsComponent />
+          <DescriptionComponent />
+          <ListingDetailsComponent />
+          <OpenHouseComponent />
+          <ScheduleTourComponent />
         </ScrollView>
       </View>
     )

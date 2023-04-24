@@ -9,9 +9,7 @@ export const PropertyContextProvider = ({children}) => {
   const {calculateDownPaymentAmount,
           calculateDownPaymentPercent,
           calculateLoanAmount,
-          calculateMortgageAmount,
-          calculatePropertyTaxAnnual,
-          calculateHomeInsuranceAmount} = useContext(InvestmentContext)
+          calculateMortgageAmount} = useContext(InvestmentContext)
 
   const [property, setProperty] = useState('')
 
@@ -70,7 +68,7 @@ export const PropertyContextProvider = ({children}) => {
     setDownPaymentPercent(calculateDownPaymentPercent(property.price, (property.price * .2)))
     setLoanAmount(calculateLoanAmount(property.price, (property.price * .2)))
     setMortgage(calculateMortgageAmount((property.price * .8), 30, property.mortgageRates.thirtyYearFixedRate))
-    setHomeInsurance(Math.round((property.price / 1000) * 3.5) / 12).toFixed(0)
+    setHomeInsurance((Math.round((property.price / 1000) * 3.5) / 12).toFixed(0))
     setLoading(false)
   }
 

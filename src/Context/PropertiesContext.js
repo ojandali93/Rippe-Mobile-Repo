@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from 'axios';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { properties, singleProperty } from '../Api/zillowApi'
 
@@ -62,6 +62,7 @@ export const PropertiesContextProvider = ({children}) => {
   const {waterFront} = useContext(SearchFilterContext)
 
   const getProperties = () => {
+    console.log('getting properties')
     setLoading(true)
     activeSearch === ''
       ? currentSearch === '' 
@@ -89,14 +90,30 @@ export const PropertiesContextProvider = ({children}) => {
     baths === null
       ? null 
       : properties.params.baths_min = baths
-    properties.params.hasPool = hasPool
-    properties.params.hasGarage = hasGarage 
-    properties.params.hasAirConditioning = hasAC
-    properties.params.singleStory = isSingleStory
-    properties.params.isCityView = cityView
-    properties.params.isMountainView = mountainView
-    properties.params.isWaterView = waterView
-    properties.params.isWaterfront = waterFront
+    hasPool === false 
+      ? null 
+      : properties.params.hasPool = hasPool
+    hasGarage === false 
+      ? null 
+      : properties.params.hasGarage = hasGarage 
+    hasAC === false 
+      ? null 
+      : properties.params.hasAirConditioning = hasAC
+    isSingleStory === false 
+      ? null 
+      : properties.params.singleStory = isSingleStory
+    cityView === false 
+      ? null 
+      : properties.params.isCityView = cityView
+    mountainView === false 
+      ? null 
+      : properties.params.isMountainView = mountainView
+    waterView === false
+      ? null 
+      : properties.params.isWaterView = waterView
+    waterFront === false 
+      ? null 
+      : properties.params.isWaterfront = waterFront
     properties.params.sortSelection = sort
     properties.params.isSingleFamily = isSingleFamily
     properties.params.isMultiFamily = isMultiFamily
@@ -107,12 +124,15 @@ export const PropertiesContextProvider = ({children}) => {
     properties.params.page = currentPage
     console.log('active', activeSearch)
     console.log('current', currentSearch)
+    console.log(properties)
     axios.request(properties).then(function (response) {
+      console.log('success')
       setCityLat(response.data.results[0].latitude)
       setCityLong(response.data.results[0].longitude)
       setTotalPages(response.data.totalPages)
       generateUrlList(response.data.results)
     }).catch(function (error) {
+      console.error('there was an issue')
       console.log(error);
     });
   }
@@ -125,10 +145,11 @@ export const PropertiesContextProvider = ({children}) => {
         url: 'https://zillow56.p.rapidapi.com/property',
         params: {zpid: results[i].zpid},
         headers: {
-          'X-RapidAPI-Key': 'a97aa2b01cmshc498c17349ddc7dp1a33e4jsn12bb4ad9c5c9',
+          'content-type': 'application/octet-stream',
+          'X-RapidAPI-Key': '015b41c917msh3247c85d232d717p128b80jsnd5d43cba3ec3',
           'X-RapidAPI-Host': 'zillow56.p.rapidapi.com'
         }
-      }
+      };
       requestList.push(requestObject)
     }
     makeNewRequest(requestList)
