@@ -38,6 +38,11 @@ const QuickSummaryComponent = () => {
         </View>
         <View>
           <Text>
+            {property.address.streetAddress} {property.address.city} {property.address.state} 
+          </Text>
+        </View>
+        <View>
+          <Text>
             {property.homeType}
           </Text>
           <Text>

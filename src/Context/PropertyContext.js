@@ -14,7 +14,6 @@ export const PropertyContextProvider = ({children}) => {
   const [property, setProperty] = useState('')
 
   const [mainImage, setMainImage] = useState('')
-  const [images, setImages] = useState([])
 
   const [revenue, setRevenue] = useState(0)
   const [additionalRevenue, setAdditionalRevenue] = useState(0)
@@ -51,10 +50,12 @@ export const PropertyContextProvider = ({children}) => {
 
   const [loading, setLoading] = useState(false)
 
+  const [priceHistory, setPriceHistory] = useState([])
+  const [taxHistory, setTaxHistory] = useState([])
+
   const setPropertyDetails = () => {
     setLoading(true)
     setMainImage(property.hiResImageLink)
-    setImages(property.big)
     setPropertyTaxRate(property.propertyTaxRate)
     setPropertyTax(Math.round(((property.propertyTaxRate/100) * property.price) / 12))
     setRevenue(property.rentZestimate)
@@ -69,6 +70,8 @@ export const PropertyContextProvider = ({children}) => {
     setLoanAmount(calculateLoanAmount(property.price, (property.price * .2)))
     setMortgage(calculateMortgageAmount((property.price * .8), 30, property.mortgageRates.thirtyYearFixedRate))
     setHomeInsurance((Math.round((property.price / 1000) * 3.5) / 12).toFixed(0))
+    setTaxHistory(property.taxHistory)
+    setPriceHistory(property.priceHistory)
     setLoading(false)
   }
 
@@ -81,7 +84,6 @@ export const PropertyContextProvider = ({children}) => {
     <PropertyContext.Provider value={{property, 
                                       loading, 
                                       mainImage, 
-                                      images,
                                       revenue,
                                       additionalRevenue,
                                       mortgage,
@@ -109,6 +111,8 @@ export const PropertyContextProvider = ({children}) => {
                                       totalExpenses,
                                       totalRevenue,
                                       mortgageInsurance, 
+                                      priceHistory,
+                                      taxHistory,
                                       setProperty, 
                                       setPropertyDetails,
                                       setMainImage,

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native'
 import { PropertyContext } from '../../Context/PropertyContext'
 
@@ -7,7 +7,9 @@ const aspectHeight = (aspectWidth / 1.78) + 1
 
 const ImageCarousel = () => {
 
-  const {images, setMainImage} = useContext(PropertyContext)
+  const {property, setMainImage} = useContext(PropertyContext)
+
+  const [images, setImages] = useState(property.big)
 
   return (
     <View>

@@ -13,6 +13,9 @@ import DescriptionComponent from '../Components/PropertyScreen/DescriptionCompon
 import ListingDetailsComponent from '../Components/PropertyScreen/ListingDetailsComponent'
 import OpenHouseComponent from '../Components/PropertyScreen/OpenHouseComponent'
 import ScheduleTourComponent from '../Components/PropertyScreen/ScheduleTourComponent'
+import SaleHistoryComponent from '../Components/PropertyScreen/SaleHistoryComponent'
+import TaxHistoryComponent from '../Components/PropertyScreen/TaxHistoryComponent'
+import ConnectWithAgentComponent from '../Components/PropertyScreen/ConnectWithAgentComponent'
 
 const PropertyScreen = () => {
 
@@ -38,6 +41,9 @@ const PropertyScreen = () => {
           <ListingDetailsComponent />
           <OpenHouseComponent />
           <ScheduleTourComponent />
+          <SaleHistoryComponent />
+          <TaxHistoryComponent />
+          <ConnectWithAgentComponent />
         </ScrollView>
       </View>
     )

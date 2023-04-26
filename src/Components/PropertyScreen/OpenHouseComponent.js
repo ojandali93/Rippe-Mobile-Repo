@@ -8,7 +8,6 @@ const OpenHouseComponent = () => {
   console.log(property.listingSubType.isOpenHouse)
 
   const hasOpenHouse = () => {
-    console.log('open house')
     return(
       <View>
         <Text>Current Schedule:</Text>
@@ -29,7 +28,6 @@ const OpenHouseComponent = () => {
   }
 
   const hasNoOpenHouse = () => {
-    console.log('no open house')
     return(
       <View>
         <Text>No current open houses scheduled</Text>
