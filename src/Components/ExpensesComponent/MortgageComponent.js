@@ -68,34 +68,28 @@ const MortgageComponent = () => {
   }
   
   const updateLoanTerm = (value) => {
-    console.log(value)
     let newIterestRate
     value === 30 ? () => {
-      console.log(property.mortgageRates.thirtyYearFixedRate)
       setLoanTerm(30)
       newIterestRate = property.mortgageRates.thirtyYearFixedRate
       setInterestRate(property.mortgageRates.thirtyYearFixedRate) 
       
     } : null
     value === 15 ? () => {
-      console.log(property.mortgageRates.fifteenYearFixedRate)
       setLoanTerm(15)
       newIterestRate = property.mortgageRates.fifteenYearFixedRate
       setInterestRate(property.mortgageRates.fifteenYearFixedRate) 
     } : null
     value === 5 ? () => {
-      console.log(property.mortgageRates.arm5Rate)
       setLoanTerm(5)
       newIterestRate = property.mortgageRates.arm5Rate
       setInterestRate(property.mortgageRates.arm5Rate) 
     } : null
-    console.log(newIterestRate)
     let newMortgageAmount = calculateMortgageAmount(loanAmount, loanTerm, newIterestRate)
     setMortgage(newMortgageAmount)
   }
 
   const updateLoanTerms = (value) => {
-    console.log(value)
     let newInterestRate
     if(value === 30){
       setLoanTerm(30)
@@ -107,7 +101,6 @@ const MortgageComponent = () => {
       newInterestRate = property.mortgageRates.fifteenYearFixedRate
       setInterestRate(property.mortgageRates.fifteenYearFixedRate)
     }
-    console.log(newInterestRate)
     let newMortgageAmount = calculateMortgageAmount(loanAmount, loanTerm, newInterestRate)
     setMortgage(newMortgageAmount)
   }

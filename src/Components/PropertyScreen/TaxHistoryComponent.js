@@ -49,8 +49,6 @@ const TaxHistoryComponent = () => {
     )
   }
 
-  console.log(taxHistory)
-
   return (
     <View>
       <View>

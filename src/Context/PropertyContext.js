@@ -53,6 +53,10 @@ export const PropertyContextProvider = ({children}) => {
   const [priceHistory, setPriceHistory] = useState([])
   const [taxHistory, setTaxHistory] = useState([])
 
+  const [schools, setSchools] = useState([])
+
+  const [nearbyHomes, setNearbyHomes] = useState([])
+
   const setPropertyDetails = () => {
     setLoading(true)
     setMainImage(property.hiResImageLink)
@@ -72,6 +76,8 @@ export const PropertyContextProvider = ({children}) => {
     setHomeInsurance((Math.round((property.price / 1000) * 3.5) / 12).toFixed(0))
     setTaxHistory(property.taxHistory)
     setPriceHistory(property.priceHistory)
+    setSchools(property.schools)
+    setNearbyHomes(property.nearbyHomes)
     setLoading(false)
   }
 
@@ -113,6 +119,8 @@ export const PropertyContextProvider = ({children}) => {
                                       mortgageInsurance, 
                                       priceHistory,
                                       taxHistory,
+                                      schools,
+                                      nearbyHomes,
                                       setProperty, 
                                       setPropertyDetails,
                                       setMainImage,

@@ -122,17 +122,12 @@ export const PropertiesContextProvider = ({children}) => {
     properties.params.isManufactured = isManufactured
     properties.params.isTownhouse = isTownhouse
     properties.params.page = currentPage
-    console.log('active', activeSearch)
-    console.log('current', currentSearch)
-    console.log(properties)
     axios.request(properties).then(function (response) {
-      console.log('success')
       setCityLat(response.data.results[0].latitude)
       setCityLong(response.data.results[0].longitude)
       setTotalPages(response.data.totalPages)
       generateUrlList(response.data.results)
     }).catch(function (error) {
-      console.error('there was an issue')
       console.log(error);
     });
   }

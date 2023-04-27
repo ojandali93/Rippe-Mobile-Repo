@@ -5,7 +5,6 @@ import { Text, View } from 'react-native'
 const OpenHouseComponent = () => {
 
   const {property} = useContext(PropertyContext)
-  console.log(property.listingSubType.isOpenHouse)
 
   const hasOpenHouse = () => {
     return(
