@@ -4,8 +4,10 @@ import PropertiesScreen from '../Screens/PropertiesScreen';
 import FavoritesScreen from '../Screens/FavoritesScreen';
 import FeedScreen from '../Screens/FeedScreen';
 import ProfileScreen from '../Screens/ProfileScreen';
+import MarketAnalysisScreen from '../Screens/MarketAnalysisScreen';
 
 import PropertyStackNavigation from './PropertiesStackNavigation';
+import MarketAnalysisStackNavigation from './MarketAnalysisStackNavigation';
 
 const Tab = createBottomTabNavigator();
 
@@ -14,10 +16,13 @@ function BottomTabNavigation() {
     <Tab.Navigator>
       <Tab.Screen 
         name="Properties" 
-        key='Properties' 
+        key='Properties'
         component={PropertyStackNavigation} />
       <Tab.Screen name="Favorites" component={FavoritesScreen} />
-      <Tab.Screen name="Feed" component={FeedScreen} />
+      <Tab.Screen 
+        name="Analysis"
+        key='Analysis'
+        component={MarketAnalysisStackNavigation} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );

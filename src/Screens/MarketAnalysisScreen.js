@@ -1,14 +1,14 @@
 import React from 'react'
 import { Text, View } from 'react-native'
 
-const FeedScreen = () => {
+const MarketAnalysisScreen = () => {
   return (
     <View>
       <View>
-        <Text>Feed Screen</Text>
+        <Text>Market Analysis Screen</Text>
       </View>
     </View>
   )
 }
 
-export default FeedScreen
+export default MarketAnalysisScreen
