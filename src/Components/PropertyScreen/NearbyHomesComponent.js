@@ -14,7 +14,7 @@ const NearbyHomesComponent = () => {
       {
         nearbyHomes.map((item) => {
           return(
-            <View>
+            <View key={item.zpid}>
               <View>
                 <Text>Address: {item.address.streetAddress} 
                         {item.address.city} {item.address.state}  {item.address.zipcode}</Text>

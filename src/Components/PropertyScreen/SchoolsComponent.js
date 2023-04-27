@@ -13,9 +13,9 @@ const SchoolsComponent = () => {
       </View>
       <View>
         {
-          schools.map((item) => {
+          schools.map((item, index) => {
             return(
-              <View>
+              <View key={index}>
                 <View>
                   <Text>
                     Name: {item.name}

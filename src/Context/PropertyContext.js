@@ -48,7 +48,7 @@ export const PropertyContextProvider = ({children}) => {
   const [homeWarranty, setHomeWarranty] = useState(0)
   const [other, setOther] = useState(0)
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   const [priceHistory, setPriceHistory] = useState([])
   const [taxHistory, setTaxHistory] = useState([])
@@ -58,7 +58,6 @@ export const PropertyContextProvider = ({children}) => {
   const [nearbyHomes, setNearbyHomes] = useState([])
 
   const setPropertyDetails = () => {
-    setLoading(true)
     setMainImage(property.hiResImageLink)
     setPropertyTaxRate(property.propertyTaxRate)
     setPropertyTax(Math.round(((property.propertyTaxRate/100) * property.price) / 12))

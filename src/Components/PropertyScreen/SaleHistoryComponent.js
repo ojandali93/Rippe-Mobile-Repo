@@ -10,9 +10,9 @@ const SaleHistoryComponent = () => {
     return(
       <View>
         {
-          priceHistory.map((item) => {
+          priceHistory.map((item, index) => {
             return(
-              <View>
+              <View key={index}>
                 <View>
                   <Text>
                     {item.date}

@@ -17,7 +17,7 @@ const ImageCarousel = () => {
       <FlatList 
         data={images}
         horizontal
-        keyExtractor={(item) => {item.index}}
+        keyExtractor={(item, index) => {index}}
         renderItem={(item) => {
           return(
             <TouchableOpacity onPress={() => setMainImage(item.item.url)}>

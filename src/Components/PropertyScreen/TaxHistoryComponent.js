@@ -10,9 +10,9 @@ const TaxHistoryComponent = () => {
     return(
       <View>
         {
-          taxHistory.slice(0, 10).map((item) => {
+          taxHistory.slice(0, 10).map((item, index) => {
             return(
-              <View>
+              <View key={index}>
                 <View>
                   <Text>
                     Tax Paid: {item.taxPaid}

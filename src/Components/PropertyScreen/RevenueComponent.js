@@ -32,7 +32,7 @@ const RevenueComponent = () => {
         </Text>
         <TextInput
           inputMode='decimal'
-          value={revenue}
+          value={revenue.toString()}
           onChangeText={(value) => {updateRevenue(value)}}
         />
       </View>
@@ -42,7 +42,7 @@ const RevenueComponent = () => {
         </Text>
         <TextInput
           inputMode='decimal'
-          value={additionalRevenue}
+          value={additionalRevenue.toString()}
           onChangeText={(value) => {updateAdditionalRevenue(value)}}
         />
       </View>

@@ -42,7 +42,7 @@ const ConnectWithAgentComponent = () => {
         <Text>Email</Text>
         <TextInput
           placeholder='example@mail.com'
-          inputMode='email-address'
+          inputMode='email'
           value={email}
           onChangeText={(value) => {setEmail(value)}}
         />
@@ -60,7 +60,6 @@ const ConnectWithAgentComponent = () => {
         <Text>Message</Text>
         <TextInput
           placeholder='Leave a message...'
-          inputMode='default'
           value={message}
           onChangeText={(value) => {setMessage(value)}}
           multiline={true}

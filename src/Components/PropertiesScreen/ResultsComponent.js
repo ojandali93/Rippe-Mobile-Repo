@@ -24,51 +24,53 @@ const ResultsComponent = () => {
     {
       results.map((property) => {
         return(
-          <TouchableOpacity onPress={() => {goToPropertyPage(property)}} key={property.zpid}> 
-            <Image style={{height: aspectHeight, width: aspectWidth}} source={{uri: property.hiResImageLink}}/>
-            <View>
+          <View key={property.zpid}>
+            <TouchableOpacity onPress={() => {goToPropertyPage(property)}}> 
+              <Image style={{height: aspectHeight, width: aspectWidth}} source={{uri: property.hiResImageLink}}/>
               <View>
-                <Text>{property.price}</Text>
-                <Text>{property.homeStatus}</Text>
+                <View>
+                  <Text>{property.price}</Text>
+                  <Text>{property.homeStatus}</Text>
+                </View>
+                <View>
+                  <Text>
+                    {property.streetAddress}
+                  </Text>
+                  <Text>
+                    {property.city}, {property.state} {property.zipcode}
+                  </Text>
+                </View>
+                <View>
+                  <Text>
+                    {property.bedrooms} Beds | {property.bathrooms} Bath | {property.livingArea} Sqft.
+                  </Text>
+                </View>
               </View>
               <View>
-                <Text>
-                  {property.streetAddress}
-                </Text>
-                <Text>
-                  {property.city}, {property.state} {property.zipcode}
-                </Text>
+                <View>
+                  <Text>Monthly Expenses: {property.investment.expenses}</Text>
+                </View>
+                <View>
+                  <Text>Monthly Revenue: {property.investment.monthlyRevenue}</Text>
+                </View>
+                <View>
+                  <Text>Net Operating Income: {property.investment.netOperatingIncome}</Text>
+                </View>
+                <View>
+                  <Text>Cash Flow: {property.investment.monthlyCashFLow}</Text>
+                </View>
+                <View>
+                  <Text>Cash on Cash Return: {property.investment.currentCashOnCashReturn}</Text>
+                </View>
+                <View>
+                  <Text>Cap Rate: {property.investment.currentCapRate}</Text>
+                </View>
+                <View>
+                  <Text>Year 1 ROI: {property.investment.year1ReturnOnInvestment}</Text>
+                </View>
               </View>
-              <View>
-                <Text>
-                  {property.bedrooms} Beds | {property.bathrooms} Bath | {property.livingArea} Sqft.
-                </Text>
-              </View>
-            </View>
-            <View>
-              <View>
-                <Text>Monthly Expenses: {property.investment.expenses}</Text>
-              </View>
-              <View>
-                <Text>Monthly Revenue: {property.investment.monthlyRevenue}</Text>
-              </View>
-              <View>
-                <Text>Net Operating Income: {property.investment.netOperatingIncome}</Text>
-              </View>
-              <View>
-                <Text>Cash Flow: {property.investment.monthlyCashFLow}</Text>
-              </View>
-              <View>
-                <Text>Cash on Cash Return: {property.investment.currentCashOnCashReturn}</Text>
-              </View>
-              <View>
-                <Text>Cap Rate: {property.investment.currentCapRate}</Text>
-              </View>
-              <View>
-                <Text>Year 1 ROI: {property.investment.year1ReturnOnInvestment}</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
+          </View>
         )
       })
     }
