@@ -9,23 +9,26 @@ import { InvestmentContextProvider } from './src/Context/InvestmentContext';
 import { SearchFilterContextProvider } from './src/Context/SearchFilterContext';
 import { PropertyContextProvider } from './src/Context/PropertyContext';
 import { AnalysisContextProvider } from './src/Context/AnalysisContext';
+import { ProfileContextProvider } from './src/Context/ProfileContext';
 
 export default function App() {
   return (
-    <AnalysisContextProvider>
-      <SearchFilterContextProvider>
-        <InvestmentContextProvider>
-          <PropertiesContextProvider>
-            <PropertyContextProvider>
-              <NavigationContainer style={styles.container}>
-                <StatusBar style="auto" /> 
-                <BottomTabNavigation />
-              </NavigationContainer>
-            </PropertyContextProvider>
-          </PropertiesContextProvider>
-        </InvestmentContextProvider>
-      </SearchFilterContextProvider>
-    </AnalysisContextProvider>
+    <ProfileContextProvider>
+      <AnalysisContextProvider>
+        <SearchFilterContextProvider>
+          <InvestmentContextProvider>
+            <PropertiesContextProvider>
+              <PropertyContextProvider>
+                <NavigationContainer style={styles.container}>
+                  <StatusBar style="auto" /> 
+                  <BottomTabNavigation />
+                </NavigationContainer>
+              </PropertyContextProvider>
+            </PropertiesContextProvider>
+          </InvestmentContextProvider>
+        </SearchFilterContextProvider>
+      </AnalysisContextProvider>
+    </ProfileContextProvider>
   );
 }
 

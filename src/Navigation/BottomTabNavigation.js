@@ -1,13 +1,9 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import PropertiesScreen from '../Screens/PropertiesScreen';
-import FavoritesScreen from '../Screens/FavoritesScreen';
-import FeedScreen from '../Screens/FeedScreen';
-import ProfileScreen from '../Screens/ProfileScreen';
-import MarketAnalysisScreen from '../Screens/MarketAnalysisScreen';
-
 import PropertyStackNavigation from './PropertiesStackNavigation';
 import MarketAnalysisStackNavigation from './MarketAnalysisStackNavigation';
+import ProfileStackNavigation from './ProfileStackNavigation';
+import FavoriteStackNavigation from './FavoriteStackNavigation';
 
 const Tab = createBottomTabNavigator();
 
@@ -18,12 +14,18 @@ function BottomTabNavigation() {
         name="Properties" 
         key='Properties'
         component={PropertyStackNavigation} />
-      <Tab.Screen name="Favorites" component={FavoritesScreen} />
+      <Tab.Screen 
+        name="Favorites" 
+        key='Favorites'
+        component={FavoriteStackNavigation} />
       <Tab.Screen 
         name="Analysis"
         key='Analysis'
         component={MarketAnalysisStackNavigation} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen 
+        name="Profile"
+        key='Profile'
+        component={ProfileStackNavigation} />
     </Tab.Navigator>
   );
 }
