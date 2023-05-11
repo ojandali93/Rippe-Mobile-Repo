@@ -32,7 +32,6 @@ const PropertyScreen = () => {
     return(
       <View>
         <ScrollView>
-          <Text>Loaded Property</Text>
           <MainImage />
           <ImageCarousel />
           <QuickSummaryComponent />

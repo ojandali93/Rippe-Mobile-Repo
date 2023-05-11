@@ -5,6 +5,10 @@ import { properties, singleProperty } from '../Api/zillowApi'
 import { InvestmentContext } from './InvestmentContext';
 import { SearchFilterContext } from './SearchFilterContext';
 
+import { collection, query, where, onSnapshot, addDoc, serverTimestamp } from 'firebase/firestore';
+import { auth, db } from '../Api/firebaseTesting';
+import { ProfileContext } from './ProfileContext';
+
 export const PropertiesContext = createContext(null)
 
 export const PropertiesContextProvider = ({children}) => {
@@ -17,14 +21,16 @@ export const PropertiesContextProvider = ({children}) => {
   const [currentPage, setCurrentPage] = useState(1)
   
   const [loading, setLoading] = useState(true)
-  // const [resultsLength, setResultsLength] = useState(2)
+  const [favorites, setFavorites] = useState([])
+  const [favoritesZpids, setFavoritesZpids] = useState([])
   
-  let resultsLength = 2
+  let resultsLength = 4
   let counter = 0
 
   const [viewMaps, setViewMaps] = useState(false)
   const [cityLat, setCityLat] = useState(118.2437)
   const [cityLong, setCityLong] = useState(34.0522)
+  const [favoritesZpid, setFavoritesZpid] = useState([])
   
   const {calculateDownPaymentAmount} = useContext(InvestmentContext)
   const {calculateDownPaymentPercent} = useContext(InvestmentContext)
@@ -60,6 +66,8 @@ export const PropertiesContextProvider = ({children}) => {
   const {mountainView} = useContext(SearchFilterContext)
   const {waterView} = useContext(SearchFilterContext)
   const {waterFront} = useContext(SearchFilterContext)
+
+  const {setLoggedIn} = useContext(ProfileContext)
 
   const getProperties = () => {
     console.log('getting properties')
@@ -149,8 +157,33 @@ export const PropertiesContextProvider = ({children}) => {
     }
     makeNewRequest(requestList)
   }
+
+  const grabFavorites = () => {
+    const collectionRef = collection(db, 'Favorites')
+    const q = query(collectionRef, where('userId', '==', auth.currentUser.uid))
+    onSnapshot(q, (snapshot) => {
+      let favoritesList = []
+      snapshot.docs.forEach((doc) => {
+        favoritesList.push({ ...doc.data(), id: doc.id })
+      })
+      setFavorites(favoritesList)
+      grabZpidList(favoritesList)
+    })
+  }
+
+  const grabZpidList = (favoritesList) => {
+    let zpidList = []
+    favoritesList.forEach((fav) => {
+      zpidList.push(fav.zpid)
+    })
+    setFavoritesZpids(zpidList)
+    console.log(zpidList)
+  }
   
   const makeNewRequest = (requestList) => {
+    auth.currentUser === null 
+      ? setLoggedIn(false)
+      : setLoggedIn(true)
     if(counter < resultsLength){
       axios.request(requestList[counter])
         .then((response) => {
@@ -202,8 +235,9 @@ export const PropertiesContextProvider = ({children}) => {
             monthlyExpensesWithoutMortgage: monthlyExpensesWithoutMortgage,
           }
           setResults(results => [...results, propertyDetails])
-          setLoading(false)
+          grabFavorites()
           setCurrentSearch('')
+          setLoading(false)
           counter++
           makeNewRequest(requestList)
         })
@@ -226,6 +260,8 @@ export const PropertiesContextProvider = ({children}) => {
                                         cityLat, 
                                         cityLong,
                                         currentPage,
+                                        favoritesZpids,
+                                        favorites,
                                         setResults,
                                         setResultsPerPage,
                                         setTotalPages,
