@@ -1,9 +1,10 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import PropertyStackNavigation from './PropertiesStackNavigation';
-import MarketAnalysisStackNavigation from './MarketAnalysisStackNavigation';
+
 import ProfileStackNavigation from './ProfileStackNavigation';
 import FavoriteStackNavigation from './FavoriteStackNavigation';
+import FeedStackNavigation from './FeedStackNavigation';
 
 const Tab = createBottomTabNavigator();
 
@@ -19,9 +20,9 @@ function BottomTabNavigation() {
         key='Favorites'
         component={FavoriteStackNavigation} />
       <Tab.Screen 
-        name="Analysis"
-        key='Analysis'
-        component={MarketAnalysisStackNavigation} />
+        name="Feed"
+        key='Feed'
+        component={FeedStackNavigation} />
       <Tab.Screen 
         name="Profile"
         key='Profile'

@@ -10,9 +10,11 @@ import { SearchFilterContextProvider } from './src/Context/SearchFilterContext';
 import { PropertyContextProvider } from './src/Context/PropertyContext';
 import { AnalysisContextProvider } from './src/Context/AnalysisContext';
 import { ProfileContextProvider } from './src/Context/ProfileContext';
+import { FeedContextProvider } from './src/Context/FeedContext';
 
 export default function App() {
   return (
+    <FeedContextProvider>
     <ProfileContextProvider>
       <AnalysisContextProvider>
         <SearchFilterContextProvider>
@@ -29,6 +31,7 @@ export default function App() {
         </SearchFilterContextProvider>
       </AnalysisContextProvider>
     </ProfileContextProvider>
+    </FeedContextProvider>
   );
 }
 

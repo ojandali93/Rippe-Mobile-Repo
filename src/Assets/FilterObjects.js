@@ -228,4 +228,19 @@ const sqftOptions = [
   },
 ]
 
-module.exports = {propertyPricing, hoaAmounts, sqftOptions}
+const homeStatus = [
+  {
+    'label': 'For Sale',
+    'value': 'forSale'
+  },
+  {
+    'label': 'For Rent',
+    'value': 'forRent'
+  },
+  {
+    'label': 'Recently Sold',
+    'value': 'recentlySold'
+  }
+]
+
+module.exports = {propertyPricing, hoaAmounts, sqftOptions, homeStatus}
