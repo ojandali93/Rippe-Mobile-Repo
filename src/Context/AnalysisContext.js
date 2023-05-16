@@ -87,7 +87,6 @@ export const AnalysisContextProvider = ({children}) => {
     axios.request(newlyLlisted)
       .then((response) => {
         setNewlyListed(response.data.content.list)
-        console.log('have all items')
         setLoading(false)
       })
       .catch((error) => {

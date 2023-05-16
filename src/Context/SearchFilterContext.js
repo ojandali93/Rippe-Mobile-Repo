@@ -7,7 +7,7 @@ export const SearchFilterContextProvider = ({children}) => {
   
   const [currentSearch, setCurrentSearch] = useState('')
   const [activeSearch, setActiveSearch] = useState('Los Angeles, CA')
-  const [sort, setSort] = useState('priorityscore')
+  const [sort, setSort] = useState('globalrelevanceex')
 
   const [isSingleFamily, setIsSingleFamily] = useState(true)
   const [isMultiFamily, setIsMultiFamily] = useState(true)

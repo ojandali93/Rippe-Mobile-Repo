@@ -40,7 +40,7 @@ export const PropertiesContextProvider = ({children}) => {
   const {calculateHomeInsuranceAmount} = useContext(InvestmentContext)
   
   const {currentSearch, setCurrentSearch} = useContext(SearchFilterContext)
-  const {activeSearch, sort} = useContext(SearchFilterContext)
+  const {activeSearch, sort, setSort} = useContext(SearchFilterContext)
   const {isSingleFamily} = useContext(SearchFilterContext)
   const {isMultiFamily} = useContext(SearchFilterContext)
   const {isApartment} = useContext(SearchFilterContext)
@@ -70,7 +70,6 @@ export const PropertiesContextProvider = ({children}) => {
   const {setLoggedIn} = useContext(ProfileContext)
 
   const getProperties = () => {
-    console.log('getting properties')
     setLoading(true)
     activeSearch === ''
       ? currentSearch === '' 
@@ -122,14 +121,14 @@ export const PropertiesContextProvider = ({children}) => {
     waterFront === false 
       ? null 
       : properties.params.isWaterfront = waterFront
-    properties.params.sortSelection = sort
-    properties.params.isSingleFamily = isSingleFamily
-    properties.params.isMultiFamily = isMultiFamily
-    properties.params.isApartment = isApartment
-    properties.params.isCondo = isCondo
-    properties.params.isManufactured = isManufactured
-    properties.params.isTownhouse = isTownhouse
-    properties.params.page = currentPage
+      properties.params.isSingleFamily = isSingleFamily
+      properties.params.isMultiFamily = isMultiFamily
+      properties.params.isApartment = isApartment
+      properties.params.isCondo = isCondo
+      properties.params.isManufactured = isManufactured
+      properties.params.isTownhouse = isTownhouse
+      properties.params.page = currentPage
+      properties.params.sortSelection = sort
     axios.request(properties).then(function (response) {
       setCityLat(response.data.results[0].latitude)
       setCityLong(response.data.results[0].longitude)
@@ -177,7 +176,6 @@ export const PropertiesContextProvider = ({children}) => {
       zpidList.push(fav.zpid)
     })
     setFavoritesZpids(zpidList)
-    console.log(zpidList)
   }
   
   const makeNewRequest = (requestList) => {

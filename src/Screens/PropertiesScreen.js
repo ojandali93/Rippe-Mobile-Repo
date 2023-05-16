@@ -55,7 +55,7 @@ const PropertiesScreen = () => {
   }
 
   return (
-    <View>
+    <View style={styles.screen}>
       <TopbarComponent />
       {
         loading 
@@ -69,6 +69,10 @@ const PropertiesScreen = () => {
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    width: '100%',
+    marginTop: 58,
+  },
   map: {
     height: 400,
     width: 400,

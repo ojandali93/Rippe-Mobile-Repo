@@ -107,7 +107,6 @@ export const FeedContextProvider = ({children}) => {
     newSearch.isCondo = isCondo
     newSearch.isManufactured = isManufactured
     newSearch.isTownhouse = isTownhouse
-    console.log(newSearch)
     const collectionRef = collection(db, 'Feed')
     addDoc(collectionRef, {
       'search': newSearch,
@@ -138,7 +137,6 @@ export const FeedContextProvider = ({children}) => {
   }
 
   const grabFeedResults = (search) => {
-    console.log(search)
     properties.params = search
     axios.request(properties)
       .then((response) => {

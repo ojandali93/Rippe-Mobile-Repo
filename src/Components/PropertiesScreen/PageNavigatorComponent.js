@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { PropertiesContext } from '../../Context/PropertiesContext'
-import {View, Text, TouchableOpacity} from 'react-native'
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native'
 
 const PageNavigatorComponent = () => {
 
@@ -28,26 +28,51 @@ const PageNavigatorComponent = () => {
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       <TouchableOpacity onPress={() => {updatePreviousPage()}}>
-        <Text>{'<'}</Text>
+        <Text style={styles.signalLeft}>{'<'}</Text>
       </TouchableOpacity>
       {
         currentPage > 1 
-          ? <Text>{prevPage}</Text>
+          ? <Text style={styles.text}>{prevPage}</Text>
           : null
       }
-      <Text>{currentPage}</Text>
+      <Text  style={styles.currentPage}>{currentPage}</Text>
       {
         currentPage < totalPages
-          ? <Text>{nextPage}</Text>
+          ? <Text style={styles.text}>{nextPage}</Text>
           : null
       }
       <TouchableOpacity onPress={() => {updateNextPage()}}>
-      <Text>{'>'}</Text>
+        <Text style={styles.signalRight}>{'>'}</Text>
       </TouchableOpacity>
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    flexDirection: 'row'
+  },
+  text: {
+    fontSize: 16,
+    paddingHorizontal: 4
+  },
+  signalLeft: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginRight: 6
+  },
+  signalRight: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginLeft: 6
+  },
+  currentPage: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  }
+})
 
 export default PageNavigatorComponent

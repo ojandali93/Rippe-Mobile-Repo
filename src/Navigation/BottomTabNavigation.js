@@ -10,7 +10,7 @@ const Tab = createBottomTabNavigator();
 
 function BottomTabNavigation() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator initialRouteName='PropertiesScreen' screenOptions={{headerShown: false}}>
       <Tab.Screen 
         name="Properties" 
         key='Properties'

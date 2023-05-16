@@ -44,7 +44,7 @@ const FilterModalComponent = () => {
   return (
     <View>
       <TouchableOpacity onPress={() => {setAccessFilter(!accessFilter)}}>
-        <Text>
+      <Text style={styles.modalButton}>
           Filter
         </Text>
       </TouchableOpacity>
@@ -316,6 +316,14 @@ const FilterModalComponent = () => {
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  modalButton: {
+    fontSize: 16,
+    paddingHorizontal: 8,
+    color: 'blue'
+  }
+})
 
 export default FilterModalComponent
 
