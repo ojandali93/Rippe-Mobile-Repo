@@ -68,7 +68,6 @@ const SortModalComponent = () => {
   return (
     <View>
       <View style={styles.sortFilterMenu}>
-        <View style={styles.separator}></View>
         <TouchableOpacity onPress={() => {setAccessSort(!accessSort)}}>
           <Text style={styles.modalButton}>
             Sort
@@ -80,7 +79,6 @@ const SortModalComponent = () => {
             Filter
           </Text>
         </TouchableOpacity>
-        <View style={styles.separator}></View>
       </View>
       <Modal
         animationType="slide"
@@ -374,8 +372,7 @@ const SortModalComponent = () => {
 
 const styles = StyleSheet.create({
   modalButton: {
-    fontSize: 16,
-    paddingHorizontal: 8,
+    fontSize: 18,
     color: 'blue',
   },
   sortFilterMenu: {
@@ -384,6 +381,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   separator: {
+    marginHorizontal: 8,
     width: 2,
     height: '100%',
     backgroundColor: 'grey'

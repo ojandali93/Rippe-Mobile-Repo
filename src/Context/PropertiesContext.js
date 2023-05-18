@@ -121,14 +121,15 @@ export const PropertiesContextProvider = ({children}) => {
     waterFront === false 
       ? null 
       : properties.params.isWaterfront = waterFront
-      properties.params.isSingleFamily = isSingleFamily
-      properties.params.isMultiFamily = isMultiFamily
-      properties.params.isApartment = isApartment
-      properties.params.isCondo = isCondo
-      properties.params.isManufactured = isManufactured
-      properties.params.isTownhouse = isTownhouse
-      properties.params.page = currentPage
-      properties.params.sortSelection = sort
+    properties.params.isSingleFamily = isSingleFamily
+    properties.params.isMultiFamily = isMultiFamily
+    properties.params.isApartment = isApartment
+    properties.params.isCondo = isCondo
+    properties.params.isManufactured = isManufactured
+    properties.params.isTownhouse = isTownhouse
+    properties.params.page = currentPage
+    properties.params.sortSelection = sort
+    console.log(properties.params)
     axios.request(properties).then(function (response) {
       setCityLat(response.data.results[0].latitude)
       setCityLong(response.data.results[0].longitude)
@@ -233,7 +234,7 @@ export const PropertiesContextProvider = ({children}) => {
             monthlyExpensesWithoutMortgage: monthlyExpensesWithoutMortgage,
           }
           setResults(results => [...results, propertyDetails])
-          grabFavorites()
+          auth.currentUser === null ? null : grabFavorites()
           setCurrentSearch('')
           setLoading(false)
           counter++

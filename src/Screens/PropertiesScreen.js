@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import {Text, View, Image, StyleSheet} from 'react-native'
+import {Text, View, Dimensions, StyleSheet} from 'react-native'
 import { PropertiesContext } from '../Context/PropertiesContext'
 
 import TopbarComponent from '../Components/PropertiesScreen/TopbarComponent'
@@ -10,6 +10,8 @@ import { useNavigation } from '@react-navigation/native'
 
 import { auth } from '../Api/firebaseTesting'
 
+const deviceWidth = Dimensions.get('window').width
+const deviceHeight = Dimensions.get('window').height
 
 const PropertiesScreen = () => {
   const navigation = useNavigation()
@@ -74,8 +76,8 @@ const styles = StyleSheet.create({
     marginTop: 58,
   },
   map: {
-    height: 400,
-    width: 400,
+    height: deviceHeight,
+    width: deviceWidth,
   }
 })
 

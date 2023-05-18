@@ -1,5 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import { Feather } from 'react-native-vector-icons'
+
 import PropertyStackNavigation from './PropertiesStackNavigation';
 
 import ProfileStackNavigation from './ProfileStackNavigation';
@@ -14,19 +16,35 @@ function BottomTabNavigation() {
       <Tab.Screen 
         name="Properties" 
         key='Properties'
-        component={PropertyStackNavigation} />
+        component={PropertyStackNavigation} 
+        options={{
+          tabBarShowLabel: false,
+          tabBarIcon: ({size, color}) => (<Feather name={"home"} color={color} size={size} />)
+        }}/>
       <Tab.Screen 
         name="Favorites" 
         key='Favorites'
-        component={FavoriteStackNavigation} />
+        component={FavoriteStackNavigation} 
+        options={{
+          tabBarShowLabel: false,
+          tabBarIcon: ({size, color}) => (<Feather name={"heart"} color={color} size={size} />)
+        }}/>
       <Tab.Screen 
         name="Feed"
         key='Feed'
-        component={FeedStackNavigation} />
+        component={FeedStackNavigation} 
+        options={{
+          tabBarShowLabel: false,
+          tabBarIcon: ({size, color}) => (<Feather name={"menu"} color={color} size={size} />)
+        }}/>
       <Tab.Screen 
         name="Profile"
         key='Profile'
-        component={ProfileStackNavigation} />
+        component={ProfileStackNavigation} 
+        options={{
+          tabBarShowLabel: false,
+          tabBarIcon: ({size, color}) => (<Feather name={"user"} color={color} size={size} />)
+        }}/>
     </Tab.Navigator>
   );
 }

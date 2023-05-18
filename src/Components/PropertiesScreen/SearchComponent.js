@@ -61,11 +61,11 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '70%',
-    fontSize: 16,
+    fontSize: 20,
     marginLeft: 6
   },
   SearchText: {
-    fontSize: 16,
+    fontSize: 20,
   }
 })
 

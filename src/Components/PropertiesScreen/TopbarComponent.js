@@ -29,13 +29,11 @@ const TopbarComponent = () => {
           <SortModalComponent />
         </View>
         <View style={styles.mapView}>
-          <View style={styles.verticalSplit}></View>
           {
             viewMaps 
               ? <Text style={styles.button} onPress={() => {setViewMaps(!viewMaps)}}> List</Text>
               : <Text style={styles.button} onPress={() => {setViewMaps(!viewMaps)}}> Map</Text>
           }
-          <View style={styles.verticalSplit}></View>
         </View>
       </View>
       <View style={styles.split}></View>
@@ -86,8 +84,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'grey'
   },
   button: {
-    marginHorizontal: 6,
-    fontSize: 16,
+    fontSize: 18,
     color: 'blue',
   },
   bottomRow: {
@@ -98,7 +95,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold'
   }
 })
