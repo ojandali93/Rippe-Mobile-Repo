@@ -16,7 +16,7 @@ const splitWidth = deviceWidth - 16
 const TopbarComponent = () => {
 
   const {viewMaps, setViewMaps} = useContext(PropertiesContext)
-  const {activeSearch} = useContext(SearchFilterContext)
+  const {activeSearch} = useContext(PropertiesContext)
 
   return (
     <View style={styles.component}>

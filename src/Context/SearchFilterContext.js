@@ -4,9 +4,6 @@ import React, { createContext, useContext, useState } from 'react';
 export const SearchFilterContext = createContext(null)
 
 export const SearchFilterContextProvider = ({children}) => {
-  
-  const [currentSearch, setCurrentSearch] = useState('')
-  const [activeSearch, setActiveSearch] = useState('Los Angeles, CA')
   const [sort, setSort] = useState('globalrelevanceex')
 
   const [isSingleFamily, setIsSingleFamily] = useState(true)
@@ -39,8 +36,7 @@ export const SearchFilterContextProvider = ({children}) => {
   const [waterFront, setWaterFront] = useState(false)
 
   return(
-    <SearchFilterContext.Provider value={{currentSearch,
-                                          sort,
+    <SearchFilterContext.Provider value={{sort,
                                           isSingleFamily,
                                           isMultiFamily,
                                           isApartment,
@@ -63,8 +59,6 @@ export const SearchFilterContextProvider = ({children}) => {
                                           mountainView,
                                           waterView,
                                           waterFront,
-                                          activeSearch,
-                                          setCurrentSearch,
                                           setSort,
                                           setIsSingleFamily,
                                           setIsMultiFamily,
@@ -87,8 +81,7 @@ export const SearchFilterContextProvider = ({children}) => {
                                           setCityView,
                                           setMountainView,
                                           setWaterView,
-                                          setWaterFront,
-                                          setActiveSearch}}>
+                                          setWaterFront}}>
       {children}
     </SearchFilterContext.Provider>
   )

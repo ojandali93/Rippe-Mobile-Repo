@@ -8,18 +8,21 @@ import { PropertiesContext } from '../../Context/PropertiesContext'
 
 const SearchComponent = () => {
 
-  const {currentSearch, setCurrentSearch} = useContext(SearchFilterContext)
-  const {setActiveSearch} = useContext(SearchFilterContext)
+  const [newSearch, setNewSearch] = useState(false)
+
+  const {currentSearch, setCurrentSearch} = useContext(PropertiesContext)
+  const {setActiveSearch} = useContext(PropertiesContext)
   const {setResults, getProperties} = useContext(PropertiesContext)
 
-  const clearSearch = () => {
-    setActiveSearch(currentSearch)
-    setResults([])
-    getProperties()
+  const updateSearchTerm = (term) => {
+    setNewSearch(true)
+    setCurrentSearch(term)
   }
 
-  const updateSearch = (value) => {
-    setCurrentSearch(value)
+  const SubmitSearch = (term) => {
+    setNewSearch(false)
+    setResults([])
+    getProperties()
   }
 
   return (
@@ -28,12 +31,12 @@ const SearchComponent = () => {
         <Feather size={20} name='search'/>
         <TextInput
           style={styles.input}
-          onChangeText={(value) => updateSearch(value)}
+          onChangeText={(value) => updateSearchTerm(value)}
           value={currentSearch}
           placeholder='Los Angeles, CA'
         />
       </View>
-      <TouchableOpacity onPress={() => {clearSearch()}}>
+      <TouchableOpacity onPress={() => {SubmitSearch(currentSearch)}}>
         <Text style={styles.SearchText}>
           Search
         </Text>
@@ -56,13 +59,16 @@ const styles = StyleSheet.create({
     borderRadius: 6
   },
   search: {
+    width: '80%',
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   input: {
-    width: '70%',
-    fontSize: 20,
-    marginLeft: 6
+    width: '90%',
+    fontSize: 14,
+    marginLeft: 6,
+    borderBottomColor: 'black',
+    borderBottomWidth: 1
   },
   SearchText: {
     fontSize: 20,

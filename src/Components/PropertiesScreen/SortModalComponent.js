@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, Modal, ScrollView, Switch } from 'react-native'
 import RNPickerSelect from 'react-native-picker-select'
+import { Feather } from 'react-native-vector-icons'
 
 import { SearchFilterContext } from '../../Context/SearchFilterContext'
 import { PropertiesContext } from '../../Context/PropertiesContext'
@@ -84,24 +85,25 @@ const SortModalComponent = () => {
         animationType="slide"
         transparent={false}
         visible={accessSort}>
-          <View>
+          <View style={styles.sortContainer}>
+            <View style={styles.headerContainer}>
+              <Text style={styles.header}>SORT</Text>
+            </View>
             {
               sortOptions.map((item) => {
                 return(
-                  <View key={item.label}>
-                    <TouchableOpacity onPress={() => {updateSortPart(item.value)}}>
-                      <Text>{item.label}</Text>
-                      {
-                        sort === item.value ? <Text>Selecteda</Text> : null
-                      }
-                    </TouchableOpacity>
-                  </View>
+                  <TouchableOpacity style={styles.item} onPress={() => {updateSortPart(item.value)}}>
+                    <Text style={styles.text}>{item.label}</Text>
+                    {
+                      sort === item.value ? <Feather size={20} name={'check'}/> : null
+                    }
+                  </TouchableOpacity>
                 )
               })
             }
           </View>
-          <TouchableOpacity onPress={() => {setAccessSort(!accessSort)}}>
-            <Text>Close</Text>
+          <TouchableOpacity style={styles.closeContainer} onPress={() => {setAccessSort(!accessSort)}}>
+            <Text style={styles.close}>Close</Text>
           </TouchableOpacity>
       </Modal>
       <Modal
@@ -109,222 +111,223 @@ const SortModalComponent = () => {
         transparent={false}
         visible={accessFilter}
       >
-        <ScrollView>
-          <Text>Hello</Text>
-          <Text>Hello</Text>
-          <Text>Hello</Text>
-          <Text>Hello</Text>
+        <ScrollView style={styles.filterContainer}>
+          <View style={styles.headerContainer}>
+              <Text style={styles.header}>Filter</Text>
+            </View>
           <View>
-            <View>
-              <Text>Single Family Home</Text>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.headerText}>Property Types:</Text>
+            </View>
+            <View style={styles.propTypeContainer}>
+              <Text style={styles.propTypeText}>Single Family Home</Text>
               <Switch
                 onValueChange={() => setIsSingleFamily(!isSingleFamily)}
                 value={isSingleFamily}
               />
             </View>
-            <View>
-              <Text>Multi Family Home</Text>
+            <View style={styles.propTypeContainer}>
+              <Text style={styles.propTypeText}>Multi Family Home</Text>
               <Switch
                 onValueChange={() => setIsMultiFamily(!isMultiFamily)}
                 value={isMultiFamily}
               />
             </View>
-            <View>
-              <Text>Townhouse</Text>
+            <View style={styles.propTypeContainer}>
+              <Text style={styles.propTypeText}>Townhouse</Text>
               <Switch
                 onValueChange={() => setIsTownhouse(!isTownhouse)}
                 value={isTownhouse}
               />
             </View>
-            <View>
-              <Text>Apartment</Text>
+            <View style={styles.propTypeContainer}>
+              <Text style={styles.propTypeText}>Apartment</Text>
               <Switch
                 onValueChange={() => setIsApartment(!isApartment)}
                 value={isApartment}
               />
             </View>
-            <View>
-              <Text>Condo</Text>
+            <View style={styles.propTypeContainer}>
+              <Text style={styles.propTypeText}>Condo</Text>
               <Switch
                 onValueChange={() => setIsCondo(!isCondo)}
                 value={isCondo}
               />
             </View>
-            <View>
-              <Text>Manufactured Home</Text>
+            <View style={styles.propTypeContainer}>
+              <Text style={styles.propTypeText}>Manufactured Home</Text>
               <Switch
                 onValueChange={() => setIsManufactured(!isManufactured)}
                 value={isManufactured}
               />
             </View>
           </View>
-          <View>
-            <View>
-              <Text>Bedrooms</Text>
+          <View >
+            <View style={styles.sectionHeader}>
+              <Text style={styles.headerText}>Propert Details:</Text>
             </View>
             <View>
+              <Text style={styles.detailSection}>Bedrooms</Text>
+            </View>
+            <View style={styles.roomSelection}>
               <TouchableOpacity onPress={() => {setBeds(0)}}>
-                <Text>Any</Text>
                 {
-                  beds === 0 ? <Text>clicked</Text> : null
+                  beds === 0 ? <Text style={styles.roomItemSelected}>Any</Text> : <Text style={styles.roomItem}>Any</Text>
                 }
               </TouchableOpacity>
               <TouchableOpacity onPress={() => {setBeds(1)}}>
-                <Text>1+</Text>
                 {
-                  beds === 1 ? <Text>clicked</Text> : null
+                  beds === 1 ? <Text style={styles.roomItemSelected}>1+</Text> : <Text style={styles.roomItem}>1+</Text>
                 }
               </TouchableOpacity>
               <TouchableOpacity onPress={() => {setBeds(2)}}>
-                <Text>2+</Text>
                 {
-                  beds === 2 ? <Text>clicked</Text> : null
+                  beds === 2 ? <Text style={styles.roomItemSelected}>2+</Text> : <Text style={styles.roomItem}>2+</Text>
                 }
               </TouchableOpacity>
               <TouchableOpacity onPress={() => {setBeds(3)}}>
-                <Text>3+</Text>
                 {
-                  beds === 3 ? <Text>clicked</Text> : null
+                  beds === 3 ? <Text style={styles.roomItemSelected}>3+</Text> : <Text style={styles.roomItem}>3+</Text>
                 }
               </TouchableOpacity>
               <TouchableOpacity onPress={() => {setBeds(4)}}>
-                <Text>4+</Text>
                 {
-                  beds === 4 ? <Text>clicked</Text> : null
+                  beds === 4 ? <Text style={styles.roomItemSelected}>4+</Text> : <Text style={styles.roomItem}>4+</Text>
                 }
               </TouchableOpacity>
               <TouchableOpacity onPress={() => {setBeds(5)}}>
-                <Text>5+</Text>
                 {
-                  beds === 5 ? <Text>clicked</Text> : null
+                  beds === 5 ? <Text style={styles.roomItemSelected}>5+</Text> : <Text style={styles.roomItem}>5+</Text>
                 }
               </TouchableOpacity>
             </View>
           </View>
           <View>
             <View>
-              <Text>Bathrooms</Text>
+              <Text style={styles.detailSection}>Bathrooms</Text>
             </View>
-            <View>
+            <View style={styles.roomSelection}>
               <TouchableOpacity onPress={() => {setBaths(0)}}>
-                <Text>Any</Text>
                 {
-                  baths === 0 ? <Text>clicked</Text> : null
+                  baths === 0 ? <Text style={styles.roomItemSelected}>Any</Text> : <Text style={styles.roomItem}>Any</Text>
                 }
               </TouchableOpacity>
               <TouchableOpacity onPress={() => {setBaths(1)}}>
-                <Text>1+</Text>
                 {
-                  baths === 1 ? <Text>clicked</Text> : null
+                  baths === 1 ? <Text style={styles.roomItemSelected}>1+</Text> : <Text style={styles.roomItem}>1+</Text>
                 }
               </TouchableOpacity>
               <TouchableOpacity onPress={() => {setBaths(2)}}>
-                <Text>2+</Text>
                 {
-                  baths === 2 ? <Text>clicked</Text> : null
+                  baths === 2 ? <Text style={styles.roomItemSelected}>2+</Text> : <Text style={styles.roomItem}>2+</Text>
                 }
               </TouchableOpacity>
               <TouchableOpacity onPress={() => {setBaths(3)}}>
-                <Text>3+</Text>
                 {
-                  baths === 3 ? <Text>clicked</Text> : null
+                  baths === 3 ? <Text style={styles.roomItemSelected}>3+</Text> : <Text style={styles.roomItem}>3+</Text>
                 }
               </TouchableOpacity>
               <TouchableOpacity onPress={() => {setBaths(4)}}>
-                <Text>4+</Text>
                 {
-                  baths === 4 ? <Text>clicked</Text> : null
+                  baths === 4 ? <Text style={styles.roomItemSelected}>4+</Text> : <Text style={styles.roomItem}>4+</Text>
                 }
               </TouchableOpacity>
               <TouchableOpacity onPress={() => {setBaths(5)}}>
-                <Text>5+</Text>
                 {
-                  baths === 5 ? <Text>clicked</Text> : null
+                  baths === 5 ? <Text style={styles.roomItemSelected}>5+</Text> : <Text style={styles.roomItem}>5+</Text>
                 }
               </TouchableOpacity>
             </View>
           </View>
-          <View>
+          <View style={styles.detailRow}>
             <View>
-              <Text>Price Min - </Text>
+              <Text style={styles.detailSection}>Price Min: </Text>
             </View>
             <RNPickerSelect 
               value={priceMin}
               onValueChange={(value) => setPriceMin(value)}
               items={propertyPricing}
+              style={styles.detailInput}
             />
           </View>
-          <View>
+          <View style={styles.detailRow}>
             <View>
-              <Text>Price Max - </Text>
+              <Text style={styles.detailSection}>Price Max: </Text>
             </View>
             <RNPickerSelect 
               value={priceMax}
               onValueChange={(value) => setPriceMax(value)}
               items={propertyPricing}
+              style={styles.detailInput}
             />
           </View>
-          <View>
+          <View style={styles.detailRow}>
             <View>
-              <Text>Max Hoa - </Text>
+              <Text style={styles.detailSection}>Max Hoa: </Text>
             </View>
             <RNPickerSelect 
               value={maxHoa}
               onValueChange={(value) => setMaxHoa(value)}
               items={hoaAmounts}
+              style={styles.detailInput}
             />
           </View>
-          <View>
+          <View style={styles.detailRow}>
             <View>
-              <Text>Sqft Min - </Text>
+              <Text style={styles.detailSection}>Sqft Min: </Text>
             </View>
             <RNPickerSelect 
               value={sqftMin}
               onValueChange={(value) => setSqftMin(value)}
               items={sqftOptions}
+              style={styles.detailInput}
             />
           </View>
-          <View>
+          <View style={styles.detailRow}>
             <View>
-              <Text>Sqft Max - </Text>
+              <Text style={styles.detailSection}>Sqft Max: </Text>
             </View>
             <RNPickerSelect 
               value={sqftMax}
               onValueChange={(value) => setSqftMax(value)}
               items={sqftOptions}
+              style={styles.detailInput}
             />
           </View>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.headerText}>Amenities:</Text>
+          </View>
           <View>
-            <View>
-              <Text>Has Pool</Text>
+            <View style={styles.propTypeContainer}>
+              <Text style={styles.propTypeText}>Has Pool</Text>
               <Switch
                 onValueChange={() => setHasPool(!hasPool)}
                 value={hasPool}
               />
             </View>
-            <View>
-              <Text>Has Garage</Text>
+            <View style={styles.propTypeContainer}>
+              <Text style={styles.propTypeText}>Has Garage</Text>
               <Switch
                 onValueChange={() => setHasGarage(!hasGarage)}
                 value={hasGarage}
               />
             </View>
-            <View>
-              <Text>Has AC</Text>
+            <View style={styles.propTypeContainer}>
+              <Text style={styles.propTypeText}>Has AC</Text>
               <Switch
                 onValueChange={() => setHasAC(!hasAC)}
                 value={hasAC}
               />
             </View>
-            <View>
-              <Text>Single Story</Text>
+            <View style={styles.propTypeContainer}>
+              <Text style={styles.propTypeText}>Single Story</Text>
               <Switch
                 onValueChange={() => setIsSingleStory(!isSingleStory)}
                 value={isSingleStory}
               />
             </View>
-            <View>
-              <Text>Water Front</Text>
+            <View style={styles.propTypeContainer}>
+              <Text style={styles.propTypeText}>Water Front</Text>
               <Switch
                 onValueChange={() => setWaterFront(!waterFront)}
                 value={waterFront}
@@ -332,38 +335,34 @@ const SortModalComponent = () => {
             </View>
           </View>
           <View>
-            <View>
-              <Text>City View</Text>
+            <View style={styles.propTypeContainer}>
+              <Text style={styles.propTypeText}>City View</Text>
               <Switch
                 onValueChange={() => setCityView(!cityView)}
                 value={cityView}
               />
             </View>
-            <View>
-              <Text>Mountain View</Text>
+            <View style={styles.propTypeContainer}>
+              <Text style={styles.propTypeText}>Mountain View</Text>
               <Switch
                 onValueChange={() => setMountainView(!mountainView)}
                 value={mountainView}
               />
             </View>
-            <View>
-              <Text>Water View</Text>
+            <View style={styles.propTypeContainer}>
+              <Text style={styles.propTypeText}>Water View</Text>
               <Switch
                 onValueChange={() => setWaterView(!waterView)}
                 value={waterView}
               />
             </View>
           </View>
-          <TouchableOpacity onPress={() => {applyFilter()}}>
-            <Text>Apply Filter</Text>
+          <TouchableOpacity style={styles.closeContainer} onPress={() => {applyFilter()}}>
+            <Text style={styles.close}>Apply Filter</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {setAccessFilter(!accessFilter)}}>
-            <Text>Close</Text>
+          <TouchableOpacity style={[styles.closeContainer, {marginBottom: 26}]} onPress={() => {setAccessFilter(!accessFilter)}}>
+            <Text style={styles.close}>Close</Text>
           </TouchableOpacity>
-          <Text>Hello</Text>
-          <Text>Hello</Text>
-          <Text>Hello</Text>
-          <Text>Hello</Text>
         </ScrollView>
       </Modal>
     </View>
@@ -385,6 +384,112 @@ const styles = StyleSheet.create({
     width: 2,
     height: '100%',
     backgroundColor: 'grey'
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: '600'
+  }, 
+  headerContainer: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingVertical: 8,
+    borderBottomWidth: 2,
+    borderBottomColor: 'lightgrey'
+  },
+  sortContainer: {
+    marginTop: 56,
+    width: '100%',
+  },
+  filterContainer: {
+    marginTop: 56,
+    width: '100%',
+    paddingHorizontal: 8
+  },
+  item: {
+    height: 48,
+    borderBottomWidth: 1,
+    borderBottomColor: 'lightgrey',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 8
+  },
+  text: {
+    fontSize: 18,
+  },
+  closeContainer: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 16
+  },
+  close: {
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    color: 'blue',
+    fontWeight: 'bold',
+    fontSize: 18
+  },
+  sectionHeader: {
+    height: 32,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomColor: 'lightgrey',
+    borderBottomWidth: 1,
+    borderTopColor: 'lightgrey',
+    borderTopWidth: 1,
+    marginBottom: 8,
+    backgroundColor: 'lightgrey',
+    paddingLeft: 8
+  },
+  headerText: {
+    fontSize: 22,
+    fontWeight: '600'
+  },
+  propTypeContainer: {
+    height: 40,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8
+  },
+  propTypeText: {
+    fontSize: 18
+  },
+  detailSection: {
+    fontSize: 18
+  },
+  roomSelection: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'center',
+    marginVertical: 16,
+  },
+  roomItem: {
+    borderWidth: 1,
+    borderColor: 'grey',
+    padding: 14
+  },
+  roomItemSelected: {
+    padding: 14, 
+    borderWidth: 1,
+    borderColor: 'grey',
+    backgroundColor: 'lightblue',
+    color: 'black'
+  },
+  detailRow: {
+    marginVertical: 8,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   }
 })
 

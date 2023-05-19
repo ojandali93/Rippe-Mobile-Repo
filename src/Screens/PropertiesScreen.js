@@ -9,6 +9,7 @@ import { ProfileContext } from '../Context/ProfileContext'
 import { useNavigation } from '@react-navigation/native'
 
 import { auth } from '../Api/firebaseTesting'
+import { PropertyContext } from '../Context/PropertyContext'
 
 const deviceWidth = Dimensions.get('window').width
 const deviceHeight = Dimensions.get('window').height
@@ -17,6 +18,8 @@ const PropertiesScreen = () => {
   const navigation = useNavigation()
 
   const {viewMaps, getProperties, loading} = useContext(PropertiesContext)
+  const {singleProperty} = useContext(PropertiesContext)
+  const {setProperty} = useContext(PropertyContext)
   const {setLoggedIn} = useContext(ProfileContext)
 
   useEffect(() => {

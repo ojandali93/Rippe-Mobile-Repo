@@ -14,24 +14,24 @@ import { FeedContextProvider } from './src/Context/FeedContext';
 
 export default function App() {
   return (
-    <FeedContextProvider>
-    <ProfileContextProvider>
-      <AnalysisContextProvider>
-        <SearchFilterContextProvider>
-          <InvestmentContextProvider>
-            <PropertiesContextProvider>
-              <PropertyContextProvider>
-                <NavigationContainer style={styles.container}>
-                  <StatusBar style="auto" /> 
-                  <BottomTabNavigation />
-                </NavigationContainer>
-              </PropertyContextProvider>
-            </PropertiesContextProvider>
-          </InvestmentContextProvider>
-        </SearchFilterContextProvider>
-      </AnalysisContextProvider>
-    </ProfileContextProvider>
-    </FeedContextProvider>
+    <NavigationContainer style={styles.container}>
+    <StatusBar style="auto" />
+      <FeedContextProvider>
+        <ProfileContextProvider>
+          <AnalysisContextProvider>
+            <SearchFilterContextProvider>
+              <InvestmentContextProvider>
+                <PropertyContextProvider>
+                  <PropertiesContextProvider>
+                    <BottomTabNavigation />
+                  </PropertiesContextProvider>
+                </PropertyContextProvider>
+              </InvestmentContextProvider>
+            </SearchFilterContextProvider>
+          </AnalysisContextProvider>
+        </ProfileContextProvider>
+      </FeedContextProvider>
+    </NavigationContainer>
   );
 }
 

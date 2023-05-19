@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {Text, View, Image, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Modal} from 'react-native'
 import { PropertiesContext } from '../../Context/PropertiesContext'
 import { useNavigation } from '@react-navigation/native'

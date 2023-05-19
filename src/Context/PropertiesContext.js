@@ -4,14 +4,17 @@ import { properties, singleProperty } from '../Api/zillowApi'
 
 import { InvestmentContext } from './InvestmentContext';
 import { SearchFilterContext } from './SearchFilterContext';
+import { PropertyContext } from './PropertyContext';
 
 import { collection, query, where, onSnapshot, addDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../Api/firebaseTesting';
 import { ProfileContext } from './ProfileContext';
+import { useNavigation } from '@react-navigation/native';
 
 export const PropertiesContext = createContext(null)
 
 export const PropertiesContextProvider = ({children}) => {
+  const navigation = useNavigation()
 
   const [results, setResults] = useState([])
 
@@ -23,6 +26,11 @@ export const PropertiesContextProvider = ({children}) => {
   const [loading, setLoading] = useState(true)
   const [favorites, setFavorites] = useState([])
   const [favoritesZpids, setFavoritesZpids] = useState([])
+
+  const [currentSearch, setCurrentSearch] = useState('')
+  const [activeSearch, setActiveSearch] = useState('Los Angeles, CA')
+
+  const [singlePropertyFound, setSinglePropertyFound] = useState(false)
   
   let resultsLength = 4
   let counter = 0
@@ -39,8 +47,7 @@ export const PropertiesContextProvider = ({children}) => {
   const {calculatePropertyTaxAnnual} = useContext(InvestmentContext)
   const {calculateHomeInsuranceAmount} = useContext(InvestmentContext)
   
-  const {currentSearch, setCurrentSearch} = useContext(SearchFilterContext)
-  const {activeSearch, sort, setSort} = useContext(SearchFilterContext)
+  const {sort, setSort} = useContext(SearchFilterContext)
   const {isSingleFamily} = useContext(SearchFilterContext)
   const {isMultiFamily} = useContext(SearchFilterContext)
   const {isApartment} = useContext(SearchFilterContext)
@@ -67,15 +74,18 @@ export const PropertiesContextProvider = ({children}) => {
   const {waterView} = useContext(SearchFilterContext)
   const {waterFront} = useContext(SearchFilterContext)
 
+  const {setProperty} = useContext(PropertyContext)
+
   const {setLoggedIn} = useContext(ProfileContext)
 
   const getProperties = () => {
     setLoading(true)
-    activeSearch === ''
-      ? currentSearch === '' 
+    currentSearch === '' ? null : activeSearch === currentSearch ? null : setActiveSearch(currentSearch)
+    currentSearch === ''
+      ? activeSearch === '' 
         ? properties.params.location = 'Los Angeles, CA'
-        : properties.params.location = currentSearch
-      : properties.params.location = activeSearch
+        : properties.params.location = activeSearch
+      : properties.params.location = currentSearch
     priceMin === null
       ? null 
       : properties.params.price_min = priceMin
@@ -129,15 +139,28 @@ export const PropertiesContextProvider = ({children}) => {
     properties.params.isTownhouse = isTownhouse
     properties.params.page = currentPage
     properties.params.sortSelection = sort
-    console.log(properties.params)
+    console.log(properties.params.location)
     axios.request(properties).then(function (response) {
-      setCityLat(response.data.results[0].latitude)
-      setCityLong(response.data.results[0].longitude)
-      setTotalPages(response.data.totalPages)
-      generateUrlList(response.data.results)
+      console.log(response.data.abbreviatedAddress)
+      response.data.abbreviatedAddress != null
+        ? goToSingleProperty(response.data) 
+        : setMultiProperties(response)
     }).catch(function (error) {
       console.log(error);
     });
+  }
+
+  const goToSingleProperty = (data) => {
+    setProperty(data)
+    setLoading(false)
+    navigation.navigate('PropertyScreen')
+  }
+
+  const setMultiProperties = (response) => {
+    setCityLat(response.data.results[0].latitude)
+    setCityLong(response.data.results[0].longitude)
+    setTotalPages(response.data.totalPages)
+    generateUrlList(response.data.results)
   }
 
   const generateUrlList = (results) => {
@@ -261,6 +284,10 @@ export const PropertiesContextProvider = ({children}) => {
                                         currentPage,
                                         favoritesZpids,
                                         favorites,
+                                        singleProperty,
+                                        activeSearch, 
+                                        currentSearch,
+                                        singlePropertyFound,
                                         setResults,
                                         setResultsPerPage,
                                         setTotalPages,
@@ -268,7 +295,10 @@ export const PropertiesContextProvider = ({children}) => {
                                         getProperties,
                                         setViewMaps,
                                         setLoading,
-                                        setCurrentPage}}>
+                                        setCurrentPage,
+                                        setActiveSearch,
+                                        setCurrentSearch,
+                                        setSinglePropertyFound}}>
       {children}
     </PropertiesContext.Provider>
   )
