@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import {Text, View, Dimensions, StyleSheet} from 'react-native'
+import {Text, View, Dimensions, StyleSheet, ActivityIndicator} from 'react-native'
 import { PropertiesContext } from '../Context/PropertiesContext'
 
 import TopbarComponent from '../Components/PropertiesScreen/TopbarComponent'
@@ -9,7 +9,6 @@ import { ProfileContext } from '../Context/ProfileContext'
 import { useNavigation } from '@react-navigation/native'
 
 import { auth } from '../Api/firebaseTesting'
-import { PropertyContext } from '../Context/PropertyContext'
 
 const deviceWidth = Dimensions.get('window').width
 const deviceHeight = Dimensions.get('window').height
@@ -18,8 +17,6 @@ const PropertiesScreen = () => {
   const navigation = useNavigation()
 
   const {viewMaps, getProperties, loading} = useContext(PropertiesContext)
-  const {singleProperty} = useContext(PropertiesContext)
-  const {setProperty} = useContext(PropertyContext)
   const {setLoggedIn} = useContext(ProfileContext)
 
   useEffect(() => {
@@ -45,8 +42,9 @@ const PropertiesScreen = () => {
 
   const displayLoading = () => {
     return(
-      <View>
-        <Text>Loading properties</Text>
+      <View style={styles.loadingScreen}>
+        <Text style={styles.loadingText}>Loading properties</Text>
+        <ActivityIndicator style={styles.loading} size='large'/>
       </View>
     )
   }
@@ -81,6 +79,22 @@ const styles = StyleSheet.create({
   map: {
     height: deviceHeight,
     width: deviceWidth,
+  },
+  loadingScreen: {
+    width: deviceWidth - 16,
+    marginLeft: 8,
+    height: deviceHeight - 250,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  loadingText: {
+    fontSize: 28,
+    fontWeight: 'bold'
+  },
+  loading: {
+    marginLeft: 16
   }
 })
 

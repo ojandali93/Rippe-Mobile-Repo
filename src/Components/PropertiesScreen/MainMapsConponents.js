@@ -12,9 +12,6 @@ const MainMapsConponents = () => {
   return (
     <View>
       <View>
-        <Text>{cityLat} - {cityLong}</Text>
-      </View>
-      <View>
       <MapView 
           scrollEnabled={true}
           zoomEnabled={true}

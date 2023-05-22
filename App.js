@@ -5,12 +5,11 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import BottomTabNavigation from './src/Navigation/BottomTabNavigation';
 import { PropertiesContextProvider } from './src/Context/PropertiesContext';
-import { InvestmentContextProvider } from './src/Context/InvestmentContext';
+// import { InvestmentContextProvider } from '../Temp/InvestmentContext';
 import { SearchFilterContextProvider } from './src/Context/SearchFilterContext';
-import { PropertyContextProvider } from './src/Context/PropertyContext';
-import { AnalysisContextProvider } from './src/Context/AnalysisContext';
 import { ProfileContextProvider } from './src/Context/ProfileContext';
 import { FeedContextProvider } from './src/Context/FeedContext';
+import { PropertyContextProvider } from './src/Context/PropertyContext';
 
 export default function App() {
   return (
@@ -18,17 +17,15 @@ export default function App() {
     <StatusBar style="auto" />
       <FeedContextProvider>
         <ProfileContextProvider>
-          <AnalysisContextProvider>
-            <SearchFilterContextProvider>
-              <InvestmentContextProvider>
-                <PropertyContextProvider>
-                  <PropertiesContextProvider>
-                    <BottomTabNavigation />
-                  </PropertiesContextProvider>
-                </PropertyContextProvider>
-              </InvestmentContextProvider>
-            </SearchFilterContextProvider>
-          </AnalysisContextProvider>
+          <SearchFilterContextProvider>
+            {/* <InvestmentContextProvider> */}
+              <PropertyContextProvider>
+                <PropertiesContextProvider>
+                  <BottomTabNavigation />
+                </PropertiesContextProvider>
+              </PropertyContextProvider>
+            {/* </InvestmentContextProvider> */}
+          </SearchFilterContextProvider>
         </ProfileContextProvider>
       </FeedContextProvider>
     </NavigationContainer>

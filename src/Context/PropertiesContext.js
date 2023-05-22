@@ -2,9 +2,14 @@ import axios from 'axios';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { properties, singleProperty } from '../Api/zillowApi'
 
-import { InvestmentContext } from './InvestmentContext';
 import { SearchFilterContext } from './SearchFilterContext';
-import { PropertyContext } from './PropertyContext';
+
+import { calculateDownPaymentAmount,
+         calculateDownPaymentPercent,
+         calculateLoanAmount,
+         calculateMortgageAmount,
+         calculatePropertyTaxAnnual,
+         calculateHomeInsuranceAmount} from '../../utilities';
 
 import { collection, query, where, onSnapshot, addDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../Api/firebaseTesting';
@@ -40,13 +45,6 @@ export const PropertiesContextProvider = ({children}) => {
   const [cityLong, setCityLong] = useState(34.0522)
   const [favoritesZpid, setFavoritesZpid] = useState([])
   
-  const {calculateDownPaymentAmount} = useContext(InvestmentContext)
-  const {calculateDownPaymentPercent} = useContext(InvestmentContext)
-  const {calculateLoanAmount} = useContext(InvestmentContext)
-  const {calculateMortgageAmount} = useContext(InvestmentContext)
-  const {calculatePropertyTaxAnnual} = useContext(InvestmentContext)
-  const {calculateHomeInsuranceAmount} = useContext(InvestmentContext)
-  
   const {sort, setSort} = useContext(SearchFilterContext)
   const {isSingleFamily} = useContext(SearchFilterContext)
   const {isMultiFamily} = useContext(SearchFilterContext)
@@ -54,7 +52,6 @@ export const PropertiesContextProvider = ({children}) => {
   const {isCondo} = useContext(SearchFilterContext)
   const {isManufactured} = useContext(SearchFilterContext)
   const {isTownhouse} = useContext(SearchFilterContext)
-  const {isLotLand} = useContext(SearchFilterContext)
 
   const {beds} = useContext(SearchFilterContext)
   const {baths} = useContext(SearchFilterContext)
@@ -73,8 +70,6 @@ export const PropertiesContextProvider = ({children}) => {
   const {mountainView} = useContext(SearchFilterContext)
   const {waterView} = useContext(SearchFilterContext)
   const {waterFront} = useContext(SearchFilterContext)
-
-  const {setProperty} = useContext(PropertyContext)
 
   const {setLoggedIn} = useContext(ProfileContext)
 
@@ -139,21 +134,13 @@ export const PropertiesContextProvider = ({children}) => {
     properties.params.isTownhouse = isTownhouse
     properties.params.page = currentPage
     properties.params.sortSelection = sort
-    console.log(properties.params.location)
     axios.request(properties).then(function (response) {
-      console.log(response.data.abbreviatedAddress)
       response.data.abbreviatedAddress != null
-        ? goToSingleProperty(response.data) 
+        ? null 
         : setMultiProperties(response)
     }).catch(function (error) {
-      console.log(error);
+      console.error(error);
     });
-  }
-
-  const goToSingleProperty = (data) => {
-    setProperty(data)
-    setLoading(false)
-    navigation.navigate('PropertyScreen')
   }
 
   const setMultiProperties = (response) => {
@@ -172,7 +159,7 @@ export const PropertiesContextProvider = ({children}) => {
         params: {zpid: results[i].zpid},
         headers: {
           'content-type': 'application/octet-stream',
-          'X-RapidAPI-Key': '015b41c917msh3247c85d232d717p128b80jsnd5d43cba3ec3',
+          'X-RapidAPI-Key': '22cff3b757msh1086049fc5382bcp19ed7ajsn955a1faa4f16',
           'X-RapidAPI-Host': 'zillow56.p.rapidapi.com'
         }
       };

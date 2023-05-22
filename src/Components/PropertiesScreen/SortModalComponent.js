@@ -92,7 +92,7 @@ const SortModalComponent = () => {
             {
               sortOptions.map((item) => {
                 return(
-                  <TouchableOpacity style={styles.item} onPress={() => {updateSortPart(item.value)}}>
+                  <TouchableOpacity key={item.value} style={styles.item} onPress={() => {updateSortPart(item.value)}}>
                     <Text style={styles.text}>{item.label}</Text>
                     {
                       sort === item.value ? <Feather size={20} name={'check'}/> : null
@@ -113,8 +113,14 @@ const SortModalComponent = () => {
       >
         <ScrollView style={styles.filterContainer}>
           <View style={styles.headerContainer}>
-              <Text style={styles.header}>Filter</Text>
-            </View>
+            <TouchableOpacity onPress={() => {setAccessFilter(!accessFilter)}}>
+              <Text style={styles.subHeader}>Back</Text>
+            </TouchableOpacity>
+            <Text style={styles.header}>Filter</Text>
+            <TouchableOpacity onPress={() => {applyFilter()}}>
+            <Text style={styles.subHeader}>Done</Text>
+          </TouchableOpacity>
+          </View>
           <View>
             <View style={styles.sectionHeader}>
               <Text style={styles.headerText}>Property Types:</Text>
@@ -389,11 +395,16 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '600'
   }, 
+  subHeader: {
+    fontSize: 18,
+    color: 'blue'
+  },
   headerContainer: {
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingVertical: 8,
     borderBottomWidth: 2,
     borderBottomColor: 'lightgrey'
@@ -490,7 +501,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
-  }
+  },
+
 })
 
 export default SortModalComponent

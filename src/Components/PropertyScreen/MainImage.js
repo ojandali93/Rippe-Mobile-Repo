@@ -1,22 +1,25 @@
 import React, { useContext } from 'react'
-import { View, Text, Image, Dimensions, TouchableOpacity } from 'react-native'
+import { View, Text, Image, Dimensions, TouchableOpacity, StyleSheet } from 'react-native'
 
 import { auth, db } from '../../Api/firebaseTesting'
 import { collection, addDoc, serverTimestamp, doc, deleteDoc } from 'firebase/firestore';
 
-import { PropertyContext } from '../../Context/PropertyContext'
+import { Entypo } from 'react-native-vector-icons'
+
 import { PropertiesContext } from '../../Context/PropertiesContext'
 import { ProfileContext } from '../../Context/ProfileContext';
+import { PropertyContext } from '../../Context/PropertyContext';
 
 const deviceWidth = Dimensions.get('window').width
+const deviceheight = Dimensions.get('window').height
 const aspectWidth = deviceWidth - 16
 const aspectHeight = (deviceWidth / 1.78) + 1
 
 const MainImage = () => {
 
-  const {mainImage, property} = useContext(PropertyContext)
   const {favoritesZpids, favorites} = useContext(PropertiesContext)
   const {loggedIn} = useContext(ProfileContext)
+  const {mainImage, property} = useContext(PropertyContext)
 
   const addToFavorites = (property) => {
     loggedIn === false 
@@ -87,14 +90,45 @@ const MainImage = () => {
 
   return (
     <View>
-      <Image key={mainImage} style={{height: aspectHeight, width: aspectWidth}} source={{uri: mainImage}} />
-      {
+      <Image key={mainImage} style={{height: aspectHeight, width: deviceWidth}} source={{uri: mainImage}} />
+      {/* {
         favoritesZpids.includes(property.zpid)
           ? <TouchableOpacity onPress={() => {removeFromFavorites(property)}}><Text>Included</Text></TouchableOpacity>
           : <TouchableOpacity onPress={() => {addToFavorites(property)}}><Text>Not Included</Text></TouchableOpacity>
-      }
+      } */}
+      <View style={styles.favoriteMenu}>
+        <View style={styles.menu}>
+          {
+            favoritesZpids.includes(property.zpid)
+              ? <TouchableOpacity stlye={styles.menu} onPress={() => {removeFromFavorites(property)}}><Entypo color={'white'} size={28} style={{paddingTop: 4, opacity: 1}} name='heart'/></TouchableOpacity>
+              : <TouchableOpacity stlye={styles.menu} onPress={() => {addToFavorites(property)}}><Entypo color={'white'} size={28}  style={{paddingTop: 4, opacity: 1}} name='heart-outlined'/></TouchableOpacity>
+          }
+        </View>
+      </View>
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  favoriteMenu: {
+    width: deviceWidth,
+    position: 'absolute',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    padding: 10
+  },
+  menu: {
+    width: 40,
+    height: 40,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'grey',
+    borderRadius: 50,
+    opacity: .75
+  }
+})
 
 export default MainImage

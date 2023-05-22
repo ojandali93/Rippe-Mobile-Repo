@@ -1,155 +1,49 @@
 import axios from 'axios'
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { InvestmentContext } from './InvestmentContext';
+import { singleProperty } from '../Api/zillowApi';
 
 export const PropertyContext = createContext(null)
 
 export const PropertyContextProvider = ({children}) => {
-
-  const {calculateDownPaymentAmount,
-          calculateDownPaymentPercent,
-          calculateLoanAmount,
-          calculateMortgageAmount} = useContext(InvestmentContext)
-
   const [property, setProperty] = useState('')
 
   const [mainImage, setMainImage] = useState('')
-
-  const [revenue, setRevenue] = useState(0)
-  const [additionalRevenue, setAdditionalRevenue] = useState(0)
-  const [totalRevenue, setTotalRevenue] = useState(0)
-
-  const [totalExpenses, setTotalExpenses] = useState(0)
-
-  const [mortgage, setMortgage] = useState(0)
-  const [mortgageInsurance, setMortgageInsurance] = useState(0)
-  const [propertyTax, setPropertyTax] = useState(0)
-  const [propertyTaxRate, setPropertyTaxRate] = useState(0)
-  const [hoa, setHoa] = useState(0)
-  const [homeInsurance, setHomeInsurance] = useState(0)
-  const [utilities, setUtilities] = useState(0)
-  const [otherExpenses, setOtherExpenses] = useState(0)
-
-  const [homePrice, setHomePrice] = useState(0)
-  const [downPaymentAmount, setDownPaymentAmount] = useState(0)
-  const [downPaymentPercent, setDownPaymentPercent] = useState(20)
-  const [loanAmount, setLoanAmount] = useState(0)
-  const [interestRate, setInterestRate] = useState(0)
-  const [loanTerm, setLoanTerm] = useState(30)
-
-  const [water, setWater] = useState(0)
-  const [trash, setTrash] = useState(0)
-  const [electricity, setElectricity] = useState(0)
-  const [gas, setGas] = useState(0)
-
-  const [maintenance, setMaintenance] = useState(0)
-  const [management, setManagement] = useState(0)
-  const [repairs, setRepairs] = useState(0)
-  const [homeWarranty, setHomeWarranty] = useState(0)
-  const [other, setOther] = useState(0)
+  const [imageList, setImageList] = useState([])
 
   const [loading, setLoading] = useState(true)
 
-  const [priceHistory, setPriceHistory] = useState([])
-  const [taxHistory, setTaxHistory] = useState([])
-
-  const [schools, setSchools] = useState([])
-
-  const [nearbyHomes, setNearbyHomes] = useState([])
-
-  const setPropertyDetails = () => {
-    setMainImage(property.hiResImageLink)
-    setPropertyTaxRate(property.propertyTaxRate)
-    setPropertyTax(Math.round(((property.propertyTaxRate/100) * property.price) / 12))
-    setRevenue(property.rentZestimate)
-    property.monthlyHoaFee === null 
-      ? setHoa(0) 
-      : setHoa(property.monthlyHoaFee)
-    setHomePrice(property.price)
-    setLoanTerm(30)
-    setInterestRate(property.mortgageRates.thirtyYearFixedRate)
-    setDownPaymentAmount(calculateDownPaymentAmount(property.price, 20))
-    setDownPaymentPercent(calculateDownPaymentPercent(property.price, (property.price * .2)))
-    setLoanAmount(calculateLoanAmount(property.price, (property.price * .2)))
-    setMortgage(calculateMortgageAmount((property.price * .8), 30, property.mortgageRates.thirtyYearFixedRate))
-    setHomeInsurance((Math.round((property.price / 1000) * 3.5) / 12).toFixed(0))
-    setTaxHistory(property.taxHistory)
-    setPriceHistory(property.priceHistory)
-    setSchools(property.schools)
-    setNearbyHomes(property.nearbyHomes)
-    setLoading(false)
+  const setPropertyDetails = (zpid) => {
+    singleProperty.params.zpid = zpid
+    axios.request(singleProperty)
+      .then((response) => {
+        setProperty(response.data)
+        setMainImage(response.data.hiResImageLink)
+        generateImageList(response.data.big)
+        setLoading(false)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
   }
 
-  useEffect(() => {
-    parseInt(downPaymentPercent) < 20
-      ? setMortgageInsurance(Math.round((loanAmount * 0.0058) / 12)) : setMortgageInsurance(0)
-  }, [downPaymentPercent])
+  const generateImageList = (images) => {
+    let imagesNewList = []
+    images.map((item, index) => {
+      item.index = index
+      imagesNewList.push(item)
+    })
+    setImageList(imagesNewList)
+  }
 
   return(
     <PropertyContext.Provider value={{property, 
                                       loading, 
                                       mainImage, 
-                                      revenue,
-                                      additionalRevenue,
-                                      mortgage,
-                                      homePrice,
-                                      downPaymentAmount,
-                                      downPaymentPercent,
-                                      loanAmount, 
-                                      interestRate, 
-                                      loanTerm,
-                                      propertyTax,
-                                      propertyTaxRate,
-                                      homeInsurance,
-                                      hoa, 
-                                      water, 
-                                      electricity, 
-                                      gas, 
-                                      trash,
-                                      utilities,
-                                      maintenance,
-                                      management,
-                                      repairs,
-                                      homeWarranty,
-                                      other,
-                                      otherExpenses,
-                                      totalExpenses,
-                                      totalRevenue,
-                                      mortgageInsurance, 
-                                      priceHistory,
-                                      taxHistory,
-                                      schools,
-                                      nearbyHomes,
+                                      imageList,
                                       setProperty, 
                                       setPropertyDetails,
                                       setMainImage,
-                                      setRevenue,
-                                      setAdditionalRevenue,
-                                      setMortgage,
-                                      setHomePrice,
-                                      setDownPaymentAmount,
-                                      setDownPaymentPercent,
-                                      setLoanAmount,
-                                      setLoanTerm,
-                                      setInterestRate,
-                                      setPropertyTax,
-                                      setPropertyTaxRate,
-                                      setHomeInsurance,
-                                      setHoa,
-                                      setTrash,
-                                      setGas,
-                                      setWater,
-                                      setElectricity,
-                                      setUtilities,
-                                      setMaintenance,
-                                      setManagement,
-                                      setRepairs,
-                                      setHomeWarranty,
-                                      setOther,
-                                      setOtherExpenses,
-                                      setTotalExpenses,
-                                      setTotalRevenue,
-                                      setMortgageInsurance}}>
+                                      setLoading}}>
       {children}
     </PropertyContext.Provider>
   )

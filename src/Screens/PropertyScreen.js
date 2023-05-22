@@ -1,55 +1,41 @@
 import React, { useContext, useEffect } from 'react'
+import { Text, View, ScrollView, StyleSheet, Dimensions, ActivityIndicator } from 'react-native'
+
+import { PropertiesContext } from '../Context/PropertiesContext'
 import { PropertyContext } from '../Context/PropertyContext'
-import { Text, View, ScrollView } from 'react-native'
 
 import MainImage from '../Components/PropertyScreen/MainImage'
 import ImageCarousel from '../Components/PropertyScreen/ImageCarousel'
-import QuickSummaryComponent from '../Components/PropertyScreen/QuickSummaryComponent'
-import RevenueComponent from '../Components/PropertyScreen/RevenueComponent'
-import ExpensesComponent from '../Components/PropertyScreen/ExpensesComponent'
-import InvestmentMetricCompnent from '../Components/PropertyScreen/InvestmentMetricCompnent'
-import DetailsComponent from '../Components/PropertyScreen/DetailsComponent'
-import DescriptionComponent from '../Components/PropertyScreen/DescriptionComponent'
-import ListingDetailsComponent from '../Components/PropertyScreen/ListingDetailsComponent'
-import OpenHouseComponent from '../Components/PropertyScreen/OpenHouseComponent'
-import ScheduleTourComponent from '../Components/PropertyScreen/ScheduleTourComponent'
-import SaleHistoryComponent from '../Components/PropertyScreen/SaleHistoryComponent'
-import TaxHistoryComponent from '../Components/PropertyScreen/TaxHistoryComponent'
-import ConnectWithAgentComponent from '../Components/PropertyScreen/ConnectWithAgentComponent'
-import SchoolsComponent from '../Components/PropertyScreen/SchoolsComponent'
-import NearbyHomesComponent from '../Components/PropertyScreen/NearbyHomesComponent'
-import DisclaimerComponent from '../Components/PropertyScreen/DisclaimerComponent'
 
-const PropertyScreen = () => {
+const deviceWidth = Dimensions.get('window').width
+const deviceHeight = Dimensions.get('window').height
 
-  const {setPropertyDetails, loading} = useContext(PropertyContext)
+const PropertyScreen = ({route}) => {
+
+  const {loading, setLoading, setPropertyDetails} = useContext(PropertyContext)
 
   useEffect(() => {
-    setPropertyDetails()
+    setPropertyDetails(route.params.zpid)
   }, [])
 
   const displayProperty = () => {
     return(
-      <View>
+      <View style={styles.screen}>
+        {/* <View style={styles.investmentCOntainer}>
+        </View> */}
         <ScrollView>
           <MainImage />
           <ImageCarousel />
-          <QuickSummaryComponent />
-          <RevenueComponent />
-          <ExpensesComponent />
-          <InvestmentMetricCompnent />
-          <DetailsComponent />
-          <DescriptionComponent />
-          <ListingDetailsComponent />
-          <OpenHouseComponent />
-          <ScheduleTourComponent />
-          <SaleHistoryComponent />
-          <TaxHistoryComponent />
-          <ConnectWithAgentComponent />
-          <SchoolsComponent />
-          <NearbyHomesComponent />
-          <DisclaimerComponent />
         </ScrollView>
+      </View>
+    )
+  }
+
+  const displayLoading = () => {
+    return(
+      <View style={styles.loadingScreen}>
+        <Text style={styles.loadingText}>Loading Property</Text>
+        <ActivityIndicator style={styles.loading} size='large'/>
       </View>
     )
   }
@@ -57,10 +43,36 @@ const PropertyScreen = () => {
   return (
     <View>
       {
-        loading === true ? <Text>Loading</Text> : displayProperty()
+        loading === true ? displayLoading() : displayProperty()
       }
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  screen: {
+    marginTop: 58
+  },
+  investmentCOntainer: {
+    zIndex: 1,
+    opacity: 1
+  },
+  loadingScreen: {
+    width: deviceWidth - 16,
+    marginLeft: 8,
+    height: deviceHeight - 250,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  loadingText: {
+    fontSize: 28,
+    fontWeight: 'bold'
+  },
+  loading: {
+    marginLeft: 16
+  }
+})
 
 export default PropertyScreen

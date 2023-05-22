@@ -1,27 +1,24 @@
 import React, { useContext, useState } from 'react'
-import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native'
+import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet } from 'react-native'
+import { PropertiesContext } from '../../Context/PropertiesContext'
 import { PropertyContext } from '../../Context/PropertyContext'
 
-const aspectWidth = 75
+const aspectWidth = 125
 const aspectHeight = (aspectWidth / 1.78) + 1
 
 const ImageCarousel = () => {
 
-  const {property, setMainImage} = useContext(PropertyContext)
-
-  const [images, setImages] = useState(property.big)
+  const {setMainImage, imageList} = useContext(PropertyContext)
 
   return (
-    <View>
-      <Text>Image Carousel</Text>
+    <View style={styles.carouselContainer}>
       <FlatList 
-        data={images}
+        data={imageList}
         horizontal
-        keyExtractor={(item, index) => {index}}
         renderItem={(item) => {
           return(
-            <TouchableOpacity onPress={() => setMainImage(item.item.url)}>
-              <Image style={{height:aspectHeight, width:aspectWidth}} source={{uri: item.item.url}} />
+            <TouchableOpacity key={item.item.index} onPress={() => setMainImage(item.item.url)}>
+              <Image style={styles.image} source={{uri: item.item.url}} />
             </TouchableOpacity>
           )  
         }}
@@ -29,5 +26,18 @@ const ImageCarousel = () => {
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  image: {
+    height: aspectHeight,
+    width: aspectWidth,
+    marginRight: 8
+  },
+  carouselContainer: {
+    paddingVertical: 8,
+    borderBottomColor: 'grey',
+    borderBottomWidth: 2
+  }
+})
 
 export default ImageCarousel

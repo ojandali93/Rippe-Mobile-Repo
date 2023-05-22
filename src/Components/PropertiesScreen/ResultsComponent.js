@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import {Text, View, Image, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Modal} from 'react-native'
 import { PropertiesContext } from '../../Context/PropertiesContext'
 import { useNavigation } from '@react-navigation/native'
-import { PropertyContext } from '../../Context/PropertyContext'
 
 import { Entypo } from 'react-native-vector-icons'
 
@@ -32,14 +31,7 @@ const ResultsComponent = () => {
   const {results} = useContext(PropertiesContext)
   const {favoritesZpids, favorites} = useContext(PropertiesContext)
 
-  const {setProperty} = useContext(PropertyContext)
-
   const {loggedIn} = useContext(ProfileContext)
-
-  const goToPropertyPage = (property) => {
-    setProperty(property)
-    navigation.navigate('PropertyScreen')
-  }
 
   const addToFavorites = (property) => {
     loggedIn === false 
@@ -123,7 +115,7 @@ const ResultsComponent = () => {
       results.map((property) => {
         return(
           <View key={property.zpid} style={styles.property}>
-            <TouchableOpacity onPress={() => {goToPropertyPage(property)}}> 
+            <TouchableOpacity onPress={() => {navigation.navigate('PropertyScreen', {zpid: property.zpid})}}> 
               <Image style={{height: aspectHeight, width: aspectWidth}} source={{uri: property.hiResImageLink}}/>
               <View style={styles.summary}>
                 <View style={styles.background}></View>
