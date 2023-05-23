@@ -91,17 +91,12 @@ const MainImage = () => {
   return (
     <View>
       <Image key={mainImage} style={{height: aspectHeight, width: deviceWidth}} source={{uri: mainImage}} />
-      {/* {
-        favoritesZpids.includes(property.zpid)
-          ? <TouchableOpacity onPress={() => {removeFromFavorites(property)}}><Text>Included</Text></TouchableOpacity>
-          : <TouchableOpacity onPress={() => {addToFavorites(property)}}><Text>Not Included</Text></TouchableOpacity>
-      } */}
       <View style={styles.favoriteMenu}>
         <View style={styles.menu}>
           {
             favoritesZpids.includes(property.zpid)
-              ? <TouchableOpacity stlye={styles.menu} onPress={() => {removeFromFavorites(property)}}><Entypo color={'white'} size={28} style={{paddingTop: 4, opacity: 1}} name='heart'/></TouchableOpacity>
-              : <TouchableOpacity stlye={styles.menu} onPress={() => {addToFavorites(property)}}><Entypo color={'white'} size={28}  style={{paddingTop: 4, opacity: 1}} name='heart-outlined'/></TouchableOpacity>
+              ? <TouchableOpacity stlye={styles.menu} onPress={() => {removeFromFavorites(property)}}><Entypo color={'black'} size={28} style={{paddingTop: 4, opacity: 1}} name='heart'/></TouchableOpacity>
+              : <TouchableOpacity stlye={styles.menu} onPress={() => {addToFavorites(property)}}><Entypo color={'black'} size={28}  style={{paddingTop: 4, opacity: 1}} name='heart-outlined'/></TouchableOpacity>
           }
         </View>
       </View>
@@ -125,9 +120,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'grey',
-    borderRadius: 50,
-    opacity: .75
+    backgroundColor: 'white',
+    borderRadius: 50
   }
 })
 

@@ -1,29 +1,29 @@
 const calculateMonthlyNetOperatingIncome = (totalRevenue, expensesWithoutMortgage) => {
-  setMonthlyNetOperatingIncome(totalRevenue - expensesWithoutMortgage)  
+  return (totalRevenue - expensesWithoutMortgage)  
 }
 
 const calculateYearlyNetOperatingIncome = (monthlyNetOperatingIncome) => {
-  setYearlyNetOperatingIncome(monthlyNetOperatingIncome * 12)  
+  return (monthlyNetOperatingIncome * 12)  
 }
 
 const calculateMonthlyCashFlow = (monthlyNetOperatingIncome, mortgage) => {
-  setMonthlyCashFlow(monthlyNetOperatingIncome - mortgage)
+  return (monthlyNetOperatingIncome - mortgage)
 }
 
 const calculateYearlyCashFlow = (monthlyCashFlow) => {
-  setYearlyCashFlow(monthlyCashFlow * 12)
+  return(monthlyCashFlow * 12)
 }
 
 const calculateCapRate = (yearlyNetOperatingIncome, price) => {
-  setCapRate(((yearlyNetOperatingIncome/price) * 100).toFixed(2))
+  return (((yearlyNetOperatingIncome/price) * 100).toFixed(2))
 }
 
 const calculateCashOnCashReturn = (yearlyCashFlow, downPaymentAmount) => {
-  setCashOnCashReturn(((yearlyCashFlow / downPaymentAmount) * 100).toFixed(2))
+  return (((yearlyCashFlow / downPaymentAmount) * 100).toFixed(2))
 }
 
 const calculateYearReturnOnInvestment = (yearlyNetOperatingIncome, downPaymentAmount) => {
-  setYearReturnOnInvestment(((yearlyNetOperatingIncome / downPaymentAmount) * 100).toFixed(2))
+  return (((yearlyNetOperatingIncome / downPaymentAmount) * 100).toFixed(2))
 }
 
 const calculateDownPaymentAmount = (homePrice, downPaymentPercent) => {

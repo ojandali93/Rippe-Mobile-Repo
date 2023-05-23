@@ -5,11 +5,11 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import BottomTabNavigation from './src/Navigation/BottomTabNavigation';
 import { PropertiesContextProvider } from './src/Context/PropertiesContext';
-// import { InvestmentContextProvider } from '../Temp/InvestmentContext';
 import { SearchFilterContextProvider } from './src/Context/SearchFilterContext';
 import { ProfileContextProvider } from './src/Context/ProfileContext';
 import { FeedContextProvider } from './src/Context/FeedContext';
 import { PropertyContextProvider } from './src/Context/PropertyContext';
+import { FinancesContextProvider } from './src/Context/FinancesContext';
 
 export default function App() {
   return (
@@ -18,13 +18,13 @@ export default function App() {
       <FeedContextProvider>
         <ProfileContextProvider>
           <SearchFilterContextProvider>
-            {/* <InvestmentContextProvider> */}
+            <FinancesContextProvider>
               <PropertyContextProvider>
                 <PropertiesContextProvider>
                   <BottomTabNavigation />
                 </PropertiesContextProvider>
               </PropertyContextProvider>
-            {/* </InvestmentContextProvider> */}
+            </FinancesContextProvider>
           </SearchFilterContextProvider>
         </ProfileContextProvider>
       </FeedContextProvider>

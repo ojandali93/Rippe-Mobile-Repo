@@ -1,18 +1,25 @@
 import React, { useContext, useEffect } from 'react'
 import { Text, View, ScrollView, StyleSheet, Dimensions, ActivityIndicator } from 'react-native'
 
-import { PropertiesContext } from '../Context/PropertiesContext'
 import { PropertyContext } from '../Context/PropertyContext'
+import { FinancesContext } from '../Context/FinancesContext'
 
 import MainImage from '../Components/PropertyScreen/MainImage'
 import ImageCarousel from '../Components/PropertyScreen/ImageCarousel'
+import MortgageComponent from '../Components/PropertyScreen/ExpensesConponents/MortgageComponent'
+import RevenueComponent from '../Components/PropertyScreen/RevenueComponent'
+import StaticComponents from '../Components/PropertyScreen/ExpensesConponents/StaticComponents'
+import UtilitiesComponent from '../Components/PropertyScreen/ExpensesConponents/UtilitiesComponent'
+import AdditionalExpensesComponent from '../Components/PropertyScreen/ExpensesConponents/AdditionalExpensesComponent'
+import InvestmentMetricCompnent from '../Components/PropertyScreen/InvestmentMetricComponent'
 
 const deviceWidth = Dimensions.get('window').width
 const deviceHeight = Dimensions.get('window').height
 
 const PropertyScreen = ({route}) => {
 
-  const {loading, setLoading, setPropertyDetails} = useContext(PropertyContext)
+  const {loading, setPropertyDetails} = useContext(PropertyContext)
+  const {expenses, totalRevenue} = useContext(FinancesContext)
 
   useEffect(() => {
     setPropertyDetails(route.params.zpid)
@@ -21,11 +28,23 @@ const PropertyScreen = ({route}) => {
   const displayProperty = () => {
     return(
       <View style={styles.screen}>
-        {/* <View style={styles.investmentCOntainer}>
-        </View> */}
+        <View style={styles.investmentCOntainer}>
+          <InvestmentMetricCompnent />
+        </View>
         <ScrollView>
           <MainImage />
           <ImageCarousel />
+          <View style={styles.expenseContainer}>
+            <Text style={styles.expensesText}>Total Revenue: ${totalRevenue}</Text>
+          </View>
+          <RevenueComponent />
+          <View style={styles.expenseContainer}>
+            <Text style={styles.expensesText}>Total Expenses: ${expenses}</Text>
+          </View>
+          <MortgageComponent />
+          <StaticComponents />
+          <UtilitiesComponent />
+          <AdditionalExpensesComponent />
         </ScrollView>
       </View>
     )
@@ -72,6 +91,19 @@ const styles = StyleSheet.create({
   },
   loading: {
     marginLeft: 16
+  },
+  expenseContainer: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingVertical: 8,
+    borderBottomColor: 'lightgrey',
+    borderBottomWidth: 2
+  },
+  expensesText: {
+    fontSize: 22,
+    fontWeight: 'bold'
   }
 })
 
