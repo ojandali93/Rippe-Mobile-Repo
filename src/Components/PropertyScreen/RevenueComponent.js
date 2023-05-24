@@ -1,12 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react'
-import {View, Text, Dimensions, TextInput, StyleSheet} from 'react-native'
+import {View, Text, Dimensions, TextInput, StyleSheet, TouchableOpacity} from 'react-native'
 import { FinancesContext } from '../../Context/FinancesContext'
 import { PropertyContext } from '../../Context/PropertyContext'
+import { Feather } from 'react-native-vector-icons'
 
 const deviceWidth = Dimensions.get('window').width
-const aspectWidth = deviceWidth - 16
+const aspectWidth = deviceWidth - 48
 
 const RevenueComponent = () => {
+
+  const [accessRevenue, setAccessRevenue] = useState(false)
+
   const {property} = useContext(PropertyContext)
   const {totalRevenue, setTotalRevenue} = useContext(FinancesContext)
   
@@ -29,30 +33,48 @@ const RevenueComponent = () => {
     setTotalRevenue(parseInt(revenue) + parseInt(additionalRevenue))
   }, [revenue, additionalRevenue])
 
+  const displayRevenue = () => {
+    return(
+      <>
+        <View style={styles.itemContainer}>
+          <Text style={styles.itemText}>
+            Rent: 
+          </Text>
+          <TextInput
+            style={styles.input}
+            inputMode='decimal'
+            value={revenue.toString()}
+            onChangeText={(value) => {updateRevenue(value)}}
+          />
+        </View>
+        <View style={styles.itemContainer}>
+          <Text style={styles.itemText}>
+            Additional Revenue: 
+          </Text>
+          <TextInput
+            style={styles.input}
+            inputMode='decimal'
+            value={additionalRevenue.toString()}
+            onChangeText={(value) => {updateAdditionalRevenue(value)}}
+          />
+        </View>
+      </>
+    )
+  }
+
   return (
     <View style={styles.container}>
-      <View style={styles.itemContainer}>
-        <Text style={styles.itemText}>
-          Rent: 
-        </Text>
-        <TextInput
-          style={styles.input}
-          inputMode='decimal'
-          value={revenue.toString()}
-          onChangeText={(value) => {updateRevenue(value)}}
-        />
-      </View>
-      <View style={styles.itemContainer}>
-        <Text style={styles.itemText}>
-          Additional Revenue: 
-        </Text>
-        <TextInput
-          style={styles.input}
-          inputMode='decimal'
-          value={additionalRevenue.toString()}
-          onChangeText={(value) => {updateAdditionalRevenue(value)}}
-        />
-      </View>
+      <TouchableOpacity onPress={() => {setAccessRevenue(!accessRevenue)}}>
+        <View style={styles.mortgageAContainer}>
+          <Text style={styles.mortgageAText}>
+            Revenue: ${totalRevenue}
+          </Text>
+          <Feather size={20} name={'chevrons-down'} />
+        </View>
+      </TouchableOpacity>
+      {
+        accessRevenue ? displayRevenue() : null
+      }
     </View>
   )
 }
@@ -60,14 +82,13 @@ const RevenueComponent = () => {
 const styles = StyleSheet.create({
   container: {
     width: aspectWidth,
-    marginLeft: 8,
-    marginTop: 8
+    marginLeft: 24,
   },
   mortgageAContainer: {
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     paddingVertical: 8
   },
   mortgageAText: {
@@ -75,11 +96,11 @@ const styles = StyleSheet.create({
     fontWeight: '700'
   },
   itemContainer: {
+    width: '100%',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingBottom: 8,
-    paddingHorizontal: 8
+    paddingVertical: 8
   },
   itemText: {
     fontSize: 18,

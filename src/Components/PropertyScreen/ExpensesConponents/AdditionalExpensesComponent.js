@@ -1,13 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react'
-import {View, Text, TextInput, Dimensions, StyleSheet} from 'react-native'
+import {View, Text, TextInput, Dimensions, StyleSheet, TouchableOpacity} from 'react-native'
 import { FinancesContext } from '../../../Context/FinancesContext'
+import { Feather } from 'react-native-vector-icons'
 
 const deviceWidth = Dimensions.get('window').width
-const aspectWidth = deviceWidth - 16
+const aspectWidth = deviceWidth - 48
 
 const AdditionalExpensesComponent = () => {
 
   const {otherExpenses, setOtherExpenses} = useContext(FinancesContext)
+
+  const [accessExpenses, setAccessExpenses] = useState(false)
   
   const [maintenance, setMaintenance] = useState(0)
   const [management, setManagement] = useState(0)
@@ -21,64 +24,77 @@ const AdditionalExpensesComponent = () => {
       parseInt(repairs) + parseInt(homeWarranty) + parseInt(other))
   }, [maintenance, management, repairs, homeWarranty, other])
 
+  const displayExpensesInfo = () => {
+    return(
+      <>
+        <View style={styles.itemContainer}>
+          <Text style={styles.itemText}>
+            maintenance {'(Annual)'}: 
+          </Text>
+          <TextInput  
+            style={styles.input}
+            value={maintenance.toString()}
+            onChangeText={(value) => setMaintenance(value)}
+          />
+        </View>
+
+        <View style={styles.itemContainer}>
+          <Text style={styles.itemText}>
+            Management {'(Annual)'}: 
+          </Text>
+          <TextInput
+            value={management.toString()}
+            style={styles.input}
+            onChangeText={(value) => setManagement(value)}
+          />
+        </View>
+        <View style={styles.itemContainer}>
+          <Text style={styles.itemText}>
+            Repairs {'(Annual)'}: 
+          </Text>
+          <TextInput
+            value={repairs.toString()}
+            style={styles.input}
+            onChangeText={(value) => setRepairs(value)}
+          />
+        </View>
+        <View style={styles.itemContainer}>
+          <Text style={styles.itemText}>
+            Home Warranty {'(Annual)'}: 
+          </Text>
+          <TextInput
+            value={homeWarranty.toString()}
+            style={styles.input}
+            onChangeText={(value) => setHomeWarranty(value)}
+          />
+        </View>
+        <View style={styles.itemContainer}>
+          <Text style={styles.itemText}>
+            Other {'(Annual)'}: 
+          </Text>
+          <TextInput
+            value={other.toString()}
+            style={styles.input}
+            onChangeText={(value) => setOther(value)}
+          />
+        </View>
+      </>
+    )
+  }
+
   return (
     <View style={styles.container}>
-      <View style={styles.mortgageAContainer}>
-        <Text style={styles.mortgageAText}>
-          Other Expenses: ${parseInt(otherExpenses)}
-        </Text>
-      </View>
-      <View style={styles.itemContainer}>
-        <Text style={styles.itemText}>
-          maintenance {'(Annual)'}: 
-        </Text>
-        <TextInput  
-          style={styles.input}
-          value={maintenance.toString()}
-          onChangeText={(value) => setMaintenance(value)}
-        />
-      </View>
-
-      <View style={styles.itemContainer}>
-        <Text style={styles.itemText}>
-          Management {'(Annual)'}: 
-        </Text>
-        <TextInput
-          value={management.toString()}
-          style={styles.input}
-          onChangeText={(value) => setManagement(value)}
-        />
-      </View>
-      <View style={styles.itemContainer}>
-        <Text style={styles.itemText}>
-          Repairs {'(Annual)'}: 
-        </Text>
-        <TextInput
-          value={repairs.toString()}
-          style={styles.input}
-          onChangeText={(value) => setRepairs(value)}
-        />
-      </View>
-      <View style={styles.itemContainer}>
-        <Text style={styles.itemText}>
-          Home Warranty {'(Annual)'}: 
-        </Text>
-        <TextInput
-          value={homeWarranty.toString()}
-          style={styles.input}
-          onChangeText={(value) => setHomeWarranty(value)}
-        />
-      </View>
-      <View style={styles.itemContainer}>
-        <Text style={styles.itemText}>
-          Other {'(Annual)'}: 
-        </Text>
-        <TextInput
-          value={other.toString()}
-          style={styles.input}
-          onChangeText={(value) => setOther(value)}
-        />
-      </View>
+      <TouchableOpacity onPress={() => {setAccessExpenses(!accessExpenses)}}>
+        <View style={styles.mortgageAContainer}>
+          <Text style={styles.mortgageAText}>
+            Other Expenses: ${parseInt(otherExpenses)}
+          </Text>
+          <Feather size={20} name={'chevrons-down'} />
+        </View>
+      </TouchableOpacity>
+      {
+        accessExpenses ? displayExpensesInfo() : null
+      }
     </View>
   )
 }
@@ -86,12 +102,13 @@ const AdditionalExpensesComponent = () => {
 const styles = StyleSheet.create({
   container: {
     width: aspectWidth,
-    marginLeft: 8,
+    marginLeft: 24,
   },
   mortgageAContainer: {
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingVertical: 8
   },
   mortgageAText: {

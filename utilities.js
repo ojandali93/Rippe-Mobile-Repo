@@ -61,6 +61,15 @@ const calculateMortgageInsurance = (loanAmount) => {
   return Math.round((loanAmount * 0.0058) / 12)
 }
 
+const convertString = (inputString) => {
+  let words = inputString.split('_');
+  let convertedWords = words.map(function(word) {
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+  });
+  let convertedString = convertedWords.join(' ');
+  return convertedString;
+}
+
 module.exports = {
   calculateMonthlyNetOperatingIncome,
   calculateYearlyNetOperatingIncome,
@@ -75,5 +84,6 @@ module.exports = {
   calculateMortgageAmount,
   calculatePropertyTaxAnnual,
   calculateHomeInsuranceAmount,
-  calculateMortgageInsurance
+  calculateMortgageInsurance,
+  convertString
 }

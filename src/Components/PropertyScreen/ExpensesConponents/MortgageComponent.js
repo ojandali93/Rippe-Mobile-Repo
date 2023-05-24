@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
-import {View, Text, TextInput, StyleSheet, Dimensions} from 'react-native'
+import {View, Text, TextInput, StyleSheet, Dimensions, TouchableOpacity} from 'react-native'
 import RNPickerSelect from 'react-native-picker-select'
+import { Feather } from 'react-native-vector-icons'
 import { PropertyContext } from '../../../Context/PropertyContext'
 import { FinancesContext } from '../../../Context/FinancesContext'
 import { calculateDownPaymentAmount,
@@ -9,7 +10,7 @@ import { calculateDownPaymentAmount,
           calculateMortgageAmount } from '../../../../utilities' 
 
 const deviceWidth = Dimensions.get('window').width
-const aspectWidth = deviceWidth - 16
+const aspectWidth = deviceWidth - 48
 
 const MortgageComponent = () => {
 
@@ -23,6 +24,7 @@ const MortgageComponent = () => {
       'value': 15
     }
   ]
+
   const {property} = useContext(PropertyContext)
   const {mortgage, setMortgage} = useContext(FinancesContext)
   const {dpAmount, setDbAmount} = useContext(FinancesContext)
@@ -34,6 +36,8 @@ const MortgageComponent = () => {
   const [interestRate, setInterestRate] = useState(property.mortgageRates.thirtyYearFixedRate)
   const [loanTerm, setLoanTerm] = useState(30)
   const [currentMortgage, setCurrentMortgage] = useState(calculateMortgageAmount(Math.round(property.price * .8), loanTerm, interestRate))
+
+  const [accessMortgage, setAccessMortgage] = useState(false)
 
   useEffect(() => {
     setMortgage(currentMortgage)
@@ -93,66 +97,79 @@ const MortgageComponent = () => {
     setMortgage(newMortgageAmount)
   }
 
+  const displayMortgageInfo = () => {
+    return(
+      <>
+        <View style={styles.itemContainer}>
+          <Text style={styles.itemText}>
+            Home Price:
+          </Text>
+          <TextInput
+            style={styles.input}
+            inputMode='decimal'
+            value={homePrice.toString()}
+            onChangeText={(value) => {updateHomePrice(value)}}
+          />
+        </View>
+        <View style={styles.itemContainer}>
+          <Text style={styles.itemText}>
+            Down Payment $: 
+          </Text>
+          <TextInput
+            style={styles.input}
+            inputMode='decimal'
+            value={downPaymentAmount.toString()}
+            onChangeText={(value) => {updateHDownPaymentAmount(value)}}
+          />
+        </View>
+        <View style={styles.itemContainer}>
+          <Text style={styles.itemText}>
+            Down Payment %:
+          </Text>
+          <TextInput
+            style={styles.input}
+            inputMode='decimal'
+            value={downPaymentPercent.toString()}
+            onChangeText={(value) => {updateDownPaymentPercent(value)}}
+          />
+        </View>
+        <View style={styles.itemContainer}>
+          <Text style={styles.itemText}>
+            Loan Program: 
+          </Text>
+          <RNPickerSelect 
+            style={styles.selector}
+            value={loanTerm}
+            onValueChange={(value) => updateLoanTerms(value)}
+            items={loanOptions}
+          />
+        </View>
+        <View style={styles.itemContainer}>
+          <Text style={styles.itemText}>
+            Interest Rate:
+          </Text>
+          <TextInput
+            style={styles.input}
+            inputMode='decimal'
+            value={interestRate.toString()}
+            onChangeText={(value) => {updateInterestRate(value)}}
+          />
+        </View>
+      </>
+    )
+  }
+
   return (
     <View style={styles.container}>
-      <View style={styles.mortgageAContainer}>
-        <Text style={styles.mortgageAText}>Mortgage: ${mortgage}</Text>
-      </View>
-      <View style={styles.itemContainer}>
-        <Text style={styles.itemText}>
-          Home Price:
-        </Text>
-        <TextInput
-          style={styles.input}
-          inputMode='decimal'
-          value={homePrice.toString()}
-          onChangeText={(value) => {updateHomePrice(value)}}
-        />
-      </View>
-      <View style={styles.itemContainer}>
-        <Text style={styles.itemText}>
-          Down Payment $: 
-        </Text>
-        <TextInput
-          style={styles.input}
-          inputMode='decimal'
-          value={downPaymentAmount.toString()}
-          onChangeText={(value) => {updateHDownPaymentAmount(value)}}
-        />
-      </View>
-      <View style={styles.itemContainer}>
-        <Text style={styles.itemText}>
-          Down Payment %:
-        </Text>
-        <TextInput
-          style={styles.input}
-          inputMode='decimal'
-          value={downPaymentPercent.toString()}
-          onChangeText={(value) => {updateDownPaymentPercent(value)}}
-        />
-      </View>
-      <View style={styles.itemContainer}>
-        <Text style={styles.itemText}>
-          Loan Program: 
-        </Text>
-        <RNPickerSelect 
-          style={styles.selector}
-          value={loanTerm}
-          onValueChange={(value) => updateLoanTerms(value)}
-          items={loanOptions}
-        />
-      </View>
-      <View style={styles.itemContainer}>
-        <Text style={styles.itemText}>
-          Interest Rate:
-        </Text>
-        <TextInput
-          style={styles.input}
-          inputMode='decimal'
-          value={interestRate.toString()}
-          onChangeText={(value) => {updateInterestRate(value)}}
-        />
-      </View>
+      <TouchableOpacity onPress={() => {setAccessMortgage(!accessMortgage)}} >
+        <View style={styles.mortgageAContainer}>
+          <Text style={styles.mortgageAText}>Mortgage: ${mortgage}</Text>
+          <Feather size={20} name={'chevrons-down'} />
+        </View>
+      </TouchableOpacity>
+      {
+        accessMortgage ? displayMortgageInfo() : null
+      }
     </View>
   )
 }
@@ -160,12 +177,13 @@ const MortgageComponent = () => {
 const styles = StyleSheet.create({
   container: {
     width: aspectWidth,
-    marginLeft: 8,
+    marginLeft: 24,
   },
   mortgageAContainer: {
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingVertical: 8
   },
   mortgageAText: {

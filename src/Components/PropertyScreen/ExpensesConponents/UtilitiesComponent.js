@@ -1,11 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react'
-import {View, Text, TextInput, StyleSheet, Dimensions} from 'react-native'
+import {View, Text, TextInput, StyleSheet, Dimensions, TouchableOpacity} from 'react-native'
 import { FinancesContext } from '../../../Context/FinancesContext'
+import { Feather } from 'react-native-vector-icons'
 
 const deviceWidth = Dimensions.get('window').width
-const aspectWidth = deviceWidth - 16
+const aspectWidth = deviceWidth - 48
 
 const UtilitiesComponent = () => {
+
+  const [accessUtilities, setAccessUtilities] = useState(false)
+
   const {utilities, setUtilities} = useContext(FinancesContext)
 
   const [water, setWater] = useState(0)
@@ -18,63 +22,76 @@ const UtilitiesComponent = () => {
     setUtilities(parseInt(gas) + parseInt(electricity) + parseInt(trash) + parseInt(water) + parseInt(sewer))
   }, [gas, electricity, trash, water, sewer])
 
+  const displayUtilities = () => {
+    return(
+      <>
+        <View style={styles.itemContainer}>
+          <Text style={styles.itemText}>
+            Gas Expenses: 
+          </Text>
+          <TextInput
+            style={styles.input}
+            value={gas.toString()}
+            onChangeText={(value) => setGas(value)}
+          />
+        </View>
+        <View style={styles.itemContainer}>
+          <Text style={styles.itemText}>
+            Water Expenses: 
+          </Text>
+          <TextInput
+            style={styles.input}
+            value={water.toString()}
+            onChangeText={(value) => setWater(value)}
+          />
+        </View>
+        <View style={styles.itemContainer}>
+          <Text style={styles.itemText}>
+            Sewer Expenses: 
+          </Text>
+          <TextInput
+            style={styles.input}
+            value={sewer.toString()}
+            onChangeText={(value) => setSewer(value)}
+          />
+        </View>
+        <View style={styles.itemContainer}>
+          <Text style={styles.itemText}>
+            Trash Expenses: 
+          </Text>
+          <TextInput
+            style={styles.input}
+            value={trash.toString()}
+            onChangeText={(value) => setTrash(value)}
+          />
+        </View>
+        <View style={styles.itemContainer}>
+          <Text style={styles.itemText}>
+            Electricity Expenses: 
+          </Text>
+          <TextInput
+            style={styles.input}
+            value={electricity.toString()}
+            onChangeText={(value) => setElectricity(value)}
+          />
+        </View>
+      </>
+    )
+  }
+
   return (
     <View style={styles.container}>
-      <View style={styles.mortgageAContainer}>
-        <Text style={styles.mortgageAText}>
-          Utility Expeses: ${utilities}
-        </Text>
-      </View>
-      <View style={styles.itemContainer}>
-        <Text style={styles.itemText}>
-          Gas Expenses: 
-        </Text>
-        <TextInput
-          style={styles.input}
-          value={gas.toString()}
-          onChangeText={(value) => setGas(value)}
-        />
-      </View>
-      <View style={styles.itemContainer}>
-        <Text style={styles.itemText}>
-          Water Expenses: 
-        </Text>
-        <TextInput
-          style={styles.input}
-          value={water.toString()}
-          onChangeText={(value) => setWater(value)}
-        />
-      </View>
-      <View style={styles.itemContainer}>
-        <Text style={styles.itemText}>
-          Sewer Expenses: 
-        </Text>
-        <TextInput
-          style={styles.input}
-          value={sewer.toString()}
-          onChangeText={(value) => setSewer(value)}
-        />
-      </View>
-      <View style={styles.itemContainer}>
-        <Text style={styles.itemText}>
-          Trash Expenses: 
-        </Text>
-        <TextInput
-          style={styles.input}
-          value={trash.toString()}
-          onChangeText={(value) => setTrash(value)}
-        />
-      </View>
-      <View style={styles.itemContainer}>
-        <Text style={styles.itemText}>
-          Electricity Expenses: 
-        </Text>
-        <TextInput
-          style={styles.input}
-          value={electricity.toString()}
-          onChangeText={(value) => setElectricity(value)}
-        />
-      </View>
+      <TouchableOpacity onPress={() => {setAccessUtilities(!accessUtilities)}}>
+        <View style={styles.mortgageAContainer}>
+          <Text style={styles.mortgageAText}>
+            Utility Expeses: ${utilities}
+          </Text>
+          <Feather size={20} name={'chevrons-down'} />
+        </View>
+      </TouchableOpacity>
+      {
+        accessUtilities ? displayUtilities() : null
+      }
     </View>
   )
 }
@@ -82,12 +99,13 @@ const UtilitiesComponent = () => {
 const styles = StyleSheet.create({
   container: {
     width: aspectWidth,
-    marginLeft: 8,
+    marginLeft: 24,
   },
   mortgageAContainer: {
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingVertical: 8
   },
   mortgageAText: {
