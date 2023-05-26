@@ -3,6 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { properties, singleProperty } from '../Api/zillowApi'
 
 import { SearchFilterContext } from './SearchFilterContext';
+import { ProfileContext } from './ProfileContext';
 
 import { calculateDownPaymentAmount,
          calculateDownPaymentPercent,
@@ -11,15 +12,17 @@ import { calculateDownPaymentAmount,
          calculatePropertyTaxAnnual,
          calculateHomeInsuranceAmount} from '../../utilities';
 
-import { collection, query, where, onSnapshot, addDoc, serverTimestamp } from 'firebase/firestore';
-import { auth, db } from '../Api/firebaseTesting';
-import { ProfileContext } from './ProfileContext';
 import { useNavigation } from '@react-navigation/native';
+import { FavoritesContext } from './FavoritesContext';
 
 export const PropertiesContext = createContext(null)
 
 export const PropertiesContextProvider = ({children}) => {
   const navigation = useNavigation()
+
+  const {
+    grabFavorites
+  } = useContext(FavoritesContext)
 
   const [results, setResults] = useState([])
 
@@ -29,8 +32,6 @@ export const PropertiesContextProvider = ({children}) => {
   const [currentPage, setCurrentPage] = useState(1)
   
   const [loading, setLoading] = useState(true)
-  const [favorites, setFavorites] = useState([])
-  const [favoritesZpids, setFavoritesZpids] = useState([])
 
   const [currentSearch, setCurrentSearch] = useState('')
   const [activeSearch, setActiveSearch] = useState('Los Angeles, CA')
@@ -74,7 +75,6 @@ export const PropertiesContextProvider = ({children}) => {
   const {setLoggedIn} = useContext(ProfileContext)
 
   const getProperties = () => {
-    setLoading(true)
     currentSearch === '' ? null : activeSearch === currentSearch ? null : setActiveSearch(currentSearch)
     currentSearch === ''
       ? activeSearch === '' 
@@ -135,6 +135,7 @@ export const PropertiesContextProvider = ({children}) => {
     properties.params.page = currentPage
     properties.params.sortSelection = sort
     axios.request(properties).then(function (response) {
+      grabFavorites()
       response.data.abbreviatedAddress != null
         ? null 
         : setMultiProperties(response)
@@ -167,32 +168,8 @@ export const PropertiesContextProvider = ({children}) => {
     }
     makeNewRequest(requestList)
   }
-
-  const grabFavorites = () => {
-    const collectionRef = collection(db, 'Favorites')
-    const q = query(collectionRef, where('userId', '==', auth.currentUser.uid))
-    onSnapshot(q, (snapshot) => {
-      let favoritesList = []
-      snapshot.docs.forEach((doc) => {
-        favoritesList.push({ ...doc.data(), id: doc.id })
-      })
-      setFavorites(favoritesList)
-      grabZpidList(favoritesList)
-    })
-  }
-
-  const grabZpidList = (favoritesList) => {
-    let zpidList = []
-    favoritesList.forEach((fav) => {
-      zpidList.push(fav.zpid)
-    })
-    setFavoritesZpids(zpidList)
-  }
   
   const makeNewRequest = (requestList) => {
-    auth.currentUser === null 
-      ? setLoggedIn(false)
-      : setLoggedIn(true)
     if(counter < resultsLength){
       axios.request(requestList[counter])
         .then((response) => {
@@ -244,7 +221,6 @@ export const PropertiesContextProvider = ({children}) => {
             monthlyExpensesWithoutMortgage: monthlyExpensesWithoutMortgage,
           }
           setResults(results => [...results, propertyDetails])
-          auth.currentUser === null ? null : grabFavorites()
           setCurrentSearch('')
           setLoading(false)
           counter++
@@ -269,8 +245,6 @@ export const PropertiesContextProvider = ({children}) => {
                                         cityLat, 
                                         cityLong,
                                         currentPage,
-                                        favoritesZpids,
-                                        favorites,
                                         singleProperty,
                                         activeSearch, 
                                         currentSearch,

@@ -4,6 +4,7 @@ import { Feather } from 'react-native-vector-icons'
 
 import { PropertyContext } from '../Context/PropertyContext'
 import { FinancesContext } from '../Context/FinancesContext'
+import { FavoritesContext } from '../Context/FavoritesContext'
 
 import MainImage from '../Components/PropertyScreen/MainImage'
 import ImageCarousel from '../Components/PropertyScreen/ImageCarousel'
@@ -18,6 +19,13 @@ import DetailsComponent from '../Components/PropertyScreen/DetailsComponent'
 import DescriptionComponent from '../Components/PropertyScreen/DescriptionComponent'
 import ListingDetailsComponent from '../Components/PropertyScreen/ListingDetailsComponent'
 import ConnectWithAgentComponent from '../Components/PropertyScreen/ConnectWithAgentComponent'
+import SaleHistoryComponent from '../Components/PropertyScreen/SaleHistoryComponent'
+import TaxHistoryComponent from '../Components/PropertyScreen/TaxHistoryComponent'
+import MapComponent from '../Components/PropertyScreen/MapComponent'
+import OpenHouseComponent from '../Components/PropertyScreen/OpenHouseComponent'
+import SchoolsComponent from '../Components/PropertyScreen/SchoolsComponent'
+import NearbyHomesComponent from '../Components/PropertyScreen/NearbyHomesComponent'
+import DisclaimerComponent from '../Components/PropertyScreen/DisclaimerComponent'
 
 const deviceWidth = Dimensions.get('window').width
 const deviceHeight = Dimensions.get('window').height
@@ -34,6 +42,7 @@ const PropertyScreen = ({route}) => {
 
   useEffect(() => {
     setPropertyDetails(route.params.zpid)
+
   }, [])
 
   const displayExpensesComponents = () => {
@@ -91,6 +100,31 @@ const PropertyScreen = ({route}) => {
             <Text style={styles.expensesText}>Connect With An Agent</Text>
           </View>
           <ConnectWithAgentComponent />
+          <View style={styles.expenseContainer}>
+            <Text style={styles.expensesText}>Sale History</Text>
+          </View>
+          <SaleHistoryComponent />
+          <View style={styles.expenseContainer}>
+            <Text style={styles.expensesText}>Tax History</Text>
+          </View>
+          <TaxHistoryComponent />
+          <MapComponent />
+          <View style={styles.expenseContainer}>
+            <Text style={styles.expensesText}>Open House</Text>
+          </View>
+          <OpenHouseComponent />
+          <View style={styles.expenseContainer}>
+            <Text style={styles.expensesText}>Nearby Schools</Text>
+          </View>
+          <SchoolsComponent />
+          <View style={styles.expenseContainer}>
+            <Text style={styles.expensesText}>Nearby Homes</Text>
+          </View>
+          <NearbyHomesComponent />
+          <View style={styles.expenseContainer}>
+            <Text style={styles.expensesText}>MLS Info</Text>
+          </View>
+          <DisclaimerComponent />
         </ScrollView>
       </View>
     )

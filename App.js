@@ -10,24 +10,27 @@ import { ProfileContextProvider } from './src/Context/ProfileContext';
 import { FeedContextProvider } from './src/Context/FeedContext';
 import { PropertyContextProvider } from './src/Context/PropertyContext';
 import { FinancesContextProvider } from './src/Context/FinancesContext';
+import { FavoritesContextProvider } from './src/Context/FavoritesContext';
 
 export default function App() {
   return (
     <NavigationContainer style={styles.container}>
     <StatusBar style="auto" />
-      <FeedContextProvider>
-        <ProfileContextProvider>
-          <SearchFilterContextProvider>
-            <FinancesContextProvider>
-              <PropertyContextProvider>
-                <PropertiesContextProvider>
-                  <BottomTabNavigation />
-                </PropertiesContextProvider>
-              </PropertyContextProvider>
-            </FinancesContextProvider>
-          </SearchFilterContextProvider>
-        </ProfileContextProvider>
-      </FeedContextProvider>
+      <FavoritesContextProvider>
+        <FeedContextProvider>
+          <ProfileContextProvider>
+            <SearchFilterContextProvider>
+              <FinancesContextProvider>
+                <PropertyContextProvider>
+                  <PropertiesContextProvider>
+                    <BottomTabNavigation />
+                  </PropertiesContextProvider>
+                </PropertyContextProvider>
+              </FinancesContextProvider> 
+            </SearchFilterContextProvider>
+          </ProfileContextProvider>
+        </FeedContextProvider>
+      </FavoritesContextProvider>
     </NavigationContainer>
   );
 }

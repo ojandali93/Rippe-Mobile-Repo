@@ -5,7 +5,9 @@ import { PropertiesContext } from '../Context/PropertiesContext'
 import TopbarComponent from '../Components/PropertiesScreen/TopbarComponent'
 import ResultsComponent from '../Components/PropertiesScreen/ResultsComponent'
 import MainMapsConponents from '../Components/PropertiesScreen/MainMapsConponents'
+
 import { ProfileContext } from '../Context/ProfileContext'
+import { FavoritesContext } from '../Context/FavoritesContext'
 import { useNavigation } from '@react-navigation/native'
 
 import { auth } from '../Api/firebaseTesting'
@@ -25,9 +27,9 @@ const PropertiesScreen = () => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      auth.currentUser === null 
-        ? setLoggedIn(false)
-        : setLoggedIn(true)
+      auth.currentUser
+        ? setLoggedIn(true)
+        : setLoggedIn(false)
     })
     return unsubscribe
   }, [navigation])
