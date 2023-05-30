@@ -3,7 +3,13 @@ import React, { useContext, useEffect } from 'react'
 import { ProfileContext } from '../../Context/ProfileContext'
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../../Api/firebaseTesting';
-import { Text, View, TextInput, TouchableOpacity } from 'react-native'
+import { Text, View, Image, TextInput, TouchableOpacity, Dimensions, StyleSheet } from 'react-native'
+import { Feather } from 'react-native-vector-icons'
+
+const deviceWidth = Dimensions.get('window').width
+const deviceheight = Dimensions.get('window').height
+const aspectWidth = deviceWidth - 16
+const aspectHeight = deviceheight - 150
 
 const SignupScreen = () => {
   const navigation = useNavigation()
@@ -18,7 +24,7 @@ const SignupScreen = () => {
   useEffect(() => {
     auth.currentUser === null 
       ? setLoggedIn(false)
-      : setLoggedIn(true)
+      : setLoggedIn(true) 
   }, [])
 
   useEffect(() => {
@@ -31,6 +37,12 @@ const SignupScreen = () => {
   }, [navigation])
 
   const createUserAccount = () => {
+    password === verify
+      ? createAccount()
+      : alert('Password / Verify don\'t match')
+  }
+
+  const createAccount = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         setEmail('')
@@ -38,81 +50,183 @@ const SignupScreen = () => {
         setVerify('')
         setUsername('')
         setPhone('')
-        goToFavorites()
+        goToProfile()
       })
       .catch((error) => {
         alert(error.message)
       });
   }
 
-  const goToFavorites = () => {
-    navigation.navigate('FavoritesScreen')
+  const goToProfile = () => {
+    navigation.navigate('ProfileScreen')
   }
 
   const goToLogin = () => {
-    navigation.navigate('LoginFavoritesScreen')
+    navigation.navigate('LoginScreen')
   }
 
   return (
-    <View>
+    <View style={styles.screen}>
       <View>
+        <Image style={styles.logo} source={require('../../Assets/RIPPE_FULL_LOGO_Blue.png')}/>
+      </View>
+      <View style={styles.form}> 
         <Text>Create Account</Text>
+        <Text>* Fill in fields below *</Text>
       </View>
-      <View>
-        <Text>Username</Text>
-        <TextInput 
-          placeholder='username'
-          value={username}
-          onChangeText={(value) => {setUsername(value)}}
-        />
+      <View style={styles.row}>
+        <View>
+          <Feather style={styles.icon} size={24} name={'mail'} />
+        </View>
+        <View style={styles.splitter}></View>
+        <View style={styles.userInfo}>
+          <TextInput 
+            placeholder='Email'
+            value={username}
+            onChangeText={(value) => {setUsername(value)}}
+          />
+        </View>
       </View>
-      <View>
-        <Text>Email</Text>
-        <TextInput 
-          placeholder='email'
-          value={email}
-          onChangeText={(value) => {setEmail(value)}}
-        />
+      <View style={styles.row}>
+        <View>
+          <Feather style={styles.icon} size={24} name={'lock'} />
+        </View>
+        <View style={styles.splitter}></View>
+        <View style={styles.userInfo}>
+          <TextInput 
+            placeholder='Password'
+            secureTextEntry={true}
+            value={password}
+            onChangeText={(value) => {setPassword(value)}}
+          />
+        </View>
       </View>
-      <View>
-        <Text>Password</Text>
-        <TextInput 
-          secureTextEntry={true}
-          placeholder='password'
-          value={password}
-          onChangeText={(value) => {setPassword(value)}}
-        />
+      <View style={styles.row}>
+        <View>
+          <Feather style={styles.icon} size={24} name={'lock'} />
+        </View>
+        <View style={styles.splitter}></View>
+        <View style={styles.userInfo}>
+          <TextInput 
+            placeholder='Verify'
+            secureTextEntry={true}
+            value={verify}
+            onChangeText={(value) => {setVerify(value)}}
+          />
+        </View>
       </View>
-      <View>
-        <Text>Verify Password</Text>
-        <TextInput 
-          secureTextEntry={true}
-          placeholder='password'
-          value={verify}
-          onChangeText={(value) => {setVerify(value)}}
-        />
+      <View style={styles.row}>
+        <View>
+          <Feather style={styles.icon} size={24} name={'phone'} />
+        </View>
+        <View style={styles.splitter}></View>
+        <View style={styles.userInfo}>
+          <TextInput 
+            placeholder='Phone'
+            value={phone}
+            onChangeText={(value) => {setPhone(value)}}
+          />
+        </View>
       </View>
-      <View>
-        <Text>Phone</Text>
-        <TextInput 
-          placeholder='phone'
-          keyboardType='phone-pad'
-          value={phone}
-          onChangeText={(value) => {setPhone(value)}}
-        />
-      </View>
-      <View>
-        <TouchableOpacity onPress={() => {createUserAccount()}}>
-          <Text>Create Account</Text>
-        </TouchableOpacity>
-      </View>
-      <View>
+      <TouchableOpacity style={[styles.closeContainer]} onPress={() => {createUserAccount()}}>
+        <Text style={styles.close}>Submit</Text>
+      </TouchableOpacity>
+      <View style={styles.create}>
+        <Text>Already Have An Acount:</Text>
         <TouchableOpacity onPress={() => {goToLogin()}}>
-          <Text>Sign In</Text>
+          <Text style={styles.text}>Login</Text>
         </TouchableOpacity>
       </View>
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  screen: {
+    marginTop: 58,
+    width: aspectWidth,
+    height: aspectHeight,
+    marginLeft: 8,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  logo: {
+    height: 70,
+    width: 248,
+    marginBottom: 16
+  },
+  row: {
+    width: '60%',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8
+  },
+  icon: {
+    paddingRight: 8,
+    paddingVertical: 8
+  },
+  splitter: {
+    width: 2,
+    height: 30,
+    backgroundColor: '#4132e1'
+  },
+  form: {
+    width: '80%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  userInfo: {
+    marginLeft: 8,
+    width: '80%'
+  },
+  label: {
+    fontSize: 12
+  },
+  input: {
+    width: '100%',
+    fontSize: 18,
+    paddingTop: 4,
+    paddingLeft: 4,
+    borderBottomColor: 'grey',
+    borderBottomWidth: 2
+  },
+  forgot: {
+    width: '60%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginBottom: 4
+  },
+  closeContainer: {
+    width: '60%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    backgroundColor: '#4132e1',
+    paddingVertical: 8,
+    borderRadius: 10,
+    marginVertical: 8
+  },
+  close: {
+    paddingVertical: 6,
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 18
+  },
+  create: {
+    width: '60%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 8
+  },
+  text: {
+    color: '#4132e1',
+    marginLeft: 4
+  }
+})
 
 export default SignupScreen

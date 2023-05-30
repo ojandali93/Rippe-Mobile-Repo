@@ -1,5 +1,5 @@
 import React, {useEffect, useContext} from 'react'
-import {View, Text, ViewBase, Modal, TextInput, TouchableOpacity} from 'react-native'
+import {View, Text, ViewBase, Modal, TextInput, TouchableOpacity, StyleSheet} from 'react-native'
 import { signOut } from "firebase/auth";
 
 import { auth } from '../Api/firebaseTesting'
@@ -21,11 +21,19 @@ const ProfileScreen = () => {
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       auth.currentUser === null 
-        ? setLoggedIn(false)
+        ? navigation.navigate('LoginScreen')
         : setLoggedIn(true)
     })
     return unsubscribe
   }, [navigation])
+
+  const signinUser = () => {
+    navigation.navigate('LoginScreen')
+  }
+
+  const signupUser = () => {
+    navigation.navigate('SignupScreen')
+  }
 
   const logoutUser = () => {
     signOut(auth)
@@ -67,13 +75,19 @@ const ProfileScreen = () => {
   }
 
   return (
-    <View>
-      <Text>Profile Screen</Text>
+    <View style={styles.screen}>
       {
-        loggedIn ? displayLogout() : displayAccountSetup()
+        loggedIn ? displayLogout() : null
       }
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  screen: {
+    marginTop: 58,
+    paddingLeft: 8
+  }
+})
 
 export default ProfileScreen
