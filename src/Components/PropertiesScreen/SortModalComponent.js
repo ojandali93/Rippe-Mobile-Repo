@@ -118,8 +118,8 @@ const SortModalComponent = () => {
             </TouchableOpacity>
             <Text style={styles.header}>Filter</Text>
             <TouchableOpacity onPress={() => {applyFilter()}}>
-            <Text style={styles.subHeader}>Done</Text>
-          </TouchableOpacity>
+              <Text style={styles.subHeader}>Done</Text>
+            </TouchableOpacity>
           </View>
           <View>
             <View style={styles.sectionHeader}>

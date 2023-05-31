@@ -5,14 +5,16 @@ import { properties } from '../Api/zillowApi';
 import { auth, db } from '../Api/firebaseTesting';
 import { collection, query, where, onSnapshot, addDoc, serverTimestamp, doc, deleteDoc } from 'firebase/firestore';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
 
 export const FeedContext = createContext(null)
 
 export const FeedContextProvider = ({children}) => {
+  const navigation = useNavigation()
 
   const [location, setLocation] = useState('')
 
-  const [sort, setSort] = useState('priorityscore')
+  const [sort, setSort] = useState('days')
 
   const [status, setStatus] = useState('forSale')
 
@@ -48,6 +50,8 @@ export const FeedContextProvider = ({children}) => {
   const [currentFeed, setCurrentFeed] = useState([]) // list of all saved searches
   const [currentFeedSearch, setCurrentFeedSearch] = useState(null) // current search being made
   const [selectedFeed, setSelectedFeed] = useState() //results
+
+  const [emptyList, setEmptyList] = useState(false)
 
   const [loading, setLoading] = useState(true)
 
@@ -115,6 +119,7 @@ export const FeedContextProvider = ({children}) => {
     })
     .then((response) => {
       console.log('successfully added')
+      navigation.navigate('FeedScreen')
     })
     .catch((error) => {
       console.error(error)
@@ -130,10 +135,15 @@ export const FeedContextProvider = ({children}) => {
       snapshot.docs.forEach((doc) => {
         FeedList.push({ ...doc.data(), id: doc.id })
       })
-      setCurrentFeed(FeedList)
-      FeedList.length > 0 ? setCurrentFeedSearch(FeedList[0]) : null
-      grabFeedResults(FeedList[0].search)
+      console.log(FeedList.length) 
+      FeedList.length > 0 ? grabListResults(FeedList) : setEmptyList(true)
     })
+  }
+
+  const grabListResults = (FeedList) => {
+    setCurrentFeed(FeedList)
+    setCurrentFeedSearch(FeedList[0])
+    grabFeedResults(FeedList[0].search)
   }
 
   const grabFeedResults = (search) => {
@@ -183,6 +193,8 @@ export const FeedContextProvider = ({children}) => {
                                   selectedFeed,
                                   currentFeedSearch,
                                   loading,
+                                  emptyList, 
+                                  setEmptyList,
                                   setSort,
                                   setIsSingleFamily,
                                   setIsMultiFamily,

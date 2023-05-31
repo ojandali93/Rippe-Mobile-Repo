@@ -13,6 +13,8 @@ const deviceHeight = Dimensions.get('window').height
 const aspectWidth = deviceWidth - 16
 const aspectHeight = deviceHeight - 100
 const aspectHeightMain = (deviceWidth / 1.78) + 1
+const screenHeight = Dimensions.get('window').height - 202
+
 
 const FavoritesScreen = () => {
   const navigation = useNavigation()
@@ -22,14 +24,14 @@ const FavoritesScreen = () => {
 
   useEffect(() => {
     auth.currentUser === null 
-      ? setLoggedIn(false)
+      ? null
       : setLoggedIn(true)
   }, [])
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       auth.currentUser === null 
-        ? setLoggedIn(false)
+        ? null
         : setLoggedIn(true)
     })
     return unsubscribe
@@ -60,22 +62,26 @@ const FavoritesScreen = () => {
       })
   }
 
-  const displayAccountSetup = () => {
+  const displayNone = () => {
     return(
       <View style={styles.mainContainer}>
         <View>
-          <Text style={styles.header}>You are currently not logged in!</Text>
+          <Text style={styles.header}>You have no favorites!</Text>
         </View>
-        <View>
-          <TouchableOpacity style={[styles.closeContainer, {marginTop: 16}]} onPress={() => {signinUser()}}>
-            <Text style={styles.close}>Sign In</Text>
-          </TouchableOpacity>
-        </View>
-        <View>
-          <TouchableOpacity style={[styles.closeContainer]} onPress={() => {signupUser()}}>
-            <Text style={styles.close}>Sign Up</Text>
-          </TouchableOpacity>
-        </View>
+      </View>
+    )
+  }
+
+  const displayEmpty = () => {
+    return(
+      <View style={styles.nonDataScreen}> 
+        <Text style={styles.nonDataText}>No Logged in User Found</Text>
+        <TouchableOpacity style={styles.closeContainer} onPress={() => {signinUser()}}>
+          <Text style={styles.close}>Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.closeContainer} onPress={() => {signupUser()}}>
+          <Text style={styles.close}>Signup</Text>
+        </TouchableOpacity>
       </View>
     )
   }
@@ -129,7 +135,10 @@ const FavoritesScreen = () => {
   return (
     <View style={styles.screen}>
       {
-        loggedIn ? displayProperties() : displayAccountSetup()
+        auth.currentUser === null 
+          ? displayEmpty() : favorites.length === 0 
+                                ? displayNone() 
+                                : displayProperties()
       }
     </View>
   )
@@ -203,7 +212,19 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'blue',
     fontWeight: 'bold',
-  }
+  },
+  nonDataScreen: {
+    width: aspectWidth,
+    height: screenHeight - 40,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  nonDataText: {
+    fontSize: 22,
+    fontWeight: 'bold'
+  },
 })
 
 export default FavoritesScreen

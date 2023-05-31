@@ -77,6 +77,41 @@ export const FavoritesContextProvider = ({children}) => {
     })
   }
 
+  const addFeedFavorite = (property) => {
+    const collectionRef = collection(db, 'Favorites')
+    let favoriteProperty = {}
+    favoriteProperty.bathrooms = property.bathrooms
+    favoriteProperty.bedrooms = property.bedrooms
+    favoriteProperty.city = property.city
+    favoriteProperty.country = property.country
+    favoriteProperty.daysOnZillow = property.daysOnZillow
+    favoriteProperty.homeStatus = property.homeStatus
+    favoriteProperty.homeType = property.homeType
+    favoriteProperty.imgSrc = property.imgSrc
+    favoriteProperty.latitude = property.latitude
+    favoriteProperty.livingArea = property.livingArea + ' ' + property.livingAreaUnitsShort
+    favoriteProperty.longitude = property.longitude
+    favoriteProperty.price = property.price
+    favoriteProperty.rentZestimate = property.rentZestimate
+    favoriteProperty.state = property.state
+    favoriteProperty.streetAddress = property.streetAddress
+    favoriteProperty.zestimate = property.zestimate
+    favoriteProperty.zipcode = property.zipcode
+    favoriteProperty.zpid = property.zpid
+    addDoc(collectionRef, {
+      'property': favoriteProperty,
+      'userId': auth.currentUser.uid,
+      'zpid': property.zpid,
+      'createdAt': serverTimestamp()
+    })
+    .then((response) => {
+      console.log('successfully added')
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+  }
+
   const removeFromFavorites = (property) => {
     let selectedFavorite
     favorites.forEach((fav) => {
@@ -103,7 +138,8 @@ export const FavoritesContextProvider = ({children}) => {
       grabFavorites,
       grabZpidList,
       addFavorite,
-      removeFromFavorites
+      removeFromFavorites,
+      addFeedFavorite
     }}>
       {children}
     </FavoritesContext.Provider>
