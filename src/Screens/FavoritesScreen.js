@@ -75,7 +75,7 @@ const FavoritesScreen = () => {
   const displayEmpty = () => {
     return(
       <View style={styles.nonDataScreen}> 
-        <Text style={styles.nonDataText}>No Logged in User Found</Text>
+        <Text style={styles.nonDataText}>Save Your Favorite Properties</Text>
         <TouchableOpacity style={styles.closeContainer} onPress={() => {signinUser()}}>
           <Text style={styles.close}>Login</Text>
         </TouchableOpacity>
@@ -206,24 +206,33 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   closeContainer: {
-    paddingVertical: 8
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    backgroundColor: '#4132e1',
+    paddingVertical: 8,
+    borderRadius: 10,
+    marginVertical: 8
   },
   close: {
-    fontSize: 20,
-    color: 'blue',
+    paddingVertical: 6,
+    color: 'white',
     fontWeight: 'bold',
+    fontSize: 18
   },
   nonDataScreen: {
     width: aspectWidth,
-    height: screenHeight - 40,
+    height: screenHeight - 32,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   nonDataText: {
     fontSize: 22,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    marginBottom: 8
   },
 })
 

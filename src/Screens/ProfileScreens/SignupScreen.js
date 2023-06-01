@@ -1,8 +1,9 @@
 import { useNavigation } from '@react-navigation/native'
 import React, { useContext, useEffect } from 'react'
 import { ProfileContext } from '../../Context/ProfileContext'
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from '../../Api/firebaseTesting';
+import { db, auth } from '../../Api/firebaseTesting'
 import { Text, View, Image, TextInput, TouchableOpacity, Dimensions, StyleSheet } from 'react-native'
 import { Feather } from 'react-native-vector-icons'
 
@@ -17,8 +18,10 @@ const SignupScreen = () => {
   const {email, setEmail} = useContext(ProfileContext)
   const {password, setPassword} = useContext(ProfileContext)
   const {verify, setVerify} = useContext(ProfileContext)
-  const {username, setUsername} = useContext(ProfileContext)
   const {phone, setPhone} = useContext(ProfileContext)
+  const {location, setLocation} = useContext(ProfileContext)
+  const {lastName, setLastName} = useContext(ProfileContext)
+  const {firstName, setFirstName} = useContext(ProfileContext)
   const {setLoggedIn} = useContext(ProfileContext)
 
   useEffect(() => {
@@ -43,14 +46,27 @@ const SignupScreen = () => {
   }
 
   const createAccount = () => {
+    const colRef = collection(db, 'Profiles')
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         setEmail('')
         setPassword('')
         setVerify('')
-        setUsername('')
         setPhone('')
-        goToProfile()
+        addDoc(colRef, {
+          user_id: userCredential.user.uid,
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          displayName: firstName + ' ' + lastName,
+          phone: phone,
+          location: location,
+          createdAt: serverTimestamp()
+        }).then((response) => {
+          goToProfile()
+        }).catch((error) => {
+          console.error(error)
+        })
       })
       .catch((error) => {
         alert(error.message)
@@ -76,11 +92,34 @@ const SignupScreen = () => {
       </View>
       <View style={styles.row}>
         <View>
+          <Feather style={styles.icon} size={24} name={'user'} />
+        </View>
+        <View style={styles.splitter}></View>
+        <View style={styles.userInfo}>
+          <View style={styles.splitInfoContainer}>
+            <TextInput 
+              style={styles.splitInpupt}
+              placeholder='First Name'
+              value={firstName}
+              onChangeText={(value) => {setFirstName(value)}}
+            />
+            <TextInput 
+              style={styles.splitInpupt}
+              placeholder='Last Name'
+              value={lastName}
+              onChangeText={(value) => {setLastName(value)}}
+            />
+          </View>
+        </View>
+      </View>
+      <View style={styles.row}>
+        <View>
           <Feather style={styles.icon} size={24} name={'mail'} />
         </View>
         <View style={styles.splitter}></View>
         <View style={styles.userInfo}>
           <TextInput 
+            style={styles.input}
             placeholder='Email'
             value={email}
             onChangeText={(value) => {setEmail(value)}}
@@ -94,6 +133,7 @@ const SignupScreen = () => {
         <View style={styles.splitter}></View>
         <View style={styles.userInfo}>
           <TextInput 
+            style={styles.input}
             placeholder='Password'
             secureTextEntry={true}
             value={password}
@@ -108,6 +148,7 @@ const SignupScreen = () => {
         <View style={styles.splitter}></View>
         <View style={styles.userInfo}>
           <TextInput 
+            style={styles.input}
             placeholder='Verify'
             secureTextEntry={true}
             value={verify}
@@ -122,9 +163,24 @@ const SignupScreen = () => {
         <View style={styles.splitter}></View>
         <View style={styles.userInfo}>
           <TextInput 
+            style={styles.input}
             placeholder='Phone'
             value={phone}
             onChangeText={(value) => {setPhone(value)}}
+          />
+        </View>
+      </View>
+      <View style={styles.row}>
+        <View>
+          <Feather style={styles.icon} size={24} name={'map-pin'} />
+        </View>
+        <View style={styles.splitter}></View>
+        <View style={styles.userInfo}>
+          <TextInput 
+            style={styles.input}
+            placeholder='City, State'
+            value={location}
+            onChangeText={(value) => {setLocation(value)}}
           />
         </View>
       </View>
@@ -226,6 +282,21 @@ const styles = StyleSheet.create({
   text: {
     color: '#4132e1',
     marginLeft: 4
+  },
+  input: {
+    borderBottomColor: 'grey',
+    borderBottomWidth: 2
+  },
+  splitInfoContainer: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  splitInpupt: {
+    width: '48%',
+    borderBottomColor: 'grey',
+    borderBottomWidth: 2
   }
 })
 

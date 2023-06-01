@@ -52,6 +52,18 @@ const ResultsComponent = () => {
     return formattedString
   }
 
+  const updateAddFavorite = (property) => {
+    auth.currentUser === null
+      ? alert('Not Logged In') 
+      : addFavorite(property) 
+  }
+
+  const updateRemoveFavorite = (property) => {
+    auth.currentUser === null
+      ? alert('Not Logged In')
+      : removeFromFavorites(property) 
+  }
+
   return (
     <ScrollView style={styles.scroll}>
     {
@@ -65,8 +77,8 @@ const ResultsComponent = () => {
                 <View style={styles.favoriteMenu}>
                   {
                     favoritesZpids.includes(property.zpid)
-                      ? <TouchableOpacity onPress={() => {removeFromFavorites(property)}}><Entypo color={'white'} size={28} name='heart'  stlye={styles.menu}/></TouchableOpacity>
-                      : <TouchableOpacity onPress={() => {addToFavorites(property)}}><Entypo color={'white'} size={28} name='heart-outlined'  stlye={styles.menu}/></TouchableOpacity>
+                      ? <TouchableOpacity onPress={() => {updateRemoveFavorite(property)}}><Entypo color={'white'} size={28} name='heart'  stlye={styles.menu}/></TouchableOpacity>
+                      : <TouchableOpacity onPress={() => {updateAddFavorite(property)}}><Entypo color={'white'} size={28} name='heart-outlined'  stlye={styles.menu}/></TouchableOpacity>
                   }
                 </View>
                 <View>

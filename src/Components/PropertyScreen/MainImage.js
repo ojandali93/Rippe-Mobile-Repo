@@ -6,6 +6,7 @@ import { Entypo } from 'react-native-vector-icons'
 import { FavoritesContext } from '../../Context/FavoritesContext'
 import { ProfileContext } from '../../Context/ProfileContext';
 import { PropertyContext } from '../../Context/PropertyContext';
+import { auth } from '../../Api/firebaseTesting';
 
 const deviceWidth = Dimensions.get('window').width
 const deviceheight = Dimensions.get('window').height
@@ -22,6 +23,18 @@ const MainImage = () => {
     removeFromFavorites
   } = useContext(FavoritesContext)
 
+  const updateAddFavorite = (property) => {
+    auth.currentUser === null
+      ? alert('Not Logged In') 
+      : addFavorite(property) 
+  }
+
+  const updateRemoveFavorite = (property) => {
+    auth.currentUser === null
+      ? alert('Not Logged In')
+      : removeFromFavorites(property) 
+  }
+
   return (
     <View>
       <Image key={mainImage} style={{height: aspectHeight, width: deviceWidth}} source={{uri: mainImage}} />
@@ -29,8 +42,8 @@ const MainImage = () => {
         <View style={styles.menu}>
           {
             favoritesZpids.includes(property.zpid)
-              ? <TouchableOpacity stlye={styles.menu} onPress={() => {removeFromFavorites(property)}}><Entypo color={'black'} size={28} style={{paddingTop: 4, opacity: 1}} name='heart'/></TouchableOpacity>
-              : <TouchableOpacity stlye={styles.menu} onPress={() => {addFavorite(property)}}><Entypo color={'black'} size={28}  style={{paddingTop: 4, opacity: 1}} name='heart-outlined'/></TouchableOpacity>
+              ? <TouchableOpacity stlye={styles.menu} onPress={() => {updateRemoveFavorite(property)}}><Entypo color={'black'} size={28} style={{paddingTop: 4, opacity: 1}} name='heart'/></TouchableOpacity>
+              : <TouchableOpacity stlye={styles.menu} onPress={() => {updateAddFavorite(property)}}><Entypo color={'black'} size={28}  style={{paddingTop: 4, opacity: 1}} name='heart-outlined'/></TouchableOpacity>
           }
         </View>
       </View>

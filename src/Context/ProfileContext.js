@@ -9,6 +9,9 @@ export const ProfileContextProvider = ({children}) => {
   const [verify, setVerify] = useState('')
   const [username, setUsername] = useState('')
   const [phone, setPhone] = useState('')
+  const [location, setLocation] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
 
   const [loggedIn, setLoggedIn] = useState(false)
 
@@ -22,6 +25,12 @@ export const ProfileContextProvider = ({children}) => {
                                       username,
                                       phone,
                                       loggedIn,
+                                      location,
+                                      firstName, 
+                                      lastName, 
+                                      setLastName,
+                                      setFirstName,
+                                      setLocation,
                                       setEmail,
                                       setPassword,
                                       setVerify,

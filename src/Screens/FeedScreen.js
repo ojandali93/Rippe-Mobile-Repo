@@ -11,7 +11,7 @@ import { FavoritesContext } from '../Context/FavoritesContext'
 const deviceWidth = Dimensions.get('window').width
 const aspectWidth = deviceWidth - 16
 const aspectHeight = (deviceWidth / 1.78) + 1
-const screenHeight = Dimensions.get('window').height - 202
+const screenHeight = Dimensions.get('window').height - 210
 const aspectHeightMain = (deviceWidth / 1.78) + 1
 
 const FeedScreen = () => {
@@ -24,14 +24,14 @@ const FeedScreen = () => {
 
   useEffect(() => {
     auth.currentUser === null 
-      ? navigation.navigate('LoginFeedScreen')
+      ? null
       : grabFeed()
   }, [])
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       auth.currentUser === null 
-        ? navigation.navigate('LoginFeedScreen')
+        ? null
         : grabFeed()
     })
     return unsubscribe
@@ -39,6 +39,14 @@ const FeedScreen = () => {
 
   const goToNewFeed = () => {
     navigation.navigate('NewFeedScreen')
+  }
+
+  const signinUser = () => {
+    navigation.navigate('LoginFeedScreen')
+  }
+
+  const signupUser = () => {
+    navigation.navigate('SignupFeedScreen')
   }
 
   const showLoading = () => {
@@ -53,6 +61,20 @@ const FeedScreen = () => {
     return(
       <View style={styles.nonDataScreen}> 
         <Text style={styles.nonDataText}>No Saved Seaches In Feed!</Text>
+      </View>
+    )
+  }
+
+  const displayEmpty = () => {
+    return(
+      <View style={styles.nonDataScreen}> 
+        <Text style={styles.nonDataText}>Keep An Eye On Specific Cities</Text>
+        <TouchableOpacity style={styles.closeContainer} onPress={() => {signinUser()}}>
+          <Text style={styles.close}>Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.closeContainer} onPress={() => {signupUser()}}>
+          <Text style={styles.close}>Signup</Text>
+        </TouchableOpacity>
       </View>
     )
   }
@@ -120,15 +142,21 @@ const FeedScreen = () => {
         }
       </View>
       {
-        !loading 
-          ? showResults() 
-          : emptyList 
-            ? displayNoList()
-            : showLoading()
+        auth.currentUser === null 
+          ? displayEmpty()
+          : !loading 
+            ? showResults() 
+            : emptyList 
+              ? displayNoList()
+              : showLoading()
       }
-      <TouchableOpacity style={[styles.closeContainer]} onPress={() => {goToNewFeed()}}>
-        <Text style={styles.close}>Add Feed Search</Text>
-      </TouchableOpacity>
+      {
+        auth.currentUser === null 
+          ? null 
+          : <TouchableOpacity style={[styles.closeContainer]} onPress={() => {goToNewFeed()}}>
+              <Text style={styles.close}>Add Feed Search</Text>
+            </TouchableOpacity>
+      }
     </View>
   )
 }
@@ -166,7 +194,8 @@ const styles = StyleSheet.create({
   },
   nonDataText: {
     fontSize: 22,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    marginBottom: 8
   },
   cityContainer: {
     display: 'flex',
