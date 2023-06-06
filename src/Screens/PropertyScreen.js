@@ -26,6 +26,7 @@ import OpenHouseComponent from '../Components/PropertyScreen/OpenHouseComponent'
 import SchoolsComponent from '../Components/PropertyScreen/SchoolsComponent'
 import NearbyHomesComponent from '../Components/PropertyScreen/NearbyHomesComponent'
 import DisclaimerComponent from '../Components/PropertyScreen/DisclaimerComponent'
+import PlaceOfferComponent from '../Components/PropertyScreen/PlaceOfferComponent'
 
 const deviceWidth = Dimensions.get('window').width
 const deviceHeight = Dimensions.get('window').height
@@ -108,6 +109,7 @@ const PropertyScreen = ({route}) => {
             <Text style={styles.expensesText}>Tax History</Text>
           </View>
           <TaxHistoryComponent />
+          <PlaceOfferComponent />
           <MapComponent />
           <View style={styles.expenseContainer}>
             <Text style={styles.expensesText}>Open House</Text>

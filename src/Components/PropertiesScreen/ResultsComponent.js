@@ -3,12 +3,15 @@ import {Text, View, Image, StyleSheet, Dimensions, ScrollView, TouchableOpacity,
 import { PropertiesContext } from '../../Context/PropertiesContext'
 import { useNavigation } from '@react-navigation/native'
 
-import { Entypo } from 'react-native-vector-icons'
+import { Entypo, Feather } from 'react-native-vector-icons'
 
 import { ProfileContext } from '../../Context/ProfileContext'
 
 import { metricInfo } from '../../../metricInfo'
 import { FavoritesContext } from '../../Context/FavoritesContext'
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
+import { db, auth } from '../../Api/firebaseTesting'
+import { PropertyContext } from '../../Context/PropertyContext'
 
 const deviceWidth = Dimensions.get('window').width
 const deviceheight = Dimensions.get('window').height
@@ -32,6 +35,8 @@ const ResultsComponent = () => {
   const [accessCashFlow, setAccessCashFlow] = useState(false)
   const [accessCashOnCashFlow, setAccessCashOnCashFlow] = useState(false)
   const [accessROI, setAccessROI] = useState(false)
+
+  const {property} = useContext(PropertyContext)
 
   const {results} = useContext(PropertiesContext)
 
@@ -64,13 +69,45 @@ const ResultsComponent = () => {
       : removeFromFavorites(property) 
   }
 
+  const addPropertyView = (property) => {
+    auth.currentUser === null   
+      ? null 
+      : updatePropertyView(property)
+  }
+
+  const updatePropertyView = (property) => {
+    let newProperty = {}
+    newProperty.zpid = property.zpid
+    newProperty.ingSrc = property.hiResImageLink
+    newProperty.bedrooms = property.bedrooms
+    newProperty.bathrooms = property.bathrooms
+    newProperty.livingArea = property.livingArea
+    newProperty.address = property.abbreviatedAddress
+    newProperty.city = property.city
+    newProperty.state = property.state
+    newProperty.zipcode = property.zipcode
+    newProperty.homeStatus = property.homeStatus
+    newProperty.price = property.price
+    const colRef = collection(db, 'RecentViews')
+    addDoc(colRef, {
+      userId: auth.currentUser.uid,
+      property: newProperty,
+      createdAt: serverTimestamp()
+    }).then(() => {
+      console.log('added to recently viewed')
+      navigation.navigate('PropertyScreen', {zpid: property.zpid})
+    }).catch((error) => {
+      console.log(error)
+    })
+  }
+
   return (
     <ScrollView style={styles.scroll}>
     {
       results.map((property) => {
         return(
           <View key={property.zpid} style={styles.property}>
-            <TouchableOpacity onPress={() => {navigation.navigate('PropertyScreen', {zpid: property.zpid})}}> 
+            <TouchableOpacity onPress={() => {addPropertyView(property)}}> 
               <Image style={{height: aspectHeight, width: aspectWidth}} source={{uri: property.hiResImageLink}}/>
               <View style={styles.summary}>
                 <View style={styles.background}></View>
@@ -106,10 +143,8 @@ const ResultsComponent = () => {
                   <View style={styles.metric}>
                     <View style={styles.key}>
                       <Text style={styles.metricText}>Monthly Rev.:</Text>
-                      <TouchableOpacity onPress={() => {setAccessMonthlyRevenue(!accessMonthlyRevenue)}} style={styles.infoCOntainer}>
-                        <Text style={styles.info}>
-                          i
-                        </Text>
+                      <TouchableOpacity style={{marginLeft: 8}} onPress={() => {setAccessMonthlyRevenue(!accessMonthlyRevenue)}}>
+                        <Feather size={20} name={'info'}/>
                       </TouchableOpacity>
                     </View>
                     <Text style={styles.metricText}>${property.investment.monthlyRevenue}</Text>
@@ -132,10 +167,8 @@ const ResultsComponent = () => {
                   <View style={styles.metric}>
                     <View style={styles.key}>
                       <Text style={styles.metricText}>Monthly Exp.:</Text>
-                      <TouchableOpacity onPress={() => {setAccessMonthlyExpenses(!accessMonthlyExpenses)}} style={styles.infoCOntainer}>
-                        <Text style={styles.info}>
-                          i
-                        </Text>
+                      <TouchableOpacity onPress={() => {setAccessMonthlyExpenses(!accessMonthlyExpenses)}} style={{marginLeft: 8}}>
+                        <Feather size={20} name={'info'}/>
                       </TouchableOpacity>
                     </View>
                     <Text style={styles.metricText}>${property.investment.expenses}</Text>
@@ -157,10 +190,8 @@ const ResultsComponent = () => {
                   <View style={styles.metric}>
                     <View style={styles.key}>
                       <Text style={styles.metricText}>Mortgage:</Text>
-                      <TouchableOpacity  onPress={() => {setAccessMortgage(!accessMortgage)}} style={styles.infoCOntainer}>
-                        <Text style={styles.info}>
-                          i
-                        </Text>
+                      <TouchableOpacity  onPress={() => {setAccessMortgage(!accessMortgage)}} style={{marginLeft: 8}}>
+                        <Feather size={20} name={'info'}/>
                       </TouchableOpacity>
                     </View>
                     <Text style={styles.metricText}>${property.investment.mortgageAmount}</Text>
@@ -182,10 +213,8 @@ const ResultsComponent = () => {
                   <View style={styles.metric}>
                     <View style={styles.key}>
                       <Text style={styles.metricText}>Cash Flow:</Text>
-                      <TouchableOpacity onPress={() => {setAccessCashFlow(!accessCashFlow)}} style={styles.infoCOntainer}>
-                        <Text style={styles.info}>
-                          i
-                        </Text>
+                      <TouchableOpacity onPress={() => {setAccessCashFlow(!accessCashFlow)}} style={{marginLeft: 8}}>
+                        <Feather size={20} name={'info'}/>
                       </TouchableOpacity>
                     </View>
                     <Text style={styles.metricText}>${property.investment.monthlyCashFLow}</Text>
@@ -208,10 +237,8 @@ const ResultsComponent = () => {
                   <View style={styles.metric}>
                     <View style={styles.key}>
                       <Text style={styles.metricText}>Net Operating Income:</Text>
-                      <TouchableOpacity onPress={() => {setAccessNOI(!accessNOI)}} style={styles.infoCOntainer}>
-                        <Text style={styles.info}>
-                          i
-                        </Text>
+                      <TouchableOpacity onPress={() => {setAccessNOI(!accessNOI)}} style={{marginLeft: 8}}>
+                        <Feather size={20} name={'info'}/>  
                       </TouchableOpacity>
                     </View>
                     <Text style={styles.metricText}>${property.investment.netOperatingIncome}</Text>
@@ -233,10 +260,8 @@ const ResultsComponent = () => {
                   <View style={styles.metric}>
                     <View style={styles.key}>
                       <Text style={styles.metricText}>Cap Rate:</Text>
-                      <TouchableOpacity onPress={() => {setAccessCapRate(!accessCapRate)}} style={styles.infoCOntainer}>
-                        <Text style={styles.info}>
-                          i
-                        </Text>
+                      <TouchableOpacity onPress={() => {setAccessCapRate(!accessCapRate)}} style={{marginLeft: 8}}>
+                        <Feather size={20} name={'info'}/>
                       </TouchableOpacity>
                     </View>
                     <Text style={styles.metricText}>{property.investment.currentCapRate}%</Text>
@@ -258,10 +283,8 @@ const ResultsComponent = () => {
                   <View style={styles.metric}>
                     <View style={styles.key}>
                       <Text style={styles.metricText}>CoC Return:</Text>
-                      <TouchableOpacity onPress={() => {setAccessCashOnCashFlow(!accessCashOnCashFlow)}} style={styles.infoCOntainer}>
-                        <Text style={styles.info}>
-                          i
-                        </Text>
+                      <TouchableOpacity onPress={() => {setAccessCashOnCashFlow(!accessCashOnCashFlow)}} style={{marginLeft: 8}}>
+                        <Feather size={20} name={'info'}/>
                       </TouchableOpacity>
                     </View>
                     <Text style={styles.metricText}>{property.investment.currentCashOnCashReturn}%</Text>
@@ -284,10 +307,8 @@ const ResultsComponent = () => {
                   <View style={styles.metric}>
                     <View style={styles.key}>
                       <Text style={styles.metricText}>Return On Invesetment:</Text>
-                      <TouchableOpacity onPress={() => {setAccessROI(!accessROI)}} style={styles.infoCOntainer}>
-                        <Text style={styles.info}>
-                          i
-                        </Text>
+                      <TouchableOpacity onPress={() => {setAccessROI(!accessROI)}} style={{marginLeft: 8}}>
+                        <Feather size={20} name={'info'}/>
                       </TouchableOpacity>
                     </View>
                     <Text style={styles.metricText}>{property.investment.year1ReturnOnInvestment}%</Text>
