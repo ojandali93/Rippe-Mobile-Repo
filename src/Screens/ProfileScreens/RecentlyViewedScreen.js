@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react'
 import {View, Text, TouchableOpacity, ScrollView, Image, Dimensions, StyleSheet} from 'react-native'
-import { auth, db } from '../Api/firebaseTesting'
+import { auth, db } from '../../Api/firebaseTesting';
 import { useNavigation } from '@react-navigation/native'
 import { where, query, collection, onSnapshot } from 'firebase/firestore';
 

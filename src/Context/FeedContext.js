@@ -61,10 +61,10 @@ export const FeedContextProvider = ({children}) => {
     newSearch.status = status
     priceMin === null
       ? null 
-      : newSearchprice_min = priceMin
+      : newSearch.price_min = priceMin
     priceMax === null
       ? null 
-      : newSearchprice_max = priceMax
+      : newSearch.price_max = priceMax
     maxHoa === null
       ? null 
       : newSearch.hoa_max = maxHoa
@@ -111,6 +111,7 @@ export const FeedContextProvider = ({children}) => {
     newSearch.isCondo = isCondo
     newSearch.isManufactured = isManufactured
     newSearch.isTownhouse = isTownhouse
+    newSearch.referenceNumber = Math.floor(Math.random() * 999999) + 1;
     const collectionRef = collection(db, 'Feed')
     addDoc(collectionRef, {
       'search': newSearch,
@@ -120,6 +121,78 @@ export const FeedContextProvider = ({children}) => {
     .then((response) => {
       console.log('successfully added')
       navigation.navigate('FeedScreen')
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+  }
+
+  const addNewSearchFromProfile = () => {
+    let newSearch = {}
+    newSearch.location = location
+    newSearch.status = status
+    priceMin === null
+      ? null 
+      : newSearch.price_min = priceMin
+    priceMax === null
+      ? null 
+      : newSearch.price_max = priceMax
+    maxHoa === null
+      ? null 
+      : newSearch.hoa_max = maxHoa
+    sqftMin === null
+      ? null 
+      : newSearch.sqft_min = sqftMin
+    sqftMax === null
+      ? null 
+      : newSearch.sqft_max = sqftMax
+    beds === null
+      ? null 
+      : newSearch.beds_min = beds
+    baths === null
+      ? null 
+      : newSearch.baths_min = baths
+    hasPool === false 
+      ? null 
+      : newSearch.hasPool = hasPool
+    hasGarage === false 
+      ? null 
+      : newSearch.hasGarage = hasGarage 
+    hasAC === false 
+      ? null 
+      : newSearch.hasAirConditioning = hasAC
+    isSingleStory === false 
+      ? null 
+      : newSearch.singleStory = isSingleStory
+    cityView === false 
+      ? null 
+      : newSearch.isCityView = cityView
+    mountainView === false 
+      ? null 
+      : newSearch.isMountainView = mountainView
+    waterView === false
+      ? null 
+      : newSearch.isWaterView = waterView
+    waterFront === false 
+      ? null 
+      : newSearch.isWaterfront = waterFront
+    newSearch.sortSelection = 'days'
+    newSearch.isSingleFamily = isSingleFamily
+    newSearch.isMultiFamily = isMultiFamily
+    newSearch.isApartment = isApartment
+    newSearch.isCondo = isCondo
+    newSearch.isManufactured = isManufactured
+    newSearch.isTownhouse = isTownhouse
+    newSearch.referenceNumber = Math.floor(Math.random() * 999999999) + 1;
+    const collectionRef = collection(db, 'Feed')
+    addDoc(collectionRef, {
+      'search': newSearch,
+      'userId': auth.currentUser.uid,
+      'createdAt': serverTimestamp()
+    })
+    .then((response) => {
+      console.log('successfully added')
+      navigation.navigate('SavedSearchScreen')
     })
     .catch((error) => {
       console.error(error)
@@ -223,7 +296,8 @@ export const FeedContextProvider = ({children}) => {
                                   addNewSearch,
                                   grabFeed,
                                   setCurrentFeedSearch,
-                                  updateSelectedFeed}}>
+                                  updateSelectedFeed,
+                                  addNewSearchFromProfile}}>
       {children}
     </FeedContext.Provider>
   )

@@ -1,5 +1,5 @@
 import React, {useEffect, useContext} from 'react'
-import {View, Text, Dimensions, TouchableOpacity, StyleSheet, ScrollView} from 'react-native'
+import {View, Text, Dimensions, TouchableOpacity, StyleSheet, ScrollView, Linking} from 'react-native'
 import { signOut } from "firebase/auth";
 import { Feather, SimpleLineIcons, Fontisto } from 'react-native-vector-icons'
 
@@ -32,6 +32,42 @@ const ProfileScreen = () => {
     return unsubscribe
   }, [navigation])
 
+  const openJobs = () => {
+    Linking.canOpenURL('https://angel.co/company/rippe/jobs').then(() => {
+      Linking.openURL('https://angel.co/company/rippe/jobs');
+    });
+  }
+
+  const openPrivacyPolicy = () => {
+    Linking.canOpenURL('https://app.termly.io/document/privacy-policy/837b29de-85aa-4940-a791-50177ec4ce82').then(() => {
+      Linking.openURL('https://app.termly.io/document/privacy-policy/837b29de-85aa-4940-a791-50177ec4ce82');
+    });
+  }
+
+  const openTermsOfService = () => {
+    Linking.canOpenURL('https://app.termly.io/document/terms-of-service/656ef15b-1498-431d-8efd-4c93b334b403').then(() => {
+      Linking.openURL('https://app.termly.io/document/terms-of-service/656ef15b-1498-431d-8efd-4c93b334b403');
+    });
+  }
+
+  const openFAQ = () => {
+    Linking.canOpenURL('https://rippeapp.com/faqs').then(() => {
+      Linking.openURL('https://rippeapp.com/faqs');
+    });
+  }
+
+  const openContact = () => {
+    Linking.canOpenURL('https://rippeapp.com/contact').then(() => {
+      Linking.openURL('https://rippeapp.com/contact');
+    });
+  }
+
+  const openLicense = () => {
+    Linking.canOpenURL('https://app.termly.io/document/eula/2a74f492-3942-45d9-af66-a5938a182d8d').then(() => {
+      Linking.openURL('https://app.termly.io/document/eula/2a74f492-3942-45d9-af66-a5938a182d8d');
+    });
+  }
+
   const signinUser = () => {
     navigation.navigate('LoginScreen')
   }
@@ -53,6 +89,18 @@ const ProfileScreen = () => {
 
   const goToRecentView = () => {
     navigation.navigate('RecentViewScreen')
+  }
+
+  const goToSavedSearch = () => {
+    navigation.navigate('SavedSearchScreen')
+  }
+
+  const goToAboutScreen = () => {
+    navigation.navigate('AboutUsScreen')
+  }
+
+  const goToPaymentCalulator = () => {
+    navigation.navigate('PaymentCalculationScreen')
   }
 
   const displayLogout = () => {
@@ -77,7 +125,7 @@ const ProfileScreen = () => {
             </View>
             <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {goToRecentView()}} style={styles.row}>
+          <TouchableOpacity onPress={() => {goToSavedSearch()}} style={styles.row}>
             <View style={styles.subRow}>
               <Feather style={styles.chevronDown} size={20} color={'black'} name='bookmark'/>
               <Text style={styles.text}>Saved Search</Text>
@@ -89,24 +137,10 @@ const ProfileScreen = () => {
             <Text style={styles.label}>Home</Text>
           </View>
 
-          <TouchableOpacity onPress={() => {goToRecentView()}} style={styles.row}>
+          <TouchableOpacity onPress={() => {goToPaymentCalulator()}} style={styles.row}>
             <View style={styles.subRow}>
               <SimpleLineIcons style={styles.chevronDown} size={20} color={'black'} name='calculator'/>
               <Text style={styles.text}>Payment Calculator</Text>
-            </View>
-            <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {goToRecentView()}} style={styles.row}>
-            <View style={styles.subRow}>
-              <Fontisto style={styles.chevronDown} size={20} color={'black'} name='money-symbol'/>
-              <Text style={styles.text}>How Much Can I Affort</Text>
-            </View>
-            <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {goToRecentView()}} style={styles.row}>
-            <View style={styles.subRow}>
-              <Feather style={styles.chevronDown} size={20} color={'black'} name='calendar'/>
-              <Text style={styles.text}>Current Offers</Text>
             </View>
             <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
           </TouchableOpacity>
@@ -127,21 +161,21 @@ const ProfileScreen = () => {
           <View style={styles.sectionHeader}>
             <Text style={styles.label}>Support</Text>
           </View>
-          <TouchableOpacity onPress={() => {goToRecentView()}} style={styles.row}>
+          <TouchableOpacity onPress={() => {openContact()}} style={styles.row}>
             <View style={styles.subRow}>
               <Feather style={styles.chevronDown} size={20} color={'black'} name='message-square'/>
               <Text style={styles.text}>Contact Us</Text>
             </View>
             <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {goToRecentView()}} style={styles.row}>
+          <TouchableOpacity onPress={() => {openFAQ()}} style={styles.row}>
             <View style={styles.subRow}>
               <Feather style={styles.chevronDown} size={20} color={'black'} name='help-circle'/>
               <Text style={styles.text}>FAQ's</Text>
             </View>
             <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {goToRecentView()}} style={styles.row}>
+          <TouchableOpacity onPress={() => {openJobs()}} style={styles.row}>
             <View style={styles.subRow}>
               <Feather style={styles.chevronDown} size={20} color={'black'} name='clipboard'/>
               <Text style={styles.text}>Careers</Text>
@@ -151,28 +185,28 @@ const ProfileScreen = () => {
           <View style={styles.sectionHeader}>
             <Text style={styles.label}>Legal</Text>
           </View>
-          <TouchableOpacity onPress={() => {goToRecentView()}} style={styles.row}>
+          <TouchableOpacity onPress={() => {openPrivacyPolicy()}} style={styles.row}>
             <View style={styles.subRow}>
               <Feather style={styles.chevronDown} size={20} color={'black'} name='file-text'/>
               <Text style={styles.text}>Privacy Policy</Text>
             </View>
             <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {goToRecentView()}} style={styles.row}>
+          <TouchableOpacity onPress={() => {openTermsOfService()}} style={styles.row}>
             <View style={styles.subRow}>
               <Feather style={styles.chevronDown} size={20} color={'black'} name='file-text'/>
               <Text style={styles.text}>Terms Of Service</Text>
             </View>
             <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {goToRecentView()}} style={styles.row}>
+          <TouchableOpacity onPress={() => {openLicense()}} style={styles.row}>
             <View style={styles.subRow}>
               <Feather style={styles.chevronDown} size={20} color={'black'} name='file-text'/>
               <Text style={styles.text}>Open Source Licenses</Text>
             </View>
             <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {goToRecentView()}} style={styles.row}>
+          <TouchableOpacity onPress={() => {goToAboutScreen()}} style={styles.row}>
             <View style={styles.subRow}>
               <Feather style={styles.chevronDown} size={20} color={'black'} name='smartphone'/>
               <Text style={styles.text}>About Rippe</Text>
