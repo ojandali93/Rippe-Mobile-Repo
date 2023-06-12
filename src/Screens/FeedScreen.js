@@ -2,8 +2,9 @@ import { useNavigation } from '@react-navigation/native'
 import React, { useContext, useEffect } from 'react'
 import { Text, View, TouchableOpacity, ScrollView, Image, Dimensions, StyleSheet } from 'react-native'
 import { FeedContext } from '../Context/FeedContext'
-import { Entypo } from 'react-native-vector-icons'
+import { Entypo, Feather } from 'react-native-vector-icons'
 import { auth, db } from '../Api/firebaseTesting'
+import { doc, deleteDoc } from 'firebase/firestore'
 
 
 import { FavoritesContext } from '../Context/FavoritesContext'
@@ -17,7 +18,7 @@ const aspectHeightMain = (deviceWidth / 1.78) + 1
 const FeedScreen = () => {
   const navigation = useNavigation()
 
-  const {favoritesZpids, favorites,removeFromFavorites, addFeedFavorite} = useContext(FavoritesContext)
+  const {favoritesZpids, favorites, addFeedFavorite} = useContext(FavoritesContext)
 
   const {currentFeed, selectedFeed, 
     updateSelectedFeed, grabFeed, loading, emptyList} = useContext(FeedContext)
@@ -79,7 +80,8 @@ const FeedScreen = () => {
     )
   }
 
-  const showResults = () => {
+  const showValidProperties = () => {
+    console.log('show balid proeprties')
     return(
       <ScrollView style={styles.scrollView}>
         {
@@ -125,27 +127,60 @@ const FeedScreen = () => {
     )
   }
 
+  const showNoValidProperties = () => {
+    return(
+      <View style={styles.nonDataScreen}>
+        <Text style={styles.nonDataText}>No properties meet the criteria</Text>
+      </View>
+    )
+  }
+
+  const removeFromFavorites = (search) => {
+    let selectedFavorite
+    currentFeed.forEach((save) => {
+      save.referenceNumber === search.referenceNumber
+        ? selectedFavorite = save 
+        : null 
+    })
+    console.log(selectedFavorite)
+    const docRef = doc(db, 'Feed', selectedFavorite.id)
+    deleteDoc(docRef)
+      .then((response) => {
+        console.log('deleted favorite')
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
   return (
     <View style={styles.screen}>
       <View style={styles.listContainer}>
+        <ScrollView horizontal>
         {
           currentFeed.map((item) => {
             return(
               <View style={styles.itemCOntainer}>
                 <TouchableOpacity style={styles.cityContainer} onPress={() => {updateSelectedFeed(item)}}>
                   <Text style={styles.cityText}>{item.search.location} {item.search.beds_min} Bed/{item.search.baths_min} Bath</Text>
+                  <TouchableOpacity onPress={() => {removeFromFavorites(item)}}>
+                    <Feather style={{marginRight: 8}} size={20} name={'x-circle'}/>
+                  </TouchableOpacity>
                 </TouchableOpacity>
                 <View style={styles.split}></View>
               </View>
             )
           })
         }
+        </ScrollView>
       </View>
       {
         auth.currentUser === null 
           ? displayEmpty()
           : !loading 
-            ? showResults() 
+            ? selectedFeed.length === 0 
+              ? showNoValidProperties()
+              : showValidProperties()
             : emptyList 
               ? displayNoList()
               : showLoading()
@@ -199,12 +234,13 @@ const styles = StyleSheet.create({
   },
   cityContainer: {
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'lightgrey',
   },
   cityText: {
     paddingVertical: 8,
     paddingHorizontal: 8,
-    backgroundColor: 'lightgrey',
   },
   itemCOntainer: {
     display: 'flex',
@@ -276,7 +312,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   scrollView: {
-    height: screenHeight - 40
+    height: screenHeight - 40,
   }
 })
 
