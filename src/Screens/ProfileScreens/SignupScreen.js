@@ -54,7 +54,7 @@ const SignupScreen = () => {
         setVerify('')
         setPhone('')
         addDoc(colRef, {
-          user_id: userCredential.user.uid,
+          userId: userCredential.user.uid,
           firstName: firstName,
           lastName: lastName,
           email: email,

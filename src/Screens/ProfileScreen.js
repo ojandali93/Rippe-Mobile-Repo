@@ -103,6 +103,14 @@ const ProfileScreen = () => {
     navigation.navigate('PaymentCalculationScreen')
   }
 
+  const goToConnectWithAgent = () => {
+    navigation.navigate('ConnectWithAgentScreen')
+  }
+
+  const goToSellHome = () => {
+    navigation.navigate('SellHomeScreen')
+  }
+
   const displayLogout = () => {
     return(
       <View style={styles.container}>
@@ -111,12 +119,13 @@ const ProfileScreen = () => {
             {
               auth.currentUser == null ? null :  <Text style={styles.headerText}>{auth.currentUser.email}</Text>
             }
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => {navigation.navigate('SettingsScreen')}}>
               <Feather name='settings' size={28} color={'black'}/>
             </TouchableOpacity>
           </View>
+
           <View style={styles.sectionHeader}>
-            <Text style={styles.label}>General</Text>
+            <Text style={styles.headerText}>General</Text>
           </View>
           <TouchableOpacity onPress={() => {goToRecentView()}} style={styles.row}>
             <View style={styles.subRow}>
@@ -134,7 +143,7 @@ const ProfileScreen = () => {
           </TouchableOpacity>
 
           <View style={styles.sectionHeader}>
-            <Text style={styles.label}>Home</Text>
+            <Text style={styles.headerText}>Home</Text>
           </View>
 
           <TouchableOpacity onPress={() => {goToPaymentCalulator()}} style={styles.row}>
@@ -144,23 +153,25 @@ const ProfileScreen = () => {
             </View>
             <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {goToRecentView()}} style={styles.row}>
+          <TouchableOpacity onPress={() => {goToSellHome()}} style={styles.row}>
             <View style={styles.subRow}>
               <Feather style={styles.chevronDown} size={20} color={'black'} name='tag'/>
               <Text style={styles.text}>Sell My Home</Text>
             </View>
             <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {goToRecentView()}} style={styles.row}>
+          <TouchableOpacity onPress={() => {goToConnectWithAgent()}} style={styles.row}>
             <View style={styles.subRow}>
               <Feather style={styles.chevronDown} size={20} color={'black'} name='link'/>
               <Text style={styles.text}>Connect W/ An Agent</Text>
             </View>
             <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
           </TouchableOpacity>
+
           <View style={styles.sectionHeader}>
-            <Text style={styles.label}>Support</Text>
+            <Text style={styles.headerText}>Support</Text>
           </View>
+
           <TouchableOpacity onPress={() => {openContact()}} style={styles.row}>
             <View style={styles.subRow}>
               <Feather style={styles.chevronDown} size={20} color={'black'} name='message-square'/>
@@ -182,9 +193,11 @@ const ProfileScreen = () => {
             </View>
             <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
           </TouchableOpacity>
+
           <View style={styles.sectionHeader}>
-            <Text style={styles.label}>Legal</Text>
+            <Text style={styles.headerText}>Legal</Text>
           </View>
+
           <TouchableOpacity onPress={() => {openPrivacyPolicy()}} style={styles.row}>
             <View style={styles.subRow}>
               <Feather style={styles.chevronDown} size={20} color={'black'} name='file-text'/>
@@ -242,7 +255,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 56,
     alignItems: 'center',
-    borderBottomWidth: 2,
     justifyContent: 'space-between',
     paddingHorizontal: 8
   },
@@ -254,7 +266,7 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingLeft: 8,
     paddingVertical: 8,
-    borderBottomColor: 'black',
+    borderBottomColor: 'lightgrey',
     borderBottomWidth: 1,
     backgroundColor: 'lightgrey'
   },
@@ -299,7 +311,21 @@ const styles = StyleSheet.create({
   },
   chevronRight: {
     paddingRight: 8
-  }
+  },
+  sectionHeader: {
+    height: 38,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomColor: 'lightgrey',
+    borderBottomWidth: 1,
+    backgroundColor: 'lightgrey',
+    paddingLeft: 8
+  },
+  headerText: {
+    fontSize: 22,
+    fontWeight: '600'
+  },
 })
 
 export default ProfileScreen

@@ -7,6 +7,9 @@ import SavedSearchScreen from '../Screens/ProfileScreens/SavedSearchScreen';
 import NewFeedScreen from '../Screens/ProfileScreens/NewFeedScreen';
 import AboutScreen from '../Screens/ProfileScreens/AboutUsScreen';
 import PaymentCalculationScreen from '../Screens/ProfileScreens/PaymentCalculationScreen';
+import ConnectWithAgentScreen from '../Screens/ProfileScreens/ConnectWithAgentScreen';
+import SellHomeScreen from '../Screens/ProfileScreens/SellHomeScreen';
+import SettingsScreen from '../Screens/ProfileScreens/SettingsScreen';
 
 const StackNav = createStackNavigator();
 
@@ -21,6 +24,9 @@ const ProfileStackNavigation = () => {
       <StackNav.Screen name="NewFeedProfileScreen" component={NewFeedScreen}/>
       <StackNav.Screen name="AboutUsScreen" component={AboutScreen}/>
       <StackNav.Screen name="PaymentCalculationScreen" component={PaymentCalculationScreen}/>
+      <StackNav.Screen name="ConnectWithAgentScreen" component={ConnectWithAgentScreen}/>
+      <StackNav.Screen name="SellHomeScreen" component={SellHomeScreen}/>
+      <StackNav.Screen name="SettingsScreen" component={SettingsScreen}/>
     </StackNav.Navigator>
   )
 }

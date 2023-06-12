@@ -94,6 +94,12 @@ const RecentlyViewedScreen = () => {
 
   return (
     <View style={styles.screen}>
+      <View style={styles.headerContainer}>
+        <Text style={styles.header}>Recently Viewed</Text>
+      </View>
+      <TouchableOpacity style={styles.backContainer} onPress={() => {navigation.goBack()}}>
+        <Text style={styles.subHeader}>Back</Text>
+      </TouchableOpacity>
       {
         recentViews.length === 0 
           ? displayNone() 
@@ -164,6 +170,22 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold'
   },
+  subHeader: {
+    fontSize: 18,
+    color: 'blue'
+  },
+  headerContainer: {
+    width: aspectWidth,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 8,
+    marginBottom: 8,
+    borderBottomWidth: 2,
+    borderBottomColor: 'lightgrey'
+  },
   closeContainer: {
     width: '100%',
     display: 'flex',
@@ -193,6 +215,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 8
   },
+  backContainer: {
+    position: 'absolute',
+    left: 8,
+    top: 8
+  }
 })
 
 export default RecentlyViewedScreen

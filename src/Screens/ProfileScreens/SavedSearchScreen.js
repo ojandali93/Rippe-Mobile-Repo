@@ -8,6 +8,7 @@ import { Feather, Ionicons, MaterialCommunityIcons, MaterialIcons } from 'react-
 const deviceWidth = Dimensions.get('window').width
 const deviceHeight = Dimensions.get('window').height
 const aspectWidth = deviceWidth - 16
+const newWidth = deviceWidth - 2
 
 const SavedSearchScreen = () => {
   const navigation = useNavigation()
@@ -205,8 +206,8 @@ const SavedSearchScreen = () => {
             search.search.isMultiFamily ? propertyTypes.push('Multi-Family Homes') : null
             search.search.isManufactured ? propertyTypes.push('Manufactured Homes') : null
             search.search.isTownhouse ? propertyTypes.push('Townhouses') : null
-            search.search.isApartment ? propertyTypes.push('Apartments') : null
             search.search.isCondo ? propertyTypes.push('Condos') : null 
+            search.search.isApartment ? propertyTypes.push('Apartments') : null
             let amenities = []
             search.search.hasAirConditioning ? amenities.push('AC Unit') : null 
             search.search.hasGarage ? amenities.push('Garage') : null 
@@ -281,8 +282,11 @@ const SavedSearchScreen = () => {
   return (
     <View style={styles.screen}>
       <View style={styles.headerContainer}>
-        <Text style={styles.header}>Saved Searches</Text>
+        <Text style={styles.header}>Saved Search</Text>
       </View>
+      <TouchableOpacity style={styles.backContainer} onPress={() => {navigation.goBack()}}>
+        <Text style={styles.subHeader}>Back</Text>
+      </TouchableOpacity>
       {
         loading 
           ? showLoading()
@@ -301,16 +305,14 @@ const SavedSearchScreen = () => {
 
 const styles = StyleSheet.create({
   screen: {
-    marginTop: 58
+    marginTop: 58,
+    width: '100%'
   },
   scroll: {
     height: deviceHeight - 250
   },
   itemContainer: {
-    width: aspectWidth,
-    marginLeft: 8,
-    borderTopColor: 'lightgrey',
-    borderTopWidth: 2,
+    width: '100%',
     borderBottomColor: 'lightgrey',
     borderBottomWidth: 2,
     padding: 8
@@ -342,7 +344,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
-    marginTop: 8,
+    marginTop: 16,
     backgroundColor: 'red'
   },
   removeText: {
@@ -368,24 +370,30 @@ const styles = StyleSheet.create({
     fontSize: 18
   },
   header: {
-    fontSize: 24,
-    fontWeight: '600'
-  }, 
+    fontSize: 22,
+    fontWeight: 'bold'
+  },
   subHeader: {
     fontSize: 18,
     color: 'blue'
   },
   headerContainer: {
-    width: aspectWidth,
-    marginLeft: 8,
+    width: '100%',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    justifyContent: 'center',
     paddingVertical: 8,
+    marginBottom: 8,
     borderBottomWidth: 2,
     borderBottomColor: 'lightgrey'
   },
+  backContainer: {
+    position: 'absolute',
+    left: 8,
+    top: 8
+  }
 })
 
 export default SavedSearchScreen

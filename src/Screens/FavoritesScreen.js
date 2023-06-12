@@ -18,21 +18,19 @@ const screenHeight = Dimensions.get('window').height - 202
 
 const FavoritesScreen = () => {
   const navigation = useNavigation()
-
-  const {loggedIn, setLoggedIn} = useContext(ProfileContext)
-  const {favoritesZpids, favorites} = useContext(FavoritesContext)
+  const {favoritesZpids, favorites, grabFavorites} = useContext(FavoritesContext)
 
   useEffect(() => {
     auth.currentUser === null 
       ? null
-      : setLoggedIn(true)
+      : grabFavorites()
   }, [])
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       auth.currentUser === null 
         ? null
-        : setLoggedIn(true)
+        : grabFavorites()
     })
     return unsubscribe
   }, [navigation])
@@ -134,6 +132,9 @@ const FavoritesScreen = () => {
 
   return (
     <View style={styles.screen}>
+      <View style={styles.headerContainer}>
+        <Text style={styles.header}>Favorites</Text>
+      </View>
       {
         auth.currentUser === null 
           ? displayEmpty() : favorites.length === 0 
@@ -233,6 +234,22 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 8
+  },
+  headerContainer: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 8,
+    marginBottom: 8,
+    borderBottomWidth: 2,
+    borderBottomColor: 'lightgrey'
+  },
+  header: {
+    fontSize: 22,
+    fontWeight: 'bold'
   },
 })
 

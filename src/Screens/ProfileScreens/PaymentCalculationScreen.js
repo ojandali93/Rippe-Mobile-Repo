@@ -65,12 +65,12 @@ const PaymentCalculationScreen = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => {navigation.goBack()}}>
-          <Feather name='chevron-left' size={28}/>
-        </TouchableOpacity>
-        <Text style={styles.headerText}>Payment Calculator </Text>
+      <View style={styles.headerContainer}>
+        <Text style={styles.header}>Payment Calculator</Text>
       </View>
+      <TouchableOpacity style={styles.backContainer} onPress={() => {navigation.goBack()}}>
+        <Text style={styles.subHeader}>Back</Text>
+      </TouchableOpacity>
       <View style={styles.totalContainer}>
         <View style={styles.row}>
           <Text style={styles.headerLabel}>Total Payment</Text>
@@ -217,12 +217,12 @@ const PaymentCalculationScreen = () => {
               <Text style={styles.label}>{propertyTax}%</Text>
             </View>
             <Slider
-              value={propertyTax}
+              value={parseFloat(propertyTax).toFixed(1)}
               style={styles.slider}
               step={.1}
               minimumValue={0}
               maximumValue={5}
-              onValueChange={(value) => setPropertyTax(value.toFixed(1))}
+              onValueChange={(value) => setPropertyTax(value)}
             />
           </View>
           <View style={styles.content}>
@@ -292,18 +292,29 @@ const styles = StyleSheet.create({
     marginTop: 54
   },
   header: {
+    fontSize: 22,
+    fontWeight: 'bold'
+  },
+  subHeader: {
+    fontSize: 18,
+    color: 'blue'
+  },
+  headerContainer: {
+    width: '100%',
     display: 'flex',
     flexDirection: 'row',
-    height: 56,
+    justifyContent: 'space-between',
     alignItems: 'center',
-    borderBottomColor: 'grey',
+    justifyContent: 'center',
+    paddingVertical: 8,
+    marginBottom: 8,
     borderBottomWidth: 2,
-    marginBottom: 8
+    borderBottomColor: 'lightgrey'
   },
-  headerText: {
-    fontSize: 22,
-    marginLeft: 16,
-    fontWeight: '700'
+  backContainer: {
+    position: 'absolute',
+    left: 8,
+    top: 8
   },
   scroll: {
     height: aspectHeight
