@@ -7,6 +7,7 @@ import PropertyStackNavigation from './PropertiesStackNavigation';
 import ProfileStackNavigation from './ProfileStackNavigation';
 import FavoriteStackNavigation from './FavoriteStackNavigation';
 import FeedStackNavigation from './FeedStackNavigation';
+import MarketAnalysisStackNavigation from './MarketAnalysisStackNavigation';
 
 const Tab = createBottomTabNavigator();
 
@@ -37,6 +38,14 @@ function BottomTabNavigation() {
           tabBarShowLabel: false,
           tabBarIcon: ({size, color}) => (<Feather name={"menu"} color={color} size={size} />)
         }}/>
+      {/* <Tab.Screen 
+        name="Analysis"
+        key='Analysis'
+        component={MarketAnalysisStackNavigation} 
+        options={{
+          tabBarShowLabel: false,
+          tabBarIcon: ({size, color}) => (<Feather name={"trending-up"} color={color} size={size} />)
+        }}/> */}
       <Tab.Screen 
         name="Profile"
         key='Profile'

@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { ProfileContext } from '../../Context/ProfileContext'
-import { Text, View, Dimensions, TextInput, TouchableOpacity, Image, StyleSheet } from 'react-native'
+import { Text, View, Dimensions, TextInput, TouchableOpacity, Image, StyleSheet, Modal, Alert } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
 import { Feather } from 'react-native-vector-icons'
 
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { auth } from '../../Api/firebaseTesting';
 
 const deviceWidth = Dimensions.get('window').width
@@ -19,6 +19,9 @@ const LoginScreen = () => {
   const {email, setEmail} = useContext(ProfileContext)
   const {password, setPassword} = useContext(ProfileContext)
   const {setLoggedIn} = useContext(ProfileContext)
+
+  const [resetEmail, setResetEmail] = useState('')
+  const [resetingPassword, setResetingPassword] = useState(false)
 
   useEffect(() => {
     auth.currentUser === null 
@@ -55,6 +58,28 @@ const LoginScreen = () => {
     navigation.navigate('SignupScreen')
   }
 
+  const resetCurrentUserEmail = () => {
+    console.log('hello')
+    sendPasswordResetEmail(auth, resetEmail.toLowerCase())
+      .then(() => {
+        console.log('password reset compelte')
+        Alert.alert('Reset Password', 'Reset password email was sent.', [
+          {
+            text: 'Close',
+            onPress: () => {navigation.navigate('ProfileScreen')}
+          },
+          {
+            text: 'Okay',
+            onPress: () => {navigation.navigate('ProfileScreen')}
+          }
+        ])
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
+  }
+
   return (
     <View style={styles.screen}>
       <View>
@@ -89,9 +114,32 @@ const LoginScreen = () => {
           />
         </View>
       </View>
-      <View style={styles.forgot}>
-        <Text>Forgot Password?</Text>
-      </View>
+      <TouchableOpacity onPress={() => {setResetingPassword(!resetingPassword)}} style={styles.row}>
+          <Text style={styles.logout}>Forgot Password?</Text>
+        </TouchableOpacity>
+        <Modal
+            visible={resetingPassword}
+            animationType="slide"
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.modalCOntent}>
+                <Text style={styles.label}>Reset Password</Text>
+                <Text style={styles.modalInfo}>Enter the email associated with this account to recieve an email with instructions to reset your password.</Text>
+                <TextInput 
+                  style={styles.input}
+                  value={resetEmail}
+                  placeholder='Email'
+                  onChangeText={(value) => {setResetEmail(value)}}
+                />
+                <TouchableOpacity onPress={() => {resetCurrentUserEmail()}}>
+                  <Text style={styles.closeButton}>Reset Password</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {setResetingPassword(!resetingPassword)}}>
+                  <Text style={styles.closeButton}>Close</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
       <TouchableOpacity style={[styles.closeContainer]} onPress={() => {loginUser()}}>
         <Text style={styles.close}>Submit</Text>
       </TouchableOpacity>
@@ -184,7 +232,37 @@ const styles = StyleSheet.create({
   text: {
     color: '#4132e1',
     marginLeft: 4
-  }
+  },
+  modalContainer: {
+    width: aspectWidth,
+    height: deviceheight,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  modalCOntent: {
+    width: '70%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  label: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    marginBottom: 12
+  },
+  modalInfo: {
+    textAlign: 'justify',
+    marginBottom: 16
+  },
+  closeButton: {
+    paddingTop: 10,
+    paddingHorizontal: 12,
+    color: 'blue',
+    fontWeight: 'bold',
+  },
 })
 
 export default LoginScreen

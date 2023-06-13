@@ -53,7 +53,8 @@ const PageNavigatorComponent = () => {
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   text: {
     fontSize: 16,
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
     marginLeft: 6
   },
   currentPage: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
   }
 })
