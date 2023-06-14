@@ -6,6 +6,10 @@ const deviceWidth = Dimensions.get('window').width
 const deviceheight = Dimensions.get('window').height
 const aspectWidth = deviceWidth - 80
 const aspectHeight = (aspectWidth / 1.78) + 1
+const deviceWidthTablet = 425
+const aspectWidthTablet = deviceWidthTablet - 16
+const aspectWidthImageTablet = deviceWidthTablet - 80
+const aspectHeightTablet = (aspectWidthTablet / 1.78) + 1
 
 const NearbyHomesComponent = () => {
 
@@ -20,42 +24,92 @@ const NearbyHomesComponent = () => {
     return formattedString
   }
 
-  return (
-    <View style={styles.container}>
-      <ScrollView horizontal>
-        {
-          property.nearbyHomes.map((item) => {
-            return(
-              <View style={styles.property} key={item.zpid}>
-                <Image style={{height: aspectHeight, width: aspectWidth}} source={{uri: item.miniCardPhotos[0].url}}/>
-                <View style={styles.summary}>
-                  <View style={styles.background}></View>
-                  <View>
-                    <Text style={[styles.text, styles.price, styles.summaryInfo]}>${property.price}</Text>
-                  </View>
-                  <View>
-                    <Text style={styles.address}>
-                      {property.streetAddress}
-                    </Text>
-                    <Text style={styles.address}>
-                      {property.city}, {property.state} {property.zipcode}
-                    </Text>
-                  </View>
-                  <View style={styles.bottomRowSummary}>
-                    <Text style={styles.address}>
-                      {property.bedrooms} Beds | {property.bathrooms} Bath | {property.livingArea} Sqft.
-                    </Text>
-                    <Text style={styles.address}>
-                      {formatStatus(property.homeStatus)}
-                    </Text>
+  const displayPhone = () => {
+    return(
+      <View style={styles.container}>
+        <ScrollView horizontal>
+          {
+            property.nearbyHomes.map((item) => {
+              return(
+                <View style={styles.propertyTablet} key={item.zpid}>
+                  <Image style={{height: aspectHeight, width: aspectWidth}} source={{uri: item.miniCardPhotos[0].url}}/>
+                  <View style={styles.summary}>
+                    <View style={styles.background}></View>
+                    <View>
+                      <Text style={[styles.text, styles.price, styles.summaryInfo]}>${property.price}</Text>
+                    </View>
+                    <View>
+                      <Text style={styles.address}>
+                        {property.streetAddress}
+                      </Text>
+                      <Text style={styles.address}>
+                        {property.city}, {property.state} {property.zipcode}
+                      </Text>
+                    </View>
+                    <View style={styles.bottomRowSummary}>
+                      <Text style={styles.address}>
+                        {property.bedrooms} Beds | {property.bathrooms} Bath | {property.livingArea} Sqft.
+                      </Text>
+                      <Text style={styles.address}>
+                        {formatStatus(property.homeStatus)}
+                      </Text>
+                    </View>
                   </View>
                 </View>
-              </View>
-            )
-          })
-        }
-      </ScrollView>
-    </View>
+              )
+            })
+          }
+        </ScrollView>
+      </View>
+    )
+  }
+
+  const displayTablet = () => {
+    return(
+      <View style={styles.containerTablet}>
+        <ScrollView horizontal>
+          {
+            property.nearbyHomes.map((item) => {
+              return(
+                <View style={styles.propertyTablet} key={item.zpid}>
+                  <Image style={{height: aspectHeightTablet, width: aspectWidthImageTablet}} source={{uri: item.miniCardPhotos[0].url}}/>
+                  <View style={styles.summary}>
+                    <View style={styles.backgroundTablet}></View>
+                    <View>
+                      <Text style={[styles.text, styles.price, styles.summaryInfo]}>${property.price}</Text>
+                    </View>
+                    <View>
+                      <Text style={styles.address}>
+                        {property.streetAddress}
+                      </Text>
+                      <Text style={styles.address}>
+                        {property.city}, {property.state} {property.zipcode}
+                      </Text>
+                    </View>
+                    <View style={styles.bottomRowSummary}>
+                      <Text style={styles.address}>
+                        {property.bedrooms} Beds | {property.bathrooms} Bath | {property.livingArea} Sqft.
+                      </Text>
+                      <Text style={styles.address}>
+                        {formatStatus(property.homeStatus)}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              )
+            })
+          }
+        </ScrollView>
+      </View>
+    )
+  }
+
+  return (
+    <>
+      {
+        deviceWidth >= 500 ? displayTablet() : displayPhone()
+      }
+    </>
   )
 }
 
@@ -63,8 +117,17 @@ const styles = StyleSheet.create({
   container: {
     margin: 8
   },
+  containerTablet: {
+    width: aspectWidthTablet,
+    margin: 8
+  },
   property: {
     marginRight: 8
+  },
+  propertyTablet: {
+    marginRight: 8,
+    borderRadius: 8,
+    overflow: 'hidden'
   },
   summary: {
     position: 'absolute',
@@ -77,14 +140,27 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     opacity: .4
   },
+  backgroundTablet: {
+    position: 'absolute',
+    height: aspectHeightTablet,
+    width: aspectWidthImageTablet,
+    backgroundColor: 'black',
+    opacity: .4
+  },
   favoriteMenu: {
     width: aspectWidth - 16,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-end',
   },
+  favoriteMenuTablet: {
+    width: aspectWidthImageTablet,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
   summaryInfo: {
-    marginTop: aspectHeight - 120
+    marginTop: aspectHeightTablet - 112
   },
   text: {
     color: 'white'

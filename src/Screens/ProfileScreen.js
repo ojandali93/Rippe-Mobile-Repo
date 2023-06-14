@@ -111,144 +111,277 @@ const ProfileScreen = () => {
     navigation.navigate('SellHomeScreen')
   }
 
-  const displayLogout = () => {
+  const displayProfile = () => {
     return(
-      <View style={styles.container}>
-        <ScrollView>
-          <View style={styles.header}>
-            {
-              auth.currentUser == null ? null :  <Text style={styles.headerText}>{auth.currentUser.email}</Text>
-            }
-            <TouchableOpacity onPress={() => {navigation.navigate('SettingsScreen')}}>
-              <Feather name='settings' size={28} color={'black'}/>
+      <View style={styles.screen}>
+        <View style={styles.container}>
+          <ScrollView>
+            <View style={styles.header}>
+              {
+                auth.currentUser == null ? null :  <Text style={styles.headerText}>{auth.currentUser.email}</Text>
+              }
+              <TouchableOpacity onPress={() => {navigation.navigate('SettingsScreen')}}>
+                <Feather name='settings' size={28} color={'black'}/>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.sectionHeader}>
+              <Text style={styles.headerText}>General</Text>
+            </View>
+            <TouchableOpacity onPress={() => {goToRecentView()}} style={styles.row}>
+              <View style={styles.subRow}>
+                <Feather style={styles.chevronDown} size={20} color={'black'} name='eye'/>
+                <Text style={styles.text}>Recent Views</Text>
+              </View>
+              <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
             </TouchableOpacity>
-          </View>
+            <TouchableOpacity onPress={() => {goToSavedSearch()}} style={styles.row}>
+              <View style={styles.subRow}>
+                <Feather style={styles.chevronDown} size={20} color={'black'} name='bookmark'/>
+                <Text style={styles.text}>Saved Search</Text>
+              </View>
+              <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
+            </TouchableOpacity>
 
-          <View style={styles.sectionHeader}>
-            <Text style={styles.headerText}>General</Text>
-          </View>
-          <TouchableOpacity onPress={() => {goToRecentView()}} style={styles.row}>
-            <View style={styles.subRow}>
-              <Feather style={styles.chevronDown} size={20} color={'black'} name='eye'/>
-              <Text style={styles.text}>Recent Views</Text>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.headerText}>Home</Text>
             </View>
-            <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {goToSavedSearch()}} style={styles.row}>
-            <View style={styles.subRow}>
-              <Feather style={styles.chevronDown} size={20} color={'black'} name='bookmark'/>
-              <Text style={styles.text}>Saved Search</Text>
-            </View>
-            <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
-          </TouchableOpacity>
 
-          <View style={styles.sectionHeader}>
-            <Text style={styles.headerText}>Home</Text>
-          </View>
+            <TouchableOpacity onPress={() => {goToPaymentCalulator()}} style={styles.row}>
+              <View style={styles.subRow}>
+                <SimpleLineIcons style={styles.chevronDown} size={20} color={'black'} name='calculator'/>
+                <Text style={styles.text}>Payment Calculator</Text>
+              </View>
+              <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {goToSellHome()}} style={styles.row}>
+              <View style={styles.subRow}>
+                <Feather style={styles.chevronDown} size={20} color={'black'} name='tag'/>
+                <Text style={styles.text}>Sell My Home</Text>
+              </View>
+              <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {goToConnectWithAgent()}} style={styles.row}>
+              <View style={styles.subRow}>
+                <Feather style={styles.chevronDown} size={20} color={'black'} name='link'/>
+                <Text style={styles.text}>Connect W/ An Agent</Text>
+              </View>
+              <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
+            </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => {goToPaymentCalulator()}} style={styles.row}>
-            <View style={styles.subRow}>
-              <SimpleLineIcons style={styles.chevronDown} size={20} color={'black'} name='calculator'/>
-              <Text style={styles.text}>Payment Calculator</Text>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.headerText}>Support</Text>
             </View>
-            <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {goToSellHome()}} style={styles.row}>
-            <View style={styles.subRow}>
-              <Feather style={styles.chevronDown} size={20} color={'black'} name='tag'/>
-              <Text style={styles.text}>Sell My Home</Text>
-            </View>
-            <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {goToConnectWithAgent()}} style={styles.row}>
-            <View style={styles.subRow}>
-              <Feather style={styles.chevronDown} size={20} color={'black'} name='link'/>
-              <Text style={styles.text}>Connect W/ An Agent</Text>
-            </View>
-            <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
-          </TouchableOpacity>
 
-          <View style={styles.sectionHeader}>
-            <Text style={styles.headerText}>Support</Text>
-          </View>
+            <TouchableOpacity onPress={() => {openContact()}} style={styles.row}>
+              <View style={styles.subRow}>
+                <Feather style={styles.chevronDown} size={20} color={'black'} name='message-square'/>
+                <Text style={styles.text}>Contact Us</Text>
+              </View>
+              <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {openFAQ()}} style={styles.row}>
+              <View style={styles.subRow}>
+                <Feather style={styles.chevronDown} size={20} color={'black'} name='help-circle'/>
+                <Text style={styles.text}>FAQ's</Text>
+              </View>
+              <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {openJobs()}} style={styles.row}>
+              <View style={styles.subRow}>
+                <Feather style={styles.chevronDown} size={20} color={'black'} name='clipboard'/>
+                <Text style={styles.text}>Careers</Text>
+              </View>
+              <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
+            </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => {openContact()}} style={styles.row}>
-            <View style={styles.subRow}>
-              <Feather style={styles.chevronDown} size={20} color={'black'} name='message-square'/>
-              <Text style={styles.text}>Contact Us</Text>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.headerText}>Legal</Text>
             </View>
-            <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {openFAQ()}} style={styles.row}>
-            <View style={styles.subRow}>
-              <Feather style={styles.chevronDown} size={20} color={'black'} name='help-circle'/>
-              <Text style={styles.text}>FAQ's</Text>
-            </View>
-            <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {openJobs()}} style={styles.row}>
-            <View style={styles.subRow}>
-              <Feather style={styles.chevronDown} size={20} color={'black'} name='clipboard'/>
-              <Text style={styles.text}>Careers</Text>
-            </View>
-            <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
-          </TouchableOpacity>
 
-          <View style={styles.sectionHeader}>
-            <Text style={styles.headerText}>Legal</Text>
-          </View>
+            <TouchableOpacity onPress={() => {openPrivacyPolicy()}} style={styles.row}>
+              <View style={styles.subRow}>
+                <Feather style={styles.chevronDown} size={20} color={'black'} name='file-text'/>
+                <Text style={styles.text}>Privacy Policy</Text>
+              </View>
+              <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {openTermsOfService()}} style={styles.row}>
+              <View style={styles.subRow}>
+                <Feather style={styles.chevronDown} size={20} color={'black'} name='file-text'/>
+                <Text style={styles.text}>Terms Of Service</Text>
+              </View>
+              <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {openLicense()}} style={styles.row}>
+              <View style={styles.subRow}>
+                <Feather style={styles.chevronDown} size={20} color={'black'} name='file-text'/>
+                <Text style={styles.text}>Open Source Licenses</Text>
+              </View>
+              <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {goToAboutScreen()}} style={styles.row}>
+              <View style={styles.subRow}>
+                <Feather style={styles.chevronDown} size={20} color={'black'} name='smartphone'/>
+                <Text style={styles.text}>About Rippe</Text>
+              </View>
+              <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {logoutUser()}} style={styles.row}>
+              <Text style={styles.logout}>Logout</Text>
+            </TouchableOpacity>
+            <View style={styles.versionRow}>
+              <Text>Version 1.0.1 | Release: June 30, 2023</Text>
+            </View>
+          </ScrollView>
+        </View>
+      </View>
+    )
+  }
 
-          <TouchableOpacity onPress={() => {openPrivacyPolicy()}} style={styles.row}>
-            <View style={styles.subRow}>
-              <Feather style={styles.chevronDown} size={20} color={'black'} name='file-text'/>
-              <Text style={styles.text}>Privacy Policy</Text>
+  const displayProfileTablet = () => {
+    return(
+      <View style={styles.screenTablet}>
+        <View style={styles.tabletContainer}>
+          <ScrollView>
+            <View style={styles.header}>
+              {
+                auth.currentUser == null ? null :  <Text style={styles.headerText}>{auth.currentUser.email}</Text>
+              }
+              <TouchableOpacity onPress={() => {navigation.navigate('SettingsScreen')}}>
+                <Feather name='settings' size={28} color={'black'}/>
+              </TouchableOpacity>
             </View>
-            <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {openTermsOfService()}} style={styles.row}>
-            <View style={styles.subRow}>
-              <Feather style={styles.chevronDown} size={20} color={'black'} name='file-text'/>
-              <Text style={styles.text}>Terms Of Service</Text>
+
+            <View style={styles.sectionHeader}>
+              <Text style={styles.headerText}>General</Text>
             </View>
-            <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {openLicense()}} style={styles.row}>
-            <View style={styles.subRow}>
-              <Feather style={styles.chevronDown} size={20} color={'black'} name='file-text'/>
-              <Text style={styles.text}>Open Source Licenses</Text>
+            <TouchableOpacity onPress={() => {goToRecentView()}} style={styles.row}>
+              <View style={styles.subRow}>
+                <Feather style={styles.chevronDown} size={20} color={'black'} name='eye'/>
+                <Text style={styles.text}>Recent Views</Text>
+              </View>
+              <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {goToSavedSearch()}} style={styles.row}>
+              <View style={styles.subRow}>
+                <Feather style={styles.chevronDown} size={20} color={'black'} name='bookmark'/>
+                <Text style={styles.text}>Saved Search</Text>
+              </View>
+              <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
+            </TouchableOpacity>
+
+            <View style={styles.sectionHeader}>
+              <Text style={styles.headerText}>Home</Text>
             </View>
-            <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {goToAboutScreen()}} style={styles.row}>
-            <View style={styles.subRow}>
-              <Feather style={styles.chevronDown} size={20} color={'black'} name='smartphone'/>
-              <Text style={styles.text}>About Rippe</Text>
+
+            <TouchableOpacity onPress={() => {goToPaymentCalulator()}} style={styles.row}>
+              <View style={styles.subRow}>
+                <SimpleLineIcons style={styles.chevronDown} size={20} color={'black'} name='calculator'/>
+                <Text style={styles.text}>Payment Calculator</Text>
+              </View>
+              <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {goToSellHome()}} style={styles.row}>
+              <View style={styles.subRow}>
+                <Feather style={styles.chevronDown} size={20} color={'black'} name='tag'/>
+                <Text style={styles.text}>Sell My Home</Text>
+              </View>
+              <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {goToConnectWithAgent()}} style={styles.row}>
+              <View style={styles.subRow}>
+                <Feather style={styles.chevronDown} size={20} color={'black'} name='link'/>
+                <Text style={styles.text}>Connect W/ An Agent</Text>
+              </View>
+              <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
+            </TouchableOpacity>
+
+            <View style={styles.sectionHeader}>
+              <Text style={styles.headerText}>Support</Text>
             </View>
-            <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {logoutUser()}} style={styles.row}>
-            <Text style={styles.logout}>Logout</Text>
-          </TouchableOpacity>
-          <View style={styles.versionRow}>
-            <Text>Version 1.0.1 | Release: June 30, 2023</Text>
-          </View>
-        </ScrollView>
+
+            <TouchableOpacity onPress={() => {openContact()}} style={styles.row}>
+              <View style={styles.subRow}>
+                <Feather style={styles.chevronDown} size={20} color={'black'} name='message-square'/>
+                <Text style={styles.text}>Contact Us</Text>
+              </View>
+              <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {openFAQ()}} style={styles.row}>
+              <View style={styles.subRow}>
+                <Feather style={styles.chevronDown} size={20} color={'black'} name='help-circle'/>
+                <Text style={styles.text}>FAQ's</Text>
+              </View>
+              <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {openJobs()}} style={styles.row}>
+              <View style={styles.subRow}>
+                <Feather style={styles.chevronDown} size={20} color={'black'} name='clipboard'/>
+                <Text style={styles.text}>Careers</Text>
+              </View>
+              <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
+            </TouchableOpacity>
+
+            <View style={styles.sectionHeader}>
+              <Text style={styles.headerText}>Legal</Text>
+            </View>
+
+            <TouchableOpacity onPress={() => {openPrivacyPolicy()}} style={styles.row}>
+              <View style={styles.subRow}>
+                <Feather style={styles.chevronDown} size={20} color={'black'} name='file-text'/>
+                <Text style={styles.text}>Privacy Policy</Text>
+              </View>
+              <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {openTermsOfService()}} style={styles.row}>
+              <View style={styles.subRow}>
+                <Feather style={styles.chevronDown} size={20} color={'black'} name='file-text'/>
+                <Text style={styles.text}>Terms Of Service</Text>
+              </View>
+              <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {openLicense()}} style={styles.row}>
+              <View style={styles.subRow}>
+                <Feather style={styles.chevronDown} size={20} color={'black'} name='file-text'/>
+                <Text style={styles.text}>Open Source Licenses</Text>
+              </View>
+              <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {goToAboutScreen()}} style={styles.row}>
+              <View style={styles.subRow}>
+                <Feather style={styles.chevronDown} size={20} color={'black'} name='smartphone'/>
+                <Text style={styles.text}>About Rippe</Text>
+              </View>
+              <Feather style={styles.chevronRight} size={20} name={'chevron-right'}/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {logoutUser()}} style={styles.row}>
+              <Text style={styles.logout}>Logout</Text>
+            </TouchableOpacity>
+            <View style={styles.versionRow}>
+              <Text>Version 1.0.1 | Release: June 30, 2023</Text>
+            </View>
+          </ScrollView>
+        </View>
       </View>
     )
   }
 
   return (
-    <View style={styles.screen}>
+    <>
       {
-        loggedIn ? displayLogout() : null
+        deviceWidth >= 500 ? displayProfileTablet() : displayProfile()
       }
-    </View>
+    </>
   )
 }
 
 const styles = StyleSheet.create({
   screen: {
     marginTop: 58
+  },
+  screenTablet:{
+    marginTop: 16
   },
   header: {
     display: 'flex',

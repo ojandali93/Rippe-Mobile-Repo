@@ -8,12 +8,16 @@ import { doc, deleteDoc } from 'firebase/firestore'
 
 
 import { FavoritesContext } from '../Context/FavoritesContext'
+import PropertyTileComponent from './FeedScreens/PropertyTileComponent'
 
 const deviceWidth = Dimensions.get('window').width
 const aspectWidth = deviceWidth - 16
 const aspectHeight = (deviceWidth / 1.78) + 1
 const screenHeight = Dimensions.get('window').height - 210
 const aspectHeightMain = (deviceWidth / 1.78) + 1
+
+const tabletAspectWidth = 375
+const tabletAspectHeight = (tabletAspectWidth / 1.78) + 1
 
 const FeedScreen = () => {
   const navigation = useNavigation()
@@ -127,6 +131,15 @@ const FeedScreen = () => {
     )
   }
 
+  const showValidPropertiesTablet = (item) => {
+    console.log('show balid proeprties')
+    return(
+      <>
+        <PropertyTileComponent item={item}/>
+      </>
+    )
+  }
+
   const showNoValidProperties = () => {
     return(
       <View style={styles.nonDataScreen}>
@@ -153,46 +166,94 @@ const FeedScreen = () => {
       })
   }
 
-  return (
-    <View style={styles.screen}>
-      <View style={styles.listContainer}>
-        <ScrollView horizontal>
-        {
-          currentFeed.map((item) => {
-            return(
-              <View style={styles.itemCOntainer}>
-                <TouchableOpacity style={styles.cityContainer} onPress={() => {updateSelectedFeed(item)}}>
-                  <Text style={styles.cityText}>{item.search.location} {item.search.beds_min} Bed/{item.search.baths_min} Bath</Text>
-                  <TouchableOpacity onPress={() => {removeFromFavorites(item)}}>
-                    <Feather style={{marginRight: 8}} size={20} name={'x-circle'}/>
+  const showPhoneScreen = () => {
+    return(
+      <View style={styles.screen}>
+        <View style={styles.listContainer}>
+          <ScrollView horizontal>
+          {
+            currentFeed.map((item) => {
+              return(
+                <View style={styles.itemCOntainer}>
+                  <TouchableOpacity style={styles.cityContainer} onPress={() => {updateSelectedFeed(item)}}>
+                    <Text style={styles.cityText}>{item.search.location} {item.search.beds_min} Bed/{item.search.baths_min} Bath</Text>
+                    <TouchableOpacity onPress={() => {removeFromFavorites(item)}}>
+                      <Feather style={{marginRight: 8}} size={20} name={'x-circle'}/>
+                    </TouchableOpacity>
                   </TouchableOpacity>
-                </TouchableOpacity>
-                <View style={styles.split}></View>
-              </View>
-            )
-          })
+                  <View style={styles.split}></View>
+                </View>
+              )
+            })
+          }
+          </ScrollView>
+        </View>
+        {
+          auth.currentUser === null 
+            ? displayEmpty()
+            : !loading 
+              ? selectedFeed.length === 0 
+                ? showNoValidProperties()
+                : showValidProperties()
+              : emptyList 
+                ? displayNoList()
+                : showLoading()
         }
-        </ScrollView>
+        {
+          auth.currentUser === null 
+            ? null 
+            : <TouchableOpacity style={[styles.closeContainer]} onPress={() => {goToNewFeed()}}>
+                <Text style={styles.close}>Add Feed Search</Text>
+              </TouchableOpacity>
+        }
       </View>
+    )
+  }
+
+  const showTabletScreen = () => {
+    return(
+      <View style={styles.tabletScreen}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.header}>Feed</Text>
+        </View>
+        <View style={styles.listContainer}>
+          <ScrollView>
+          {
+            currentFeed.map((item) => {
+              return(
+                <View style={styles.itemCOntainer}>
+                  <View style={styles.cityContainer} >
+                    <Text style={styles.cityText}>{item.search.location} {item.search.beds_min} Bed/{item.search.baths_min} Bath</Text>
+                    <TouchableOpacity onPress={() => {removeFromFavorites(item)}}>
+                      <Feather style={{marginRight: 8}} size={20} name={'x-circle'}/>
+                    </TouchableOpacity>
+                  </View>
+                  {
+                    showValidPropertiesTablet(item)
+                  }
+                </View>
+              )
+            })
+          }
+          </ScrollView>
+        </View>
+        {
+          auth.currentUser === null 
+            ? null 
+            : <TouchableOpacity style={[styles.closeContainer]} onPress={() => {goToNewFeed()}}>
+                <Text style={styles.close}>Add Feed Search</Text>
+              </TouchableOpacity>
+        }
+      </View>
+    )
+  }
+
+  return (
+    <>
       {
-        auth.currentUser === null 
-          ? displayEmpty()
-          : !loading 
-            ? selectedFeed.length === 0 
-              ? showNoValidProperties()
-              : showValidProperties()
-            : emptyList 
-              ? displayNoList()
-              : showLoading()
+        deviceWidth >= 500 ? showTabletScreen() : showPhoneScreen()
       }
-      {
-        auth.currentUser === null 
-          ? null 
-          : <TouchableOpacity style={[styles.closeContainer]} onPress={() => {goToNewFeed()}}>
-              <Text style={styles.close}>Add Feed Search</Text>
-            </TouchableOpacity>
-      }
-    </View>
+    </>
   )
 }
 
@@ -201,7 +262,11 @@ const styles = StyleSheet.create({
     marginTop: 58,
     width: aspectWidth,
     marginLeft: 8,
-
+  },
+  tabletScreen: {
+    marginTop: 32,
+    width: aspectWidth,
+    marginLeft: 8,
   },
   closeContainer: {
     width: '100%',
@@ -237,6 +302,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'lightgrey',
+    marginBottom: 8
   },
   cityText: {
     paddingVertical: 8,
@@ -244,13 +310,14 @@ const styles = StyleSheet.create({
   },
   itemCOntainer: {
     display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center', 
+    flexDirection: 'column',
+    alignItems: '', 
   },
   listContainer: {
+    height: screenHeight - 16,
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: '',
     marginBottom: 8
   },
   split: {
@@ -260,10 +327,18 @@ const styles = StyleSheet.create({
     marginHorizontal: 8
   },
   property: {
-    width: aspectWidth,
+    width: tabletAspectWidth,
     borderRadius: 10,
     overflow: 'hidden',
     marginBottom: 16,
+    backgroundColor: '#E8E8E8'
+  },
+  propertyTablet: {
+    width: tabletAspectWidth,
+    borderRadius: 10,
+    overflow: 'hidden',
+    marginBottom: 16,
+    marginRight: 8,
     backgroundColor: '#E8E8E8'
   },
   summary: {
@@ -313,7 +388,26 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     height: screenHeight - 40,
-  }
+  },
+  scrollViewTablet: {
+    height: tabletAspectHeight + 8,
+  },
+  headerContainer: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 8,
+    marginBottom: 8,
+    borderBottomWidth: 2,
+    borderBottomColor: 'lightgrey'
+  },
+  header: {
+    fontSize: 22,
+    fontWeight: 'bold'
+  },
 })
 
 export default FeedScreen

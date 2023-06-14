@@ -10,7 +10,10 @@ import { calculateDownPaymentAmount,
           calculateMortgageAmount } from '../../../../utilities' 
 
 const deviceWidth = Dimensions.get('window').width
+const deviceWidthTablet = 425
 const aspectWidth = deviceWidth - 48
+const aspectWidthTablet = deviceWidthTablet - 48
+
 
 const MortgageComponent = () => {
 
@@ -159,24 +162,54 @@ const MortgageComponent = () => {
     )
   }
 
+  const displayPhone = () => {
+    return(
+      <View style={styles.container}>
+        <TouchableOpacity onPress={() => {setAccessMortgage(!accessMortgage)}} >
+          <View style={styles.mortgageAContainer}>
+            <Text style={styles.mortgageAText}>Mortgage: ${mortgage}</Text>
+            <Feather size={20} name={'chevrons-down'} />
+          </View>
+        </TouchableOpacity>
+        {
+          accessMortgage ? displayMortgageInfo() : null
+        }
+      </View>
+    )
+  }
+
+  const displayTablet = () => {
+    return(
+      <View style={styles.containerTablet}>
+        <TouchableOpacity onPress={() => {setAccessMortgage(!accessMortgage)}} >
+          <View style={styles.mortgageAContainer}>
+            <Text style={styles.mortgageAText}>Mortgage: ${mortgage}</Text>
+            <Feather size={20} name={'chevrons-down'} />
+          </View>
+        </TouchableOpacity>
+        {
+          accessMortgage ? displayMortgageInfo() : null
+        }
+      </View>
+    )
+  }
+
   return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={() => {setAccessMortgage(!accessMortgage)}} >
-        <View style={styles.mortgageAContainer}>
-          <Text style={styles.mortgageAText}>Mortgage: ${mortgage}</Text>
-          <Feather size={20} name={'chevrons-down'} />
-        </View>
-      </TouchableOpacity>
-      {
-        accessMortgage ? displayMortgageInfo() : null
-      }
-    </View>
+    <>
+    {
+      deviceWidth >= 500 ? displayTablet() : displayPhone()
+    }
+    </>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     width: aspectWidth,
+    marginLeft: 24,
+  },
+  containerTablet: {
+    width: aspectWidthTablet,
     marginLeft: 24,
   },
   mortgageAContainer: {

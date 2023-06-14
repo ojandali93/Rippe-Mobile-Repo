@@ -3,8 +3,9 @@ import { StyleSheet, Text, View, Dimensions } from 'react-native'
 import { PropertyContext } from '../../Context/PropertyContext'
 
 const deviceWidth = Dimensions.get('window').width
-const deviceheight = Dimensions.get('window').height
+const deviceWidthTablet = 425
 const aspectWidth = deviceWidth - 16
+const aspectWidthTablet = deviceWidthTablet - 16
 
 const TaxHistoryComponent = () => {
 
@@ -95,20 +96,48 @@ const TaxHistoryComponent = () => {
     )
   }
 
-  return (
-    <View style={styles.listingContainer}>
-      <View style={styles.agentContainer}>
-        {
-          property.priceHistory.length > 0 ? showTaxHistory() : noTaxHistory()
-        }
+  const displayPhone = () => {
+    return(
+      <View style={styles.listingContainer}>
+        <View style={styles.agentContainer}>
+          {
+            property.priceHistory.length > 0 ? showTaxHistory() : noTaxHistory()
+          }
+        </View>
       </View>
-    </View>
+    )
+  }
+
+  const displayTablet = () => {
+    return(
+      <View style={styles.listingContainerTablet}>
+        <View style={styles.agentContainer}>
+          {
+            property.priceHistory.length > 0 ? showTaxHistory() : noTaxHistory()
+          }
+        </View>
+      </View>
+    )
+  }
+
+  return (
+    <>
+      {
+        deviceWidth >= 500 ? displayTablet() : displayPhone()
+      }
+    </>
   )
 }
 
 const styles = StyleSheet.create({
   listingContainer: {
     width: aspectWidth,
+    marginLeft: 8,
+    borderBottomColor: 'lightgrey',
+    borderBottomWidth: 2
+  },
+  listingContainerTablet: {
+    width: aspectWidthTablet,
     marginLeft: 8,
     borderBottomColor: 'lightgrey',
     borderBottomWidth: 2

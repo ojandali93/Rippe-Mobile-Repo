@@ -5,7 +5,9 @@ import { PropertyContext } from '../../Context/PropertyContext'
 import { Feather } from 'react-native-vector-icons'
 
 const deviceWidth = Dimensions.get('window').width
+const deviceWidthTablet = 425
 const aspectWidth = deviceWidth - 48
+const aspectWidthTablet = deviceWidthTablet - 48
 
 const RevenueComponent = () => {
 
@@ -62,26 +64,58 @@ const RevenueComponent = () => {
     )
   }
 
+  const displayPhone = () => {
+    return(
+      <View style={styles.container}>
+        <TouchableOpacity onPress={() => {setAccessRevenue(!accessRevenue)}}>
+          <View style={styles.mortgageAContainer}>
+            <Text style={styles.mortgageAText}>
+              Revenue: ${totalRevenue}
+            </Text>
+            <Feather size={20} name={'chevrons-down'} />
+          </View>
+        </TouchableOpacity>
+        {
+          accessRevenue ? displayRevenue() : null
+        }
+      </View>
+    )
+  }
+
+  const displayTablet = () => {
+    return(
+      <View style={styles.containerTablet}>
+        <TouchableOpacity onPress={() => {setAccessRevenue(!accessRevenue)}}>
+          <View style={styles.mortgageAContainer}>
+            <Text style={styles.mortgageAText}>
+              Revenue: ${totalRevenue}
+            </Text>
+            <Feather size={20} name={'chevrons-down'} />
+          </View>
+        </TouchableOpacity>
+        {
+          accessRevenue ? displayRevenue() : null
+        }
+      </View>
+    )
+  }
+
   return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={() => {setAccessRevenue(!accessRevenue)}}>
-        <View style={styles.mortgageAContainer}>
-          <Text style={styles.mortgageAText}>
-            Revenue: ${totalRevenue}
-          </Text>
-          <Feather size={20} name={'chevrons-down'} />
-        </View>
-      </TouchableOpacity>
-      {
-        accessRevenue ? displayRevenue() : null
-      }
-    </View>
+    <>
+    {
+      deviceWidth >= 500 ? displayTablet() : displayPhone()
+    }
+    </>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     width: aspectWidth,
+    marginLeft: 24,
+  },
+  containerTablet: {
+    width: aspectWidthTablet,
     marginLeft: 24,
   },
   mortgageAContainer: {

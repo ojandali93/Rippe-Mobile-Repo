@@ -78,8 +78,9 @@ const InvestmentMetricCompnent = () => {
     setRoi(calculateYearReturnOnInvestment(yearlyNOI, dpAmount))
   }, [dpAmount])
 
-  return (
-    <View style={styles.investmentComponent}>
+  const displayPhone = () => {
+    return(
+      <View style={styles.investmentComponent}>
       <View>
         <Text style={styles.headerComponent}>Investment Metrics:</Text>
       </View>
@@ -385,6 +386,326 @@ const InvestmentMetricCompnent = () => {
         </View>
       </Modal>
     </View>
+    )
+  }
+
+  const displayTablet = () => {
+    return(
+      <View style={styles.investmentComponentTablet}>
+      <View>
+        <Text style={styles.headerComponent}>Investment Metrics:</Text>
+      </View>
+      <View style={styles.container}>
+        <View style={styles.column}>
+          <View style={styles.metric}>
+            <View style={styles.key}>
+              <Text style={styles.metricText}>Income (M):</Text>
+              <TouchableOpacity onPress={() => {setAccessGrossMonthlyIncome(!accessGrossMonthlyIncome)}} style={styles.infoCOntainer}>
+                <Text style={styles.info}>
+                  i
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.metricText}>${totalRevenue}</Text>
+          </View>
+
+          <Modal
+            visible={accessGrossMonthlyIncome}
+            animationType="slide"
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.modalCOntent}>
+                <Text style={styles.label}>{metricInfo.grossMonthlyRevenue.label}</Text>
+                <Text style={styles.modalInfo}>{metricInfo.grossMonthlyRevenue.info}</Text>
+                <TouchableOpacity onPress={() => {setAccessGrossMonthlyIncome(!accessGrossMonthlyIncome)}}>
+                  <Text style={styles.close}>Close</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+
+          <View style={styles.metric}>
+            <View style={styles.key}>
+              <Text style={styles.metricText}>Expenses (M):</Text>
+              <TouchableOpacity onPress={() => {setAccessGrossMonthyExpenses(!accessGrossMonthyExpenses)}} style={styles.infoCOntainer}>
+                <Text style={styles.info}>
+                  i
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.metricText}>${expenses}</Text>
+          </View>
+
+          <Modal
+            visible={accessGrossMonthyExpenses}
+            animationType="slide"
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.modalCOntent}>
+                <Text style={styles.label}>{metricInfo.totalMonthlyExpenses.label}</Text>
+                <Text style={styles.modalInfo}>{metricInfo.totalMonthlyExpenses.info}</Text>
+                <TouchableOpacity onPress={() => {setAccessGrossMonthyExpenses(!accessGrossMonthyExpenses)}}>
+                  <Text style={styles.close}>Close</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+
+          <View style={styles.metric}>
+            <View style={styles.key}>
+              <Text style={styles.metricText}>NOI (M):</Text>
+              <TouchableOpacity onPress={() => {setAccessMonthlyNOI(!accessMonthlyNOI)}} style={styles.infoCOntainer}>
+                <Text style={styles.info}>
+                  i
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.metricText}>${monthlyNOI}</Text>
+          </View>
+
+          <Modal
+            visible={accessMonthlyNOI}
+            animationType="slide"
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.modalCOntent}>
+                <Text style={styles.label}>{metricInfo.monthlyNOI.label}</Text>
+                <Text style={styles.modalInfo}>{metricInfo.monthlyNOI.info}</Text>
+                <TouchableOpacity onPress={() => {setAccessMonthlyNOI(!accessMonthlyNOI)}}>
+                  <Text style={styles.close}>Close</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+
+          <View style={styles.metric}>
+            <View style={styles.key}>
+              <Text style={styles.metricText}>Cash Flow (M):</Text>
+              <TouchableOpacity onPress={() => {setAccessMonthlyCashFlow(!accessMonthlyCashFlow)}} style={styles.infoCOntainer}>
+                <Text style={styles.info}>
+                  i
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.metricText}>${monthlyCF}</Text>
+          </View>
+
+          <Modal
+            visible={accessMonthlyCashFlow}
+            animationType="slide"
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.modalCOntent}>
+                <Text style={styles.label}>{metricInfo.monthlyCashFlow.label}</Text>
+                <Text style={styles.modalInfo}>{metricInfo.monthlyCashFlow.info}</Text>
+                <TouchableOpacity onPress={() => {setAccessMonthlyCashFlow(!accessMonthlyCashFlow)}}>
+                  <Text style={styles.close}>Close</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+
+          <View style={styles.metric}>
+            <View style={styles.key}>
+              <Text style={styles.metricText}>Cap Rate:</Text>
+              <TouchableOpacity onPress={() => {setAccessCapRate(!accessCapRate)}} style={styles.infoCOntainer}>
+                <Text style={styles.info}>
+                  i
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.metricText}>{capRate}%</Text>
+          </View>
+
+          <Modal
+            visible={accessCapRate}
+            animationType="slide"
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.modalCOntent}>
+                <Text style={styles.label}>{metricInfo.capRate.label}</Text>
+                <Text style={styles.modalInfo}>{metricInfo.capRate.info}</Text>
+                <TouchableOpacity onPress={() => {setAccessCapRate(!accessCapRate)}}>
+                  <Text style={styles.close}>Close</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+        </View>
+
+        <View style={styles.column}>
+          <View style={styles.metric}>
+            <View style={styles.key}>
+              <Text style={styles.metricText}>Income (Y):</Text>
+              <TouchableOpacity onPress={() => {setAccessGrossearlyIncome(!accessGrossYearlyIncome)}} style={styles.infoCOntainer}>
+                <Text style={styles.info}>
+                  i
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.metricText}>${totalRevenue * 12}</Text>
+          </View>
+
+          <Modal
+            visible={accessGrossYearlyIncome}
+            animationType="slide"
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.modalCOntent}>
+                <Text style={styles.label}>{metricInfo.grossYearlyRevenue.label}</Text>
+                <Text style={styles.modalInfo}>{metricInfo.grossYearlyRevenue.info}</Text>
+                <TouchableOpacity onPress={() => {setAccessGrossearlyIncome(!accessGrossYearlyIncome)}}>
+                  <Text style={styles.close}>Close</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+
+          <View style={styles.metric}>
+            <View style={styles.key}>
+              <Text style={styles.metricText}>Expenses (Y):</Text>
+              <TouchableOpacity onPress={() => {setAccessGrossYearlyExpenses(!accessGrossYearlyExpenses)}} style={styles.infoCOntainer}>
+                <Text style={styles.info}>
+                  i
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.metricText}>${expenses * 12}</Text>
+          </View>
+
+          <Modal
+            visible={accessGrossYearlyExpenses}
+            animationType="slide"
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.modalCOntent}>
+                <Text style={styles.label}>{metricInfo.totalYearlyExpenses.label}</Text>
+                <Text style={styles.modalInfo}>{metricInfo.totalYearlyExpenses.info}</Text>
+                <TouchableOpacity onPress={() => {setAccessGrossYearlyExpenses(!accessGrossYearlyExpenses)}}>
+                  <Text style={styles.close}>Close</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+
+          <View style={styles.metric}>
+            <View style={styles.key}>
+              <Text style={styles.metricText}>NOI (Y):</Text>
+              <TouchableOpacity onPress={() => {setAccessYearlyNOI(!accessYearlyNOI)}} style={styles.infoCOntainer}>
+                <Text style={styles.info}>
+                  i
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.metricText}>${yearlyNOI}</Text>
+          </View>
+
+          <Modal
+            visible={accessYearlyNOI}
+            animationType="slide"
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.modalCOntent}>
+                <Text style={styles.label}>{metricInfo.yearlyNOI.label}</Text>
+                <Text style={styles.modalInfo}>{metricInfo.yearlyNOI.info}</Text>
+                <TouchableOpacity onPress={() => {setAccessYearlyNOI(!accessYearlyNOI)}}>
+                  <Text style={styles.close}>Close</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+
+          <View style={styles.metric}>
+            <View style={styles.key}>
+              <Text style={styles.metricText}>Cash Flow (Y):</Text>
+              <TouchableOpacity onPress={() => {setAccessYearlyCashFlow(!accessYearlyCashFlow)}} style={styles.infoCOntainer}>
+                <Text style={styles.info}>
+                  i
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.metricText}>${yearlyCf}</Text>
+          </View>
+
+          <Modal
+            visible={accessYearlyCashFlow}
+            animationType="slide"
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.modalCOntent}>
+                <Text style={styles.label}>{metricInfo.yearlyCashFlow.label}</Text>
+                <Text style={styles.modalInfo}>{metricInfo.yearlyCashFlow.info}</Text>
+                <TouchableOpacity onPress={() => {setAccessYearlyCashFlow(!accessYearlyCashFlow)}}>
+                  <Text style={styles.close}>Close</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+
+          <View style={styles.metric}>
+            <View style={styles.key}>
+              <Text style={styles.metricText}>CoC Return:</Text>
+              <TouchableOpacity onPress={() => {setAccessCashOnCashReturn(!accessCashOnCashReturn)}} style={styles.infoCOntainer}>
+                <Text style={styles.info}>
+                  i
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.metricText}>{CashOnCashReturn}%</Text>
+          </View>
+
+          <Modal
+            visible={accessCashOnCashReturn}
+            animationType="slide"
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.modalCOntent}>
+                <Text style={styles.label}>{metricInfo.cashOnCashReturn.label}</Text>
+                <Text style={styles.modalInfo}>{metricInfo.cashOnCashReturn.info}</Text>
+                <TouchableOpacity onPress={() => {setAccessCashOnCashReturn(!accessCashOnCashReturn)}}>
+                  <Text style={styles.close}>Close</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+        </View>
+      </View>
+      <View style={styles.roiMetrics}>
+        <View style={styles.key}>
+          <Text style={styles.metricTextRoi}>Return On Investment (1 Year):</Text>
+          <TouchableOpacity onPress={() => {setAccessROI(!accessROI)}} style={styles.infoCOntainer}>
+            <Text style={styles.info}>
+              i
+            </Text>
+          </TouchableOpacity>
+          <Text style={styles.roiMetricText}>{roi}%</Text>
+        </View>
+      </View>
+
+      <Modal
+        visible={accessROI}
+        animationType="slide"
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalCOntent}>
+            <Text style={styles.label}>{metricInfo.rOI.label}</Text>
+            <Text style={styles.modalInfo}>{metricInfo.rOI.info}</Text>
+            <TouchableOpacity onPress={() => {setAccessROI(!accessROI)}}>
+              <Text style={styles.close}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    </View>
+    )
+  }
+
+  return (
+    <>
+      {
+        deviceWidth >= 500 ? displayTablet() : displayPhone()
+      }
+    </>
   )
 }
 
@@ -395,6 +716,17 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     top: 600,
+    backgroundColor: 'white',
+    paddingHorizontal: 8,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20
+  },
+  investmentComponentTablet: {
+    height: 225,
+    width: '100%',
+    position: 'absolute',
+    left: 0,
+    top: deviceheight - 300,
     backgroundColor: 'white',
     paddingHorizontal: 8,
     borderTopLeftRadius: 20,

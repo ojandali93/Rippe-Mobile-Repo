@@ -7,6 +7,9 @@ import { doc, deleteDoc } from 'firebase/firestore';
 import { FavoritesContext } from '../Context/FavoritesContext'
 import { Entypo } from 'react-native-vector-icons'
 
+import MainMapsConponents from '../Components/PropertiesScreen/MainMapsConponents'
+import StaticMapsComponent from '../Components/PropertiesScreen/StaticMapsComponent'
+
 
 const deviceWidth = Dimensions.get('window').width
 const deviceHeight = Dimensions.get('window').height
@@ -14,6 +17,13 @@ const aspectWidth = deviceWidth - 16
 const aspectHeight = deviceHeight - 100
 const aspectHeightMain = (deviceWidth / 1.78) + 1
 const screenHeight = Dimensions.get('window').height - 202
+
+const tabletWidth = 375
+const tabletImageHeight = (tabletWidth / 1.78) + 1
+
+const tabletSplitWidth = Dimensions.get('window').width - 375
+const tabletContentWidth = Dimensions.get('window').width - 375
+
 
 
 const FavoritesScreen = () => {
@@ -84,6 +94,52 @@ const FavoritesScreen = () => {
     )
   }
 
+  const displayPropertiesTablet = () => {
+    return(
+      <ScrollView>
+        {
+          favorites.map((property) => {
+            return(
+              <View key={property.property.zpid}>
+                <TouchableOpacity style={styles.propertyTablet} onPress={() => {}}> 
+                  <View>
+                    <Image style={{height: tabletImageHeight, width: tabletWidth}} source={{uri: property.property.imgSrc}}/>
+                    <View style={styles.summary}>
+                      <View style={styles.background}></View>
+                      <View style={styles.favoriteMenuTablet}>
+                        {
+                          favoritesZpids.includes(property.property.zpid)
+                          ? <TouchableOpacity stlye={styles.menu} onPress={() => {removeFromFavorites(property)}}><Entypo color={'white'} size={28} style={{paddingTop: 4, opacity: 1}} name='heart'/></TouchableOpacity>
+                          : <TouchableOpacity stlye={styles.menu} onPress={() => {addFavorite(property)}}><Entypo color={'white'} size={28}  style={{paddingTop: 4, opacity: 1}} name='heart-outlined'/></TouchableOpacity>
+                        }
+                      </View>
+                      <View>
+                        <Text style={[styles.text, styles.price, styles.summaryInfoTablet]}>${property.property.price}</Text>
+                      </View>
+                      <View>
+                      <Text style={styles.address}>
+                          {property.property.streetAddress}
+                        </Text>
+                        <Text style={styles.address}>
+                          {property.property.city}, {property.property.state} {property.property.zipcode}
+                        </Text>
+                      </View>
+                      <View style={styles.bottomRowSummary}>
+                        <Text style={styles.address}>
+                          {property.property.bedrooms} Beds | {property.property.bathrooms} Bath | {property.property.livingArea} Sqft.
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            )
+          })
+        }
+        </ScrollView>
+    )
+  }
+
   const displayProperties = () => {
     return(
       <ScrollView>
@@ -130,18 +186,51 @@ const FavoritesScreen = () => {
     )
   }
 
-  return (
-    <View style={styles.screen}>
-      <View style={styles.headerContainer}>
-        <Text style={styles.header}>Favorites</Text>
+  const tabletScreen = () => {
+    return(
+      <View style={styles.tabletScreen}>
+        <View style={styles.mapSplit}>
+          <StaticMapsComponent/>
+        </View>
+        <View style={styles.contentSplit}>
+          <View style={styles.headerContainerTablet}>
+            <Text style={styles.header}>Favorites</Text>
+          </View>
+          {
+            auth.currentUser === null 
+              ? displayEmpty() : favorites.length === 0 
+                                    ? displayNone() 
+                                    : deviceWidth >= 500
+                                        ? displayPropertiesTablet()
+                                        : displayProperties()
+          }
+        </View>
       </View>
+    )
+  }
+
+  const phoneScreen = () => {
+    return(
+      <View style={styles.screen}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.header}>Favorites</Text>
+        </View>
+        {
+          auth.currentUser === null 
+            ? displayEmpty() : favorites.length === 0 
+                                  ? displayNone() 
+                                  : displayProperties()
+        }
+      </View>
+    )
+  }
+
+  return (
+    <>
       {
-        auth.currentUser === null 
-          ? displayEmpty() : favorites.length === 0 
-                                ? displayNone() 
-                                : displayProperties()
+        deviceWidth >= 500 ? tabletScreen() : phoneScreen()
       }
-    </View>
+    </>
   )
 }
 
@@ -149,6 +238,26 @@ const styles = StyleSheet.create({
   screen: {
     marginTop: 58,
     marginLeft: 8
+  },
+  tabletScreen: {
+    display: 'flex',
+    flexDirection: 'row'
+  },
+  mapSplit: {
+    width: tabletSplitWidth
+  },
+  contentSplit: {
+    marginTop: 18,
+    width: tabletContentWidth
+  },
+  propertyTablet: {
+    width: tabletWidth - 16,
+    height: tabletImageHeight,
+    marginLeft: 8,
+    borderRadius: 10,
+    overflow: 'hidden',
+    marginBottom: 16,
+    backgroundColor: '#E8E8E8'
   },
   property: {
     width: aspectWidth,
@@ -163,8 +272,8 @@ const styles = StyleSheet.create({
   },
   background: {
     position: 'absolute',
-    height: aspectHeightMain,
-    width: aspectWidth,
+    height: tabletImageHeight,
+    width: tabletWidth - 16,
     backgroundColor: 'black',
     opacity: .4
   },
@@ -174,8 +283,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
   },
+  favoriteMenuTablet: {
+    width: tabletWidth - 32,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
   summaryInfo: {
     marginTop: aspectHeightMain - 120
+  },
+  summaryInfoTablet: {
+    marginTop: tabletImageHeight - 140
   },
   text: {
     color: 'white'
@@ -237,6 +355,18 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 8,
+    marginBottom: 8,
+    borderBottomWidth: 2,
+    borderBottomColor: 'lightgrey'
+  },
+  headerContainerTablet: {
+    width: tabletWidth,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',

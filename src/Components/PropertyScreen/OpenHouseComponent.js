@@ -7,8 +7,9 @@ import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../Api/firebaseTesting'
 
 const deviceWidth = Dimensions.get('window').width
-const deviceheight = Dimensions.get('window').height
+const deviceWidthTablet = 425
 const aspectWidth = deviceWidth - 16
+const aspectWidthTablet = deviceWidthTablet - 16
 
 const OpenHouseComponent = () => {
 
@@ -24,7 +25,6 @@ const OpenHouseComponent = () => {
   const hasOpenHouse = () => {
     return(
       <View>
-        <Text>Current Schedule:</Text>
         <View>
           {
             property.openHouseSchedule.map((event, index) => {
@@ -84,127 +84,262 @@ const OpenHouseComponent = () => {
     })
   }
 
-  return (
-    <View style={styles.listingContainer}>
-      <View style={styles.agentContainer}>
-        <Text style={styles.text}>
-          Currently Showing Homes: 
-        </Text>
-      </View>
-      {
-        property.listingSubType.isOpenHouse === false ? hasNoOpenHouse() : hasOpenHouse()
-      }
-      <View style={styles.contentRow}>
-        <Text style={styles.mainText}>
-          Schedule A Showing:
-        </Text>
+  const displayPhone = () => {
+    return(
+      <View style={styles.listingContainer}>
+        <View style={styles.agentContainer}>
+          <Text style={styles.text}>
+            Currently Showing Homes: 
+          </Text>
+        </View>
+        {
+          property.listingSubType.isOpenHouse === false ? hasNoOpenHouse() : hasOpenHouse()
+        }
+        <View style={styles.contentRow}>
+          <Text style={styles.mainText}>
+            Schedule A Showing:
+          </Text>
+          <View style={styles.row}>
+            <TouchableOpacity onPress={() => {setOpen(true)}}>
+              <Text style={styles.text}>Select Date</Text>
+            </TouchableOpacity>
+            <DatePicker
+              modal
+              date={date}
+              customStyles={{ dateInput:{
+                                borderWidth: 0,
+                                borderBottomWidth: 2,
+                                borderBottomColor: 'grey',
+                                backgroundColor: 'lightgrey',
+                                height: 30
+                              },
+                              dateText:{
+                                fontSize: 18
+                              },
+                              dateIcon:{
+                                height: 0, 
+                                width:0
+                              }
+                            }}
+              mode="date"
+              placeholder="select date"
+              format="MM-DD-YYYY"
+              minDate="01-01-2023"
+              maxDate="12-31-2040"
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              onDateChange={(date) => {setDate(date)}}
+            />
+          </View>
+        </View>
+        <View style={styles.newRow}>
+          <View style={styles.column}>
+            <Text style={styles.text}>First Name</Text>
+            <TextInput
+              style={styles.input}
+              placeholder='First Name'
+              inputMode='text'
+              value={firstName}
+              onChangeText={(value) => {setFirstName(value)}}
+            />
+          </View>
+          <View style={styles.column}>
+            <Text style={styles.text}>Last Name</Text>
+            <TextInput
+              style={styles.input}
+              placeholder='Last Name'
+              inputMode='text'
+              value={lastName}
+              onChangeText={(value) => {setLastName(value)}}
+            />
+          </View>
+        </View>
+        <View style={styles.colRow}>
+          <Text style={styles.text}>
+            Email:
+          </Text>
+          <TextInput
+            style={styles.input}
+            placeholder='example@email.com'
+            value={email}
+            onChangeText={(value) => {setEmail(value)}}
+            inputMode='email'
+          />
+        </View>
+        <View style={styles.colRow}>
+          <Text style={styles.text}>
+            Phone:
+          </Text>
+          <TextInput
+            style={styles.input}
+            placeholder='999-999-9999'
+            value={phone}
+            onChangeText={(value) => {setPhone(value)}}
+            inputMode='tel'
+          />
+        </View>
         <View style={styles.row}>
-          <TouchableOpacity onPress={() => {setOpen(true)}}>
-            <Text style={styles.text}>Select Date</Text>
-          </TouchableOpacity>
-          <DatePicker
-            modal
-            date={date}
-            customStyles={{ dateInput:{
-                              borderWidth: 0,
-                              borderBottomWidth: 2,
-                              borderBottomColor: 'grey',
-                              backgroundColor: 'lightgrey',
-                              height: 30
-                            },
-                            dateText:{
-                              fontSize: 18
-                            },
-                            dateIcon:{
-                              height: 0, 
-                              width:0
-                            }
-                          }}
-            mode="date"
-            placeholder="select date"
-            format="MM-DD-YYYY"
-            minDate="01-01-2023"
-            maxDate="12-31-2040"
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            onDateChange={(date) => {setDate(date)}}
+          <Text style={styles.text}>
+            Time Of Contact:
+          </Text>
+          <RNPickerSelect 
+            syle={styles.text}
+            value={contact}
+            onValueChange={(value) => setContact(value)}
+            items={[
+              {
+                'label':'Morning',
+                'value':'Morning'
+              },
+              {
+                'label':'Noon',
+                'value':'Noon'
+              },
+              {
+                'label':'Evening',
+                'value':'Evening'
+              }
+            ]}
           />
         </View>
+        <TouchableOpacity style={[styles.closeContainer]} onPress={()  => {submitRequest()}}>
+          <Text style={styles.close}>Schedule A Showing</Text>
+        </TouchableOpacity>
       </View>
-      <View style={styles.newRow}>
-        <View style={styles.column}>
-          <Text style={styles.text}>First Name</Text>
+    )
+  }
+
+  const displayTablet = () => {
+    return(
+      <View style={styles.listingContainerTablet}>
+        <View style={styles.agentContainer}>
+          <Text style={styles.text}>
+            Currently Showing Homes: 
+          </Text>
+        </View>
+        {
+          property.listingSubType.isOpenHouse === false ? hasNoOpenHouse() : hasOpenHouse()
+        }
+        <View style={styles.contentRow}>
+          <Text style={styles.mainText}>
+            Schedule A Showing:
+          </Text>
+          <View style={styles.row}>
+            <TouchableOpacity onPress={() => {setOpen(true)}}>
+              <Text style={styles.text}>Select Date</Text>
+            </TouchableOpacity>
+            <DatePicker
+              modal
+              date={date}
+              customStyles={{ dateInput:{
+                                borderWidth: 0,
+                                borderBottomWidth: 2,
+                                borderBottomColor: 'grey',
+                                backgroundColor: 'lightgrey',
+                                height: 30
+                              },
+                              dateText:{
+                                fontSize: 18
+                              },
+                              dateIcon:{
+                                height: 0, 
+                                width:0
+                              }
+                            }}
+              mode="date"
+              placeholder="select date"
+              format="MM-DD-YYYY"
+              minDate="01-01-2023"
+              maxDate="12-31-2040"
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              onDateChange={(date) => {setDate(date)}}
+            />
+          </View>
+        </View>
+        <View style={styles.newRow}>
+          <View style={styles.column}>
+            <Text style={styles.text}>First Name</Text>
+            <TextInput
+              style={styles.input}
+              placeholder='First Name'
+              inputMode='text'
+              value={firstName}
+              onChangeText={(value) => {setFirstName(value)}}
+            />
+          </View>
+          <View style={styles.column}>
+            <Text style={styles.text}>Last Name</Text>
+            <TextInput
+              style={styles.input}
+              placeholder='Last Name'
+              inputMode='text'
+              value={lastName}
+              onChangeText={(value) => {setLastName(value)}}
+            />
+          </View>
+        </View>
+        <View style={styles.colRow}>
+          <Text style={styles.text}>
+            Email:
+          </Text>
           <TextInput
             style={styles.input}
-            placeholder='First Name'
-            inputMode='text'
-            value={firstName}
-            onChangeText={(value) => {setFirstName(value)}}
+            placeholder='example@email.com'
+            value={email}
+            onChangeText={(value) => {setEmail(value)}}
+            inputMode='email'
           />
         </View>
-        <View style={styles.column}>
-          <Text style={styles.text}>Last Name</Text>
+        <View style={styles.colRow}>
+          <Text style={styles.text}>
+            Phone:
+          </Text>
           <TextInput
             style={styles.input}
-            placeholder='Last Name'
-            inputMode='text'
-            value={lastName}
-            onChangeText={(value) => {setLastName(value)}}
+            placeholder='999-999-9999'
+            value={phone}
+            onChangeText={(value) => {setPhone(value)}}
+            inputMode='tel'
           />
         </View>
+        <View style={styles.row}>
+          <Text style={styles.text}>
+            Time Of Contact:
+          </Text>
+          <RNPickerSelect 
+            syle={styles.text}
+            value={contact}
+            onValueChange={(value) => setContact(value)}
+            items={[
+              {
+                'label':'Morning',
+                'value':'Morning'
+              },
+              {
+                'label':'Noon',
+                'value':'Noon'
+              },
+              {
+                'label':'Evening',
+                'value':'Evening'
+              }
+            ]}
+          />
+        </View>
+        <TouchableOpacity style={[styles.closeContainer]} onPress={()  => {submitRequest()}}>
+          <Text style={styles.close}>Schedule A Showing</Text>
+        </TouchableOpacity>
       </View>
-      <View style={styles.colRow}>
-        <Text style={styles.text}>
-          Email:
-        </Text>
-        <TextInput
-          style={styles.input}
-          placeholder='example@email.com'
-          value={email}
-          onChangeText={(value) => {setEmail(value)}}
-          inputMode='email'
-        />
-      </View>
-      <View style={styles.colRow}>
-        <Text style={styles.text}>
-          Phone:
-        </Text>
-        <TextInput
-          style={styles.input}
-          placeholder='999-999-9999'
-          value={phone}
-          onChangeText={(value) => {setPhone(value)}}
-          inputMode='tel'
-        />
-      </View>
-      <View style={styles.row}>
-        <Text style={styles.text}>
-          Time Of Contact:
-        </Text>
-        <RNPickerSelect 
-          syle={styles.text}
-          value={contact}
-          onValueChange={(value) => setContact(value)}
-          items={[
-            {
-              'label':'Morning',
-              'value':'Morning'
-            },
-            {
-              'label':'Noon',
-              'value':'Noon'
-            },
-            {
-              'label':'Evening',
-              'value':'Evening'
-            }
-          ]}
-        />
-      </View>
-      <TouchableOpacity style={[styles.closeContainer]} onPress={()  => {submitRequest()}}>
-        <Text style={styles.close}>Schedule A Showing</Text>
-      </TouchableOpacity>
-    </View>
+    )
+  }
+
+  return (
+    <>
+      {
+        deviceWidth >= 500 ? displayTablet() : displayPhone()
+      }
+    </>
   )
 }
 
@@ -218,6 +353,13 @@ const pickerStyle = {
 const styles = StyleSheet.create({
   listingContainer: {
     width: aspectWidth,
+    marginLeft: 8,
+    borderBottomColor: 'lightgrey',
+    borderBottomWidth: 2,
+    paddingBottom: 8
+  },
+  listingContainerTablet: {
+    width: aspectWidthTablet,
     marginLeft: 8,
     borderBottomColor: 'lightgrey',
     borderBottomWidth: 2,

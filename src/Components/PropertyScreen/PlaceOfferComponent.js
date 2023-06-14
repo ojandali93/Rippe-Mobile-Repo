@@ -2,16 +2,37 @@ import React from 'react'
 import { View, Text, StyleSheet, Dimensions } from 'react-native'
 
 const deviceWidth = Dimensions.get('window').width
-const deviceheight = Dimensions.get('window').height
+const deviceWidthTablet = 425
 const aspectWidth = deviceWidth - 16
+const aspectWidthTablet = deviceWidthTablet - 16
 
-const PlaceOfferComponent = () => {
-  return (
+const displayPhone = () => {
+  return(
     <View>
       <View style={styles.container}>
         <Text style={styles.button}>Make An Offer</Text>
       </View>
     </View>
+  )
+}
+
+const displayTablet = () => {
+  return(
+    <View>
+      <View style={styles.containerTablet}>
+        <Text style={styles.button}>Make An Offer</Text>
+      </View>
+    </View>
+  )
+}
+
+const PlaceOfferComponent = () => {
+  return (
+    <>
+      {
+        deviceWidth >= 500 ? displayTablet() : displayPhone()
+      }
+    </>
   )
 }
 
@@ -30,6 +51,13 @@ const styles = StyleSheet.create({
   },
   container: {
     width: aspectWidth,
+    marginLeft: 8,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center'
+  },
+  containerTablet: {
+    width: aspectWidthTablet,
     marginLeft: 8,
     display: 'flex',
     flexDirection: 'row',

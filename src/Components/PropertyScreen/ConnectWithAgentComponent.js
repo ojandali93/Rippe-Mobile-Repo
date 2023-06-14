@@ -6,7 +6,9 @@ import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../Api/firebaseTesting'
 
 const deviceWidth = Dimensions.get('window').width
+const deviceWidthTablet = 425
 const aspectWidth = deviceWidth - 16
+const aspectWidthTablet = deviceWidthTablet - 16
 
 const ConnectWithAgentComponent = () => {
   const {property} = useContext(PropertyContext)
@@ -80,163 +82,335 @@ const ConnectWithAgentComponent = () => {
     })
   }
 
+  const displayPhone = () => {
+    return(
+      <View style={styles.listingContainer}>
+        <View style={styles.agentContainer}>
+          <View style={styles.imageContainer}>
+            <Image style={{height: 100, width: 100}} source={{uri: 'https://dummyimage.com/100X100/000/fff'}}/>
+          </View>
+          <View style={styles.agentInfoContainer}>
+            <View>
+              <Text style={styles.text}><Text style={{fontWeight: 'bold'}}>Omar Jandali</Text> | DRE# 02151051</Text>
+            </View>
+            <View>
+              <Text style={styles.text}>Realy One Group</Text>
+            </View>
+            <View>
+              <Text style={styles.text}>951-534-3666</Text>
+            </View>
+            <View>
+              <Text style={styles.text}>omarjandali93@gmail.com</Text>
+            </View>
+          </View>
+        </View>
+        <View style={styles.newRow}>
+          <View style={styles.column}>
+            <Text style={styles.text}>First Name</Text>
+            <TextInput
+              style={styles.input}
+              placeholder='First Name'
+              inputMode='text'
+              value={firstName}
+              onChangeText={(value) => {setFirstName(value)}}
+            />
+          </View>
+          <View style={styles.column}>
+            <Text style={styles.text}>Last Name</Text>
+            <TextInput
+              style={styles.input}
+              placeholder='Last Name'
+              inputMode='text'
+              value={lastName}
+              onChangeText={(value) => {setLastName(value)}}
+            />
+          </View>
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.text}>Email</Text>
+          <TextInput
+            style={styles.input}
+            placeholder='example@mail.com'
+            inputMode='email'
+            value={email}
+            onChangeText={(value) => {setEmail(value)}}
+          />
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.text}>Phone</Text>
+          <TextInput 
+            style={styles.input}
+            placeholder='999-999-9999'
+            inputMode='tel'
+            value={phone}
+            onChangeText={(value) => {setPhone(value)}}
+          />
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.text}>Message</Text>
+          <TextInput
+            style={styles.input}
+            placeholder='Leave a message...'
+            value={message}
+            onChangeText={(value) => {setMessage(value)}}
+            multiline={true}
+          />
+        </View>
+        <View style={styles.newRowSelect}>
+          <Text style={styles.text}>Level of interest</Text>
+          <RNPickerSelect 
+            style={styles.input}
+            value={levelOfInterest}
+            onValueChange={(value) => setLevelOfInterest(value)}
+            items={[
+              {
+                'label': 'Just looking',
+                'value': 'Just looking'
+              },
+              {
+                'label': 'More info',
+                'value': 'More info'
+              },
+              {
+                'label': 'Fairly interested',
+                'value': 'Fairly interested'
+              },
+              {
+                'label': 'Very interested',
+                'value': 'Very interested'
+              },
+              {
+                'label': 'Ready to purchase',
+                'value': 'Ready to purchase'
+              },
+            ]}
+          />
+        </View>
+        <View style={styles.newRowSelect}>
+          <Text style={styles.text}>Reason of purchase</Text>
+          <RNPickerSelect 
+            style={styles.input}
+            value={reason}
+            onValueChange={(value) => setReason(value)}
+            items={[
+              {
+                'label': 'First investment property',
+                'value': 'First investment property'
+              },
+              {
+                'label': 'Expanding portfolio',
+                'value': 'Expanding portfolio'
+              },
+              {
+                'label': 'Interested in investing',
+                'value': 'Interested in investing'
+              },
+              {
+                'label': 'Invest in stable assets',
+                'value': 'Invest in stable assets'
+              },
+              {
+                'label': 'Purchase and flip',
+                'value': 'Purchase and flip'
+              },
+            ]}
+          />
+        </View>
+        <View style={styles.newRowSelect}>
+          <Text style={styles.text}>Viewed the property</Text>
+          <Switch
+            value={viewed}
+            onValueChange={() => {setViewed(!viewed)}}
+          />
+        </View>
+        <View style={styles.newRowSelect}>
+          <Text style={styles.text}>Schedule a tour</Text>
+          <Switch
+            value={schedule}
+            onValueChange={() => {setSchedule(!schedule)}}
+          />
+        </View>
+        <TouchableOpacity style={[styles.closeContainer]} onPress={() => {validateConnection()}}>
+          <Text style={styles.close}>Connect With Agent</Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
+  const displayTablet = () => {
+    return(
+      <View style={styles.listingContainerTablet}>
+        <View style={styles.agentContainer}>
+          <View style={styles.imageContainer}>
+            <Image style={{height: 100, width: 100}} source={{uri: 'https://dummyimage.com/100X100/000/fff'}}/>
+          </View>
+          <View style={styles.agentInfoContainer}>
+            <View>
+              <Text style={styles.text}><Text style={{fontWeight: 'bold'}}>Omar Jandali</Text> | DRE# 02151051</Text>
+            </View>
+            <View>
+              <Text style={styles.text}>Realy One Group</Text>
+            </View>
+            <View>
+              <Text style={styles.text}>951-534-3666</Text>
+            </View>
+            <View>
+              <Text style={styles.text}>omarjandali93@gmail.com</Text>
+            </View>
+          </View>
+        </View>
+        <View style={styles.newRow}>
+          <View style={styles.column}>
+            <Text style={styles.text}>First Name</Text>
+            <TextInput
+              style={styles.input}
+              placeholder='First Name'
+              inputMode='text'
+              value={firstName}
+              onChangeText={(value) => {setFirstName(value)}}
+            />
+          </View>
+          <View style={styles.column}>
+            <Text style={styles.text}>Last Name</Text>
+            <TextInput
+              style={styles.input}
+              placeholder='Last Name'
+              inputMode='text'
+              value={lastName}
+              onChangeText={(value) => {setLastName(value)}}
+            />
+          </View>
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.text}>Email</Text>
+          <TextInput
+            style={styles.input}
+            placeholder='example@mail.com'
+            inputMode='email'
+            value={email}
+            onChangeText={(value) => {setEmail(value)}}
+          />
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.text}>Phone</Text>
+          <TextInput 
+            style={styles.input}
+            placeholder='999-999-9999'
+            inputMode='tel'
+            value={phone}
+            onChangeText={(value) => {setPhone(value)}}
+          />
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.text}>Message</Text>
+          <TextInput
+            style={styles.input}
+            placeholder='Leave a message...'
+            value={message}
+            onChangeText={(value) => {setMessage(value)}}
+            multiline={true}
+          />
+        </View>
+        <View style={styles.newRowSelect}>
+          <Text style={styles.text}>Level of interest</Text>
+          <RNPickerSelect 
+            style={styles.input}
+            value={levelOfInterest}
+            onValueChange={(value) => setLevelOfInterest(value)}
+            items={[
+              {
+                'label': 'Just looking',
+                'value': 'Just looking'
+              },
+              {
+                'label': 'More info',
+                'value': 'More info'
+              },
+              {
+                'label': 'Fairly interested',
+                'value': 'Fairly interested'
+              },
+              {
+                'label': 'Very interested',
+                'value': 'Very interested'
+              },
+              {
+                'label': 'Ready to purchase',
+                'value': 'Ready to purchase'
+              },
+            ]}
+          />
+        </View>
+        <View style={styles.newRowSelect}>
+          <Text style={styles.text}>Reason of purchase</Text>
+          <RNPickerSelect 
+            style={styles.input}
+            value={reason}
+            onValueChange={(value) => setReason(value)}
+            items={[
+              {
+                'label': 'First investment property',
+                'value': 'First investment property'
+              },
+              {
+                'label': 'Expanding portfolio',
+                'value': 'Expanding portfolio'
+              },
+              {
+                'label': 'Interested in investing',
+                'value': 'Interested in investing'
+              },
+              {
+                'label': 'Invest in stable assets',
+                'value': 'Invest in stable assets'
+              },
+              {
+                'label': 'Purchase and flip',
+                'value': 'Purchase and flip'
+              },
+            ]}
+          />
+        </View>
+        <View style={styles.newRowSelect}>
+          <Text style={styles.text}>Viewed the property</Text>
+          <Switch
+            value={viewed}
+            onValueChange={() => {setViewed(!viewed)}}
+          />
+        </View>
+        <View style={styles.newRowSelect}>
+          <Text style={styles.text}>Schedule a tour</Text>
+          <Switch
+            value={schedule}
+            onValueChange={() => {setSchedule(!schedule)}}
+          />
+        </View>
+        <TouchableOpacity style={[styles.closeContainer]} onPress={() => {validateConnection()}}>
+          <Text style={styles.close}>Connect With Agent</Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
   return (
-    <View style={styles.listingContainer}>
-      <View style={styles.agentContainer}>
-        <View style={styles.imageContainer}>
-          <Image style={{height: 100, width: 100}} source={{uri: 'https://dummyimage.com/100X100/000/fff'}}/>
-        </View>
-        <View style={styles.agentInfoContainer}>
-          <View>
-            <Text style={styles.text}><Text style={{fontWeight: 'bold'}}>Omar Jandali</Text> | DRE# 02151051</Text>
-          </View>
-          <View>
-            <Text style={styles.text}>Realy One Group</Text>
-          </View>
-          <View>
-            <Text style={styles.text}>951-534-3666</Text>
-          </View>
-          <View>
-            <Text style={styles.text}>omarjandali93@gmail.com</Text>
-          </View>
-        </View>
-      </View>
-      <View style={styles.newRow}>
-        <View style={styles.column}>
-          <Text style={styles.text}>First Name</Text>
-          <TextInput
-            style={styles.input}
-            placeholder='First Name'
-            inputMode='text'
-            value={firstName}
-            onChangeText={(value) => {setFirstName(value)}}
-          />
-        </View>
-        <View style={styles.column}>
-          <Text style={styles.text}>Last Name</Text>
-          <TextInput
-            style={styles.input}
-            placeholder='Last Name'
-            inputMode='text'
-            value={lastName}
-            onChangeText={(value) => {setLastName(value)}}
-          />
-        </View>
-      </View>
-      <View style={styles.row}>
-        <Text style={styles.text}>Email</Text>
-        <TextInput
-          style={styles.input}
-          placeholder='example@mail.com'
-          inputMode='email'
-          value={email}
-          onChangeText={(value) => {setEmail(value)}}
-        />
-      </View>
-      <View style={styles.row}>
-        <Text style={styles.text}>Phone</Text>
-        <TextInput 
-          style={styles.input}
-          placeholder='999-999-9999'
-          inputMode='tel'
-          value={phone}
-          onChangeText={(value) => {setPhone(value)}}
-        />
-      </View>
-      <View style={styles.row}>
-        <Text style={styles.text}>Message</Text>
-        <TextInput
-          style={styles.input}
-          placeholder='Leave a message...'
-          value={message}
-          onChangeText={(value) => {setMessage(value)}}
-          multiline={true}
-        />
-      </View>
-      <View style={styles.newRowSelect}>
-        <Text style={styles.text}>Level of interest</Text>
-        <RNPickerSelect 
-          style={styles.input}
-          value={levelOfInterest}
-          onValueChange={(value) => setLevelOfInterest(value)}
-          items={[
-            {
-              'label': 'Just looking',
-              'value': 'Just looking'
-            },
-            {
-              'label': 'More info',
-              'value': 'More info'
-            },
-            {
-              'label': 'Fairly interested',
-              'value': 'Fairly interested'
-            },
-            {
-              'label': 'Very interested',
-              'value': 'Very interested'
-            },
-            {
-              'label': 'Ready to purchase',
-              'value': 'Ready to purchase'
-            },
-          ]}
-        />
-      </View>
-      <View style={styles.newRowSelect}>
-        <Text style={styles.text}>Reason of purchase</Text>
-        <RNPickerSelect 
-          style={styles.input}
-          value={reason}
-          onValueChange={(value) => setReason(value)}
-          items={[
-            {
-              'label': 'First investment property',
-              'value': 'First investment property'
-            },
-            {
-              'label': 'Expanding portfolio',
-              'value': 'Expanding portfolio'
-            },
-            {
-              'label': 'Interested in investing',
-              'value': 'Interested in investing'
-            },
-            {
-              'label': 'Invest in stable assets',
-              'value': 'Invest in stable assets'
-            },
-            {
-              'label': 'Purchase and flip',
-              'value': 'Purchase and flip'
-            },
-          ]}
-        />
-      </View>
-      <View style={styles.newRowSelect}>
-        <Text style={styles.text}>Viewed the property</Text>
-        <Switch
-          value={viewed}
-          onValueChange={() => {setViewed(!viewed)}}
-        />
-      </View>
-      <View style={styles.newRowSelect}>
-        <Text style={styles.text}>Schedule a tour</Text>
-        <Switch
-          value={schedule}
-          onValueChange={() => {setSchedule(!schedule)}}
-        />
-      </View>
-      <TouchableOpacity style={[styles.closeContainer]} onPress={() => {validateConnection()}}>
-        <Text style={styles.close}>Connect With Agent</Text>
-      </TouchableOpacity>
-    </View>
+    <>
+      {
+        deviceWidth >= 500 ? displayTablet() : displayPhone()
+      }
+    </>
   )
 }
 
 const styles = StyleSheet.create({
   listingContainer: {
     width: aspectWidth,
+    marginLeft: 8,
+    paddingVertical: 8,
+    borderBottomColor: 'lightgrey',
+    borderBottomWidth: 2
+  },
+  listingContainerTablet: {
+    width: aspectWidthTablet,
     marginLeft: 8,
     paddingVertical: 8,
     borderBottomColor: 'lightgrey',

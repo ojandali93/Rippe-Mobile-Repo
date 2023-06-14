@@ -17,6 +17,8 @@ const deviceWidth = Dimensions.get('window').width
 const deviceheight = Dimensions.get('window').height
 const aspectWidth = deviceWidth - 16
 const aspectHeight = (deviceWidth / 1.78) + 1
+const splitWidth = 360
+const splitHeight = (splitWidth / 1.78) + 1
 
 const ResultsComponent = () => {
   const navigation = useNavigation()
@@ -101,245 +103,498 @@ const ResultsComponent = () => {
     })
   }
 
+  const tabletScreen = () => {
+    return(
+      <ScrollView style={styles.tabletScroll}>
+        {
+          results.map((property) => {
+            return(
+              <View key={property.zpid} style={styles.tabletProperty}>
+                <TouchableOpacity onPress={() => {addPropertyView(property)}}> 
+                  <Image style={{height: splitHeight, width: splitWidth}} source={{uri: property.hiResImageLink}}/>
+                  <View style={styles.summary}>
+                    <View style={styles.tabletBackground}></View>
+                    <View style={styles.tabletFavoriteMenu}>
+                      {
+                        favoritesZpids.includes(property.zpid)
+                          ? <TouchableOpacity onPress={() => {updateRemoveFavorite(property)}}><Entypo color={'white'} size={24} name='heart'  stlye={styles.menu}/></TouchableOpacity>
+                          : <TouchableOpacity onPress={() => {updateAddFavorite(property)}}><Entypo color={'white'} size={24} name='heart-outlined'  stlye={styles.menu}/></TouchableOpacity>
+                      }
+                    </View>
+                    <View>
+                      <Text style={[styles.text, styles.price, styles.tabletSummaryInfo]}>${property.price}</Text>
+                    </View>
+                    <View>
+                      <Text style={styles.address}>
+                        {property.streetAddress}
+                      </Text>
+                      <Text style={styles.address}>
+                        {property.city}, {property.state} {property.zipcode}
+                      </Text>
+                    </View>
+                    <View style={styles.bottomRowSummary}>
+                      <Text style={styles.address}>
+                        {property.bedrooms} Beds | {property.bathrooms} Bath | {property.livingArea} Sqft.
+                      </Text>
+                      <Text style={styles.address}>
+                        {formatStatus(property.homeStatus)}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={styles.investmentComponent}>
+                    <View style={styles.column}> 
+                      <View style={styles.metric}>
+                        <View style={styles.key}>
+                          <Text style={styles.tabletMetricText}>Monthly Rev.:</Text>
+                          <TouchableOpacity style={{marginLeft: 8}} onPress={() => {setAccessMonthlyRevenue(!accessMonthlyRevenue)}}>
+                            <Feather size={16} name={'info'}/>
+                          </TouchableOpacity>
+                        </View>
+                        <Text style={styles.tabletMetricText}>${property.investment.monthlyRevenue}</Text>
+                      </View>
+
+                      <Modal
+                        visible={accessMonthlyRevenue}
+                        animationType="slide"
+                      >
+                        <View style={styles.modalContainer}>
+                          <View style={styles.modalCOntent}>
+                            <Text style={styles.label}>{metricInfo.grossMonthlyRevenue.label}</Text>
+                            <Text style={styles.modalInfo}>{metricInfo.grossMonthlyRevenue.info}</Text>
+                            <TouchableOpacity onPress={() => {setAccessMonthlyRevenue(!accessMonthlyRevenue)}}>
+                              <Text style={styles.close}>Close</Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      </Modal>
+                      <View style={styles.metric}>
+                        <View style={styles.key}>
+                          <Text style={styles.tabletMetricText}>Monthly Exp.:</Text>
+                          <TouchableOpacity onPress={() => {setAccessMonthlyExpenses(!accessMonthlyExpenses)}} style={{marginLeft: 8}}>
+                            <Feather size={16} name={'info'}/>
+                          </TouchableOpacity>
+                        </View>
+                        <Text style={styles.tabletMetricText}>${property.investment.expenses}</Text>
+                      </View>
+                      <Modal
+                        visible={accessMonthlyExpenses}
+                        animationType="slide"
+                      >
+                        <View style={styles.modalContainer}>
+                          <View style={styles.modalCOntent}>
+                            <Text style={styles.label}>{metricInfo.totalMonthlyExpenses.label}</Text>
+                            <Text style={styles.modalInfo}>{metricInfo.totalMonthlyExpenses.info}</Text>
+                            <TouchableOpacity onPress={() => {setAccessMonthlyExpenses(!accessMonthlyExpenses)}}>
+                              <Text style={styles.close}>Close</Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      </Modal>
+                      <View style={styles.metric}>
+                        <View style={styles.key}>
+                          <Text style={styles.tabletMetricText}>Mortgage:</Text>
+                          <TouchableOpacity  onPress={() => {setAccessMortgage(!accessMortgage)}} style={{marginLeft: 8}}>
+                            <Feather size={16} name={'info'}/>
+                          </TouchableOpacity>
+                        </View>
+                        <Text style={styles.tabletMetricText}>${property.investment.mortgageAmount}</Text>
+                      </View>
+                      <Modal
+                        visible={accessMortgage}
+                        animationType="slide"
+                      >
+                        <View style={styles.modalContainer}>
+                          <View style={styles.modalCOntent}>
+                            <Text style={styles.label}>{metricInfo.mortgage.label}</Text>
+                            <Text style={styles.modalInfo}>{metricInfo.mortgage.info}</Text>
+                            <TouchableOpacity onPress={() => {setAccessMortgage(!accessMortgage)}}>
+                              <Text style={styles.close}>Close</Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      </Modal>
+                      <View style={styles.metric}>
+                        <View style={styles.key}>
+                          <Text style={styles.tabletMetricText}>Cash Flow:</Text>
+                          <TouchableOpacity onPress={() => {setAccessCashFlow(!accessCashFlow)}} style={{marginLeft: 8}}>
+                            <Feather size={16} name={'info'}/>
+                          </TouchableOpacity>
+                        </View>
+                        <Text style={styles.tabletMetricText}>${property.investment.monthlyCashFLow}</Text>
+                      </View>
+
+                      <Modal
+                        visible={accessCashFlow}
+                        animationType="slide"
+                      >
+                        <View style={styles.modalContainer}>
+                          <View style={styles.modalCOntent}>
+                            <Text style={styles.label}>{metricInfo.monthlyCashFlow.label}</Text>
+                            <Text style={styles.modalInfo}>{metricInfo.monthlyCashFlow.info}</Text>
+                            <TouchableOpacity onPress={() => {setAccessCashFlow(!accessCashFlow)}}>
+                              <Text style={styles.close}>Close</Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      </Modal>
+                      <View style={styles.metric}>
+                        <View style={styles.key}>
+                          <Text style={styles.tabletMetricText}>Net Operating Income:</Text>
+                          <TouchableOpacity onPress={() => {setAccessNOI(!accessNOI)}} style={{marginLeft: 8}}>
+                            <Feather size={16} name={'info'}/>  
+                          </TouchableOpacity>
+                        </View>
+                        <Text style={styles.tabletMetricText}>${property.investment.netOperatingIncome}</Text>
+                      </View>
+                      <Modal
+                        visible={accessNOI}
+                        animationType="slide"
+                      >
+                        <View style={styles.modalContainer}>
+                          <View style={styles.modalCOntent}>
+                            <Text style={styles.label}>{metricInfo.monthlyNOI.label}</Text>
+                            <Text style={styles.modalInfo}>{metricInfo.monthlyNOI.info}</Text>
+                            <TouchableOpacity onPress={() => {setAccessNOI(!accessNOI)}}>
+                              <Text style={styles.close}>Close</Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      </Modal>
+                      <View style={styles.metric}>
+                        <View style={styles.key}>
+                          <Text style={styles.tabletMetricText}>Cap Rate:</Text>
+                          <TouchableOpacity onPress={() => {setAccessCapRate(!accessCapRate)}} style={{marginLeft: 8}}>
+                            <Feather size={16} name={'info'}/>
+                          </TouchableOpacity>
+                        </View>
+                        <Text style={styles.tabletMetricText}>{property.investment.currentCapRate}%</Text>
+                      </View>
+                      <Modal
+                        visible={accessCapRate}
+                        animationType="slide"
+                      >
+                        <View style={styles.modalContainer}>
+                          <View style={styles.modalCOntent}>
+                            <Text style={styles.label}>{metricInfo.capRate.label}</Text>
+                            <Text style={styles.modalInfo}>{metricInfo.capRate.info}</Text>
+                            <TouchableOpacity onPress={() => {setAccessCapRate(!accessCapRate)}}>
+                              <Text style={styles.close}>Close</Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      </Modal>
+                      <View style={styles.metric}>
+                        <View style={styles.key}>
+                          <Text style={styles.tabletMetricText}>CoC Return:</Text>
+                          <TouchableOpacity onPress={() => {setAccessCashOnCashFlow(!accessCashOnCashFlow)}} style={{marginLeft: 8}}>
+                            <Feather size={16} name={'info'}/>
+                          </TouchableOpacity>
+                        </View>
+                        <Text style={styles.tabletMetricText}>{property.investment.currentCashOnCashReturn}%</Text>
+                      </View>
+
+                      <Modal
+                        visible={accessCashOnCashFlow}
+                        animationType="slide"
+                      >
+                        <View style={styles.modalContainer}>
+                          <View style={styles.modalCOntent}>
+                            <Text style={styles.label}>{metricInfo.cashOnCashReturn.label}</Text>
+                            <Text style={styles.modalInfo}>{metricInfo.cashOnCashReturn.info}</Text>
+                            <TouchableOpacity onPress={() => {setAccessCashOnCashFlow(!accessCashOnCashFlow)}}>
+                              <Text style={styles.close}>Close</Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      </Modal>
+                      <View style={styles.metric}>
+                        <View style={styles.key}>
+                          <Text style={styles.tabletMetricText}>Return On Invesetment:</Text>
+                          <TouchableOpacity onPress={() => {setAccessROI(!accessROI)}} style={{marginLeft: 8}}>
+                            <Feather size={16} name={'info'}/>
+                          </TouchableOpacity>
+                        </View>
+                        <Text style={styles.tabletMetricText}>{property.investment.year1ReturnOnInvestment}%</Text>
+                      </View>
+
+                      <Modal
+                        visible={accessROI}
+                        animationType="slide"
+                      >
+                        <View style={styles.modalContainer}>
+                          <View style={styles.modalCOntent}>
+                            <Text style={styles.label}>{metricInfo.rOI.label}</Text>
+                            <Text style={styles.modalInfo}>{metricInfo.rOI.info}</Text>
+                            <TouchableOpacity onPress={() => {setAccessROI(!accessROI)}}>
+                              <Text style={styles.close}>Close</Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      </Modal>
+                    </View>
+                  </View>
+                  <View style={styles.hSplit}></View>
+                  <View style={styles.disclaimerContainer}>
+                    <Text style={styles.tabletDisclaimer}>Values & Metrics based on 20% down / 30 years / {property.mortgageRates.thirtyYearFixedRate}% IR</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            )
+          })
+        }
+      </ScrollView>
+    )
+  }
+
+  const phoneScreen = () => {
+    return(
+      <ScrollView style={styles.scroll}>
+        {
+          results.map((property) => {
+            return(
+              <View key={property.zpid} style={styles.property}>
+                <TouchableOpacity onPress={() => {addPropertyView(property)}}> 
+                  <Image style={{height: aspectHeight, width: aspectWidth}} source={{uri: property.hiResImageLink}}/>
+                  <View style={styles.summary}>
+                    <View style={styles.background}></View>
+                    <View style={styles.favoriteMenu}>
+                      {
+                        favoritesZpids.includes(property.zpid)
+                          ? <TouchableOpacity onPress={() => {updateRemoveFavorite(property)}}><Entypo color={'white'} size={28} name='heart'  stlye={styles.menu}/></TouchableOpacity>
+                          : <TouchableOpacity onPress={() => {updateAddFavorite(property)}}><Entypo color={'white'} size={28} name='heart-outlined'  stlye={styles.menu}/></TouchableOpacity>
+                      }
+                    </View>
+                    <View>
+                      <Text style={[styles.text, styles.price, styles.summaryInfo]}>${property.price}</Text>
+                    </View>
+                    <View>
+                      <Text style={styles.address}>
+                        {property.streetAddress}
+                      </Text>
+                      <Text style={styles.address}>
+                        {property.city}, {property.state} {property.zipcode}
+                      </Text>
+                    </View>
+                    <View style={styles.bottomRowSummary}>
+                      <Text style={styles.address}>
+                        {property.bedrooms} Beds | {property.bathrooms} Bath | {property.livingArea} Sqft.
+                      </Text>
+                      <Text style={styles.address}>
+                        {formatStatus(property.homeStatus)}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={styles.investmentComponent}>
+                    <View style={styles.column}> 
+                      <View style={styles.metric}>
+                        <View style={styles.key}>
+                          <Text style={styles.metricText}>Monthly Rev.:</Text>
+                          <TouchableOpacity style={{marginLeft: 8}} onPress={() => {setAccessMonthlyRevenue(!accessMonthlyRevenue)}}>
+                            <Feather size={20} name={'info'}/>
+                          </TouchableOpacity>
+                        </View>
+                        <Text style={styles.metricText}>${property.investment.monthlyRevenue}</Text>
+                      </View>
+
+                      <Modal
+                        visible={accessMonthlyRevenue}
+                        animationType="slide"
+                      >
+                        <View style={styles.modalContainer}>
+                          <View style={styles.modalCOntent}>
+                            <Text style={styles.label}>{metricInfo.grossMonthlyRevenue.label}</Text>
+                            <Text style={styles.modalInfo}>{metricInfo.grossMonthlyRevenue.info}</Text>
+                            <TouchableOpacity onPress={() => {setAccessMonthlyRevenue(!accessMonthlyRevenue)}}>
+                              <Text style={styles.close}>Close</Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      </Modal>
+                      <View style={styles.metric}>
+                        <View style={styles.key}>
+                          <Text style={styles.metricText}>Monthly Exp.:</Text>
+                          <TouchableOpacity onPress={() => {setAccessMonthlyExpenses(!accessMonthlyExpenses)}} style={{marginLeft: 8}}>
+                            <Feather size={20} name={'info'}/>
+                          </TouchableOpacity>
+                        </View>
+                        <Text style={styles.metricText}>${property.investment.expenses}</Text>
+                      </View>
+                      <Modal
+                        visible={accessMonthlyExpenses}
+                        animationType="slide"
+                      >
+                        <View style={styles.modalContainer}>
+                          <View style={styles.modalCOntent}>
+                            <Text style={styles.label}>{metricInfo.totalMonthlyExpenses.label}</Text>
+                            <Text style={styles.modalInfo}>{metricInfo.totalMonthlyExpenses.info}</Text>
+                            <TouchableOpacity onPress={() => {setAccessMonthlyExpenses(!accessMonthlyExpenses)}}>
+                              <Text style={styles.close}>Close</Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      </Modal>
+                      <View style={styles.metric}>
+                        <View style={styles.key}>
+                          <Text style={styles.metricText}>Mortgage:</Text>
+                          <TouchableOpacity  onPress={() => {setAccessMortgage(!accessMortgage)}} style={{marginLeft: 8}}>
+                            <Feather size={20} name={'info'}/>
+                          </TouchableOpacity>
+                        </View>
+                        <Text style={styles.metricText}>${property.investment.mortgageAmount}</Text>
+                      </View>
+                      <Modal
+                        visible={accessMortgage}
+                        animationType="slide"
+                      >
+                        <View style={styles.modalContainer}>
+                          <View style={styles.modalCOntent}>
+                            <Text style={styles.label}>{metricInfo.mortgage.label}</Text>
+                            <Text style={styles.modalInfo}>{metricInfo.mortgage.info}</Text>
+                            <TouchableOpacity onPress={() => {setAccessMortgage(!accessMortgage)}}>
+                              <Text style={styles.close}>Close</Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      </Modal>
+                      <View style={styles.metric}>
+                        <View style={styles.key}>
+                          <Text style={styles.metricText}>Cash Flow:</Text>
+                          <TouchableOpacity onPress={() => {setAccessCashFlow(!accessCashFlow)}} style={{marginLeft: 8}}>
+                            <Feather size={20} name={'info'}/>
+                          </TouchableOpacity>
+                        </View>
+                        <Text style={styles.metricText}>${property.investment.monthlyCashFLow}</Text>
+                      </View>
+
+                      <Modal
+                        visible={accessCashFlow}
+                        animationType="slide"
+                      >
+                        <View style={styles.modalContainer}>
+                          <View style={styles.modalCOntent}>
+                            <Text style={styles.label}>{metricInfo.monthlyCashFlow.label}</Text>
+                            <Text style={styles.modalInfo}>{metricInfo.monthlyCashFlow.info}</Text>
+                            <TouchableOpacity onPress={() => {setAccessCashFlow(!accessCashFlow)}}>
+                              <Text style={styles.close}>Close</Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      </Modal>
+                      <View style={styles.metric}>
+                        <View style={styles.key}>
+                          <Text style={styles.metricText}>Net Operating Income:</Text>
+                          <TouchableOpacity onPress={() => {setAccessNOI(!accessNOI)}} style={{marginLeft: 8}}>
+                            <Feather size={20} name={'info'}/>  
+                          </TouchableOpacity>
+                        </View>
+                        <Text style={styles.metricText}>${property.investment.netOperatingIncome}</Text>
+                      </View>
+                      <Modal
+                        visible={accessNOI}
+                        animationType="slide"
+                      >
+                        <View style={styles.modalContainer}>
+                          <View style={styles.modalCOntent}>
+                            <Text style={styles.label}>{metricInfo.monthlyNOI.label}</Text>
+                            <Text style={styles.modalInfo}>{metricInfo.monthlyNOI.info}</Text>
+                            <TouchableOpacity onPress={() => {setAccessNOI(!accessNOI)}}>
+                              <Text style={styles.close}>Close</Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      </Modal>
+                      <View style={styles.metric}>
+                        <View style={styles.key}>
+                          <Text style={styles.metricText}>Cap Rate:</Text>
+                          <TouchableOpacity onPress={() => {setAccessCapRate(!accessCapRate)}} style={{marginLeft: 8}}>
+                            <Feather size={20} name={'info'}/>
+                          </TouchableOpacity>
+                        </View>
+                        <Text style={styles.metricText}>{property.investment.currentCapRate}%</Text>
+                      </View>
+                      <Modal
+                        visible={accessCapRate}
+                        animationType="slide"
+                      >
+                        <View style={styles.modalContainer}>
+                          <View style={styles.modalCOntent}>
+                            <Text style={styles.label}>{metricInfo.capRate.label}</Text>
+                            <Text style={styles.modalInfo}>{metricInfo.capRate.info}</Text>
+                            <TouchableOpacity onPress={() => {setAccessCapRate(!accessCapRate)}}>
+                              <Text style={styles.close}>Close</Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      </Modal>
+                      <View style={styles.metric}>
+                        <View style={styles.key}>
+                          <Text style={styles.metricText}>CoC Return:</Text>
+                          <TouchableOpacity onPress={() => {setAccessCashOnCashFlow(!accessCashOnCashFlow)}} style={{marginLeft: 8}}>
+                            <Feather size={20} name={'info'}/>
+                          </TouchableOpacity>
+                        </View>
+                        <Text style={styles.metricText}>{property.investment.currentCashOnCashReturn}%</Text>
+                      </View>
+
+                      <Modal
+                        visible={accessCashOnCashFlow}
+                        animationType="slide"
+                      >
+                        <View style={styles.modalContainer}>
+                          <View style={styles.modalCOntent}>
+                            <Text style={styles.label}>{metricInfo.cashOnCashReturn.label}</Text>
+                            <Text style={styles.modalInfo}>{metricInfo.cashOnCashReturn.info}</Text>
+                            <TouchableOpacity onPress={() => {setAccessCashOnCashFlow(!accessCashOnCashFlow)}}>
+                              <Text style={styles.close}>Close</Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      </Modal>
+                      <View style={styles.metric}>
+                        <View style={styles.key}>
+                          <Text style={styles.metricText}>Return On Invesetment:</Text>
+                          <TouchableOpacity onPress={() => {setAccessROI(!accessROI)}} style={{marginLeft: 8}}>
+                            <Feather size={20} name={'info'}/>
+                          </TouchableOpacity>
+                        </View>
+                        <Text style={styles.metricText}>{property.investment.year1ReturnOnInvestment}%</Text>
+                      </View>
+
+                      <Modal
+                        visible={accessROI}
+                        animationType="slide"
+                      >
+                        <View style={styles.modalContainer}>
+                          <View style={styles.modalCOntent}>
+                            <Text style={styles.label}>{metricInfo.rOI.label}</Text>
+                            <Text style={styles.modalInfo}>{metricInfo.rOI.info}</Text>
+                            <TouchableOpacity onPress={() => {setAccessROI(!accessROI)}}>
+                              <Text style={styles.close}>Close</Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      </Modal>
+                    </View>
+                  </View>
+                  <View style={styles.hSplit}></View>
+                  <View style={styles.disclaimerContainer}>
+                    <Text style={styles.disclaimer}>Values & Metrics based on 20% down / 30 years / {property.mortgageRates.thirtyYearFixedRate}% IR</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            )
+          })
+        }
+      </ScrollView>
+    )
+  }
+
   return (
-    <ScrollView style={styles.scroll}>
-    {
-      results.map((property) => {
-        return(
-          <View key={property.zpid} style={styles.property}>
-            <TouchableOpacity onPress={() => {addPropertyView(property)}}> 
-              <Image style={{height: aspectHeight, width: aspectWidth}} source={{uri: property.hiResImageLink}}/>
-              <View style={styles.summary}>
-                <View style={styles.background}></View>
-                <View style={styles.favoriteMenu}>
-                  {
-                    favoritesZpids.includes(property.zpid)
-                      ? <TouchableOpacity onPress={() => {updateRemoveFavorite(property)}}><Entypo color={'white'} size={28} name='heart'  stlye={styles.menu}/></TouchableOpacity>
-                      : <TouchableOpacity onPress={() => {updateAddFavorite(property)}}><Entypo color={'white'} size={28} name='heart-outlined'  stlye={styles.menu}/></TouchableOpacity>
-                  }
-                </View>
-                <View>
-                  <Text style={[styles.text, styles.price, styles.summaryInfo]}>${property.price}</Text>
-                </View>
-                <View>
-                  <Text style={styles.address}>
-                    {property.streetAddress}
-                  </Text>
-                  <Text style={styles.address}>
-                    {property.city}, {property.state} {property.zipcode}
-                  </Text>
-                </View>
-                <View style={styles.bottomRowSummary}>
-                  <Text style={styles.address}>
-                    {property.bedrooms} Beds | {property.bathrooms} Bath | {property.livingArea} Sqft.
-                  </Text>
-                  <Text style={styles.address}>
-                    {formatStatus(property.homeStatus)}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.investmentComponent}>
-                <View style={styles.column}> 
-                  <View style={styles.metric}>
-                    <View style={styles.key}>
-                      <Text style={styles.metricText}>Monthly Rev.:</Text>
-                      <TouchableOpacity style={{marginLeft: 8}} onPress={() => {setAccessMonthlyRevenue(!accessMonthlyRevenue)}}>
-                        <Feather size={20} name={'info'}/>
-                      </TouchableOpacity>
-                    </View>
-                    <Text style={styles.metricText}>${property.investment.monthlyRevenue}</Text>
-                  </View>
-
-                  <Modal
-                    visible={accessMonthlyRevenue}
-                    animationType="slide"
-                  >
-                    <View style={styles.modalContainer}>
-                      <View style={styles.modalCOntent}>
-                        <Text style={styles.label}>{metricInfo.grossMonthlyRevenue.label}</Text>
-                        <Text style={styles.modalInfo}>{metricInfo.grossMonthlyRevenue.info}</Text>
-                        <TouchableOpacity onPress={() => {setAccessMonthlyRevenue(!accessMonthlyRevenue)}}>
-                          <Text style={styles.close}>Close</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  </Modal>
-                  <View style={styles.metric}>
-                    <View style={styles.key}>
-                      <Text style={styles.metricText}>Monthly Exp.:</Text>
-                      <TouchableOpacity onPress={() => {setAccessMonthlyExpenses(!accessMonthlyExpenses)}} style={{marginLeft: 8}}>
-                        <Feather size={20} name={'info'}/>
-                      </TouchableOpacity>
-                    </View>
-                    <Text style={styles.metricText}>${property.investment.expenses}</Text>
-                  </View>
-                  <Modal
-                    visible={accessMonthlyExpenses}
-                    animationType="slide"
-                  >
-                    <View style={styles.modalContainer}>
-                      <View style={styles.modalCOntent}>
-                        <Text style={styles.label}>{metricInfo.totalMonthlyExpenses.label}</Text>
-                        <Text style={styles.modalInfo}>{metricInfo.totalMonthlyExpenses.info}</Text>
-                        <TouchableOpacity onPress={() => {setAccessMonthlyExpenses(!accessMonthlyExpenses)}}>
-                          <Text style={styles.close}>Close</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  </Modal>
-                  <View style={styles.metric}>
-                    <View style={styles.key}>
-                      <Text style={styles.metricText}>Mortgage:</Text>
-                      <TouchableOpacity  onPress={() => {setAccessMortgage(!accessMortgage)}} style={{marginLeft: 8}}>
-                        <Feather size={20} name={'info'}/>
-                      </TouchableOpacity>
-                    </View>
-                    <Text style={styles.metricText}>${property.investment.mortgageAmount}</Text>
-                  </View>
-                  <Modal
-                    visible={accessMortgage}
-                    animationType="slide"
-                  >
-                    <View style={styles.modalContainer}>
-                      <View style={styles.modalCOntent}>
-                        <Text style={styles.label}>{metricInfo.mortgage.label}</Text>
-                        <Text style={styles.modalInfo}>{metricInfo.mortgage.info}</Text>
-                        <TouchableOpacity onPress={() => {setAccessMortgage(!accessMortgage)}}>
-                          <Text style={styles.close}>Close</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  </Modal>
-                  <View style={styles.metric}>
-                    <View style={styles.key}>
-                      <Text style={styles.metricText}>Cash Flow:</Text>
-                      <TouchableOpacity onPress={() => {setAccessCashFlow(!accessCashFlow)}} style={{marginLeft: 8}}>
-                        <Feather size={20} name={'info'}/>
-                      </TouchableOpacity>
-                    </View>
-                    <Text style={styles.metricText}>${property.investment.monthlyCashFLow}</Text>
-                  </View>
-
-                  <Modal
-                    visible={accessCashFlow}
-                    animationType="slide"
-                  >
-                    <View style={styles.modalContainer}>
-                      <View style={styles.modalCOntent}>
-                        <Text style={styles.label}>{metricInfo.monthlyCashFlow.label}</Text>
-                        <Text style={styles.modalInfo}>{metricInfo.monthlyCashFlow.info}</Text>
-                        <TouchableOpacity onPress={() => {setAccessCashFlow(!accessCashFlow)}}>
-                          <Text style={styles.close}>Close</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  </Modal>
-                  <View style={styles.metric}>
-                    <View style={styles.key}>
-                      <Text style={styles.metricText}>Net Operating Income:</Text>
-                      <TouchableOpacity onPress={() => {setAccessNOI(!accessNOI)}} style={{marginLeft: 8}}>
-                        <Feather size={20} name={'info'}/>  
-                      </TouchableOpacity>
-                    </View>
-                    <Text style={styles.metricText}>${property.investment.netOperatingIncome}</Text>
-                  </View>
-                  <Modal
-                    visible={accessNOI}
-                    animationType="slide"
-                  >
-                    <View style={styles.modalContainer}>
-                      <View style={styles.modalCOntent}>
-                        <Text style={styles.label}>{metricInfo.monthlyNOI.label}</Text>
-                        <Text style={styles.modalInfo}>{metricInfo.monthlyNOI.info}</Text>
-                        <TouchableOpacity onPress={() => {setAccessNOI(!accessNOI)}}>
-                          <Text style={styles.close}>Close</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  </Modal>
-                  <View style={styles.metric}>
-                    <View style={styles.key}>
-                      <Text style={styles.metricText}>Cap Rate:</Text>
-                      <TouchableOpacity onPress={() => {setAccessCapRate(!accessCapRate)}} style={{marginLeft: 8}}>
-                        <Feather size={20} name={'info'}/>
-                      </TouchableOpacity>
-                    </View>
-                    <Text style={styles.metricText}>{property.investment.currentCapRate}%</Text>
-                  </View>
-                  <Modal
-                    visible={accessCapRate}
-                    animationType="slide"
-                  >
-                    <View style={styles.modalContainer}>
-                      <View style={styles.modalCOntent}>
-                        <Text style={styles.label}>{metricInfo.capRate.label}</Text>
-                        <Text style={styles.modalInfo}>{metricInfo.capRate.info}</Text>
-                        <TouchableOpacity onPress={() => {setAccessCapRate(!accessCapRate)}}>
-                          <Text style={styles.close}>Close</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  </Modal>
-                  <View style={styles.metric}>
-                    <View style={styles.key}>
-                      <Text style={styles.metricText}>CoC Return:</Text>
-                      <TouchableOpacity onPress={() => {setAccessCashOnCashFlow(!accessCashOnCashFlow)}} style={{marginLeft: 8}}>
-                        <Feather size={20} name={'info'}/>
-                      </TouchableOpacity>
-                    </View>
-                    <Text style={styles.metricText}>{property.investment.currentCashOnCashReturn}%</Text>
-                  </View>
-
-                  <Modal
-                    visible={accessCashOnCashFlow}
-                    animationType="slide"
-                  >
-                    <View style={styles.modalContainer}>
-                      <View style={styles.modalCOntent}>
-                        <Text style={styles.label}>{metricInfo.cashOnCashReturn.label}</Text>
-                        <Text style={styles.modalInfo}>{metricInfo.cashOnCashReturn.info}</Text>
-                        <TouchableOpacity onPress={() => {setAccessCashOnCashFlow(!accessCashOnCashFlow)}}>
-                          <Text style={styles.close}>Close</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  </Modal>
-                  <View style={styles.metric}>
-                    <View style={styles.key}>
-                      <Text style={styles.metricText}>Return On Invesetment:</Text>
-                      <TouchableOpacity onPress={() => {setAccessROI(!accessROI)}} style={{marginLeft: 8}}>
-                        <Feather size={20} name={'info'}/>
-                      </TouchableOpacity>
-                    </View>
-                    <Text style={styles.metricText}>{property.investment.year1ReturnOnInvestment}%</Text>
-                  </View>
-
-                  <Modal
-                    visible={accessROI}
-                    animationType="slide"
-                  >
-                    <View style={styles.modalContainer}>
-                      <View style={styles.modalCOntent}>
-                        <Text style={styles.label}>{metricInfo.rOI.label}</Text>
-                        <Text style={styles.modalInfo}>{metricInfo.rOI.info}</Text>
-                        <TouchableOpacity onPress={() => {setAccessROI(!accessROI)}}>
-                          <Text style={styles.close}>Close</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  </Modal>
-                </View>
-              </View>
-              <View style={styles.hSplit}></View>
-              <View style={styles.disclaimerContainer}>
-                <Text style={styles.disclaimer}>Values & Metrics based on 20% down / 30 years / {property.mortgageRates.thirtyYearFixedRate}% IR</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        )
-      })
-    }
-    </ScrollView>
+    <>
+      {
+        deviceWidth >= 500 ? tabletScreen() : phoneScreen()
+      }
+    </>
   )
 }
 
@@ -347,6 +602,17 @@ const styles = StyleSheet.create({
   scroll: {
     marginLeft: 8,
     marginBottom: 250
+  },
+  tabletScroll: {
+    marginLeft: 8,
+    marginBottom: 250
+  },
+  tabletProperty: {
+    width: splitWidth,
+    borderRadius: 10,
+    overflow: 'hidden',
+    marginBottom: 16,
+    backgroundColor: '#E8E8E8'
   },
   property: {
     width: aspectWidth,
@@ -358,6 +624,13 @@ const styles = StyleSheet.create({
   summary: {
     position: 'absolute',
     padding: 8
+  },
+  tabletBackground: {
+    position: 'absolute',
+    height: splitHeight,
+    width: splitWidth,
+    backgroundColor: 'black',
+    opacity: .4
   },
   background: {
     position: 'absolute',
@@ -372,8 +645,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
   },
+  tabletFavoriteMenu: {
+    width: splitWidth - 16,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
   summaryInfo: {
     marginTop: aspectHeight - 120
+  },
+  tabletSummaryInfo: {
+    marginTop: splitHeight - 134
   },
   text: {
     color: 'white'
@@ -424,8 +706,16 @@ const styles = StyleSheet.create({
   disclaimer: {
     color: 'grey'
   },
+  tabletDisclaimer: {
+    fontSize: 12,
+    color: 'grey'
+  },
   metricText: {
     fontSize: 20,
+    fontWeight: '500'
+  },
+  tabletMetricText: {
+    fontSize: 18,
     fontWeight: '500'
   },
   key: {

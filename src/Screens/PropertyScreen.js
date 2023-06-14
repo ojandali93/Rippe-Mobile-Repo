@@ -27,9 +27,11 @@ import SchoolsComponent from '../Components/PropertyScreen/SchoolsComponent'
 import NearbyHomesComponent from '../Components/PropertyScreen/NearbyHomesComponent'
 import DisclaimerComponent from '../Components/PropertyScreen/DisclaimerComponent'
 import PlaceOfferComponent from '../Components/PropertyScreen/PlaceOfferComponent'
+import ImageCarouseTabletComponent from '../Components/PropertyScreen/ImageCarouseTabletComponent'
 
 const deviceWidth = Dimensions.get('window').width
 const deviceHeight = Dimensions.get('window').height
+const scrollHeight = deviceHeight - 315
 
 const PropertyScreen = ({route}) => {
 
@@ -132,6 +134,86 @@ const PropertyScreen = ({route}) => {
     )
   }
 
+  const displayPropertyTablet = () => {
+    return(
+      <View style={styles.screenTablet}>
+        <View style={styles.investmentCOntainer}>
+          <InvestmentMetricCompnent />
+        </View>
+        <View style={styles.splitTablet}>
+          <View style={styles.splitImages}>
+            <ImageCarouseTabletComponent/>
+          </View>
+          <View style={styles.splitContent}>
+            <ScrollView style={[styles.scrollTablet]}>
+              <QuickSummaryComponent/>
+              <TouchableOpacity onPress={() => {setLoadRevenue(!loadRevenue)}}>
+                <View style={styles.expenseContainer}>
+                  <Text style={styles.expensesText}>Total Revenue: ${totalRevenue}</Text>
+                    <Feather size={22} name={'chevrons-down'} />
+                </View>
+              </TouchableOpacity>
+              {
+                loadRevenue ? <RevenueComponent /> : null
+              }
+              <TouchableOpacity onPress={() => {setLoadExpenses(!loadExpenses)}}>
+                <View style={styles.expenseContainer}>
+                  <Text style={styles.expensesText}>Total Expenses: ${expenses}</Text>
+                    <Feather size={22} name={'chevrons-down'} />
+                </View>
+              </TouchableOpacity>
+              {
+                loadExpenses ? displayExpensesComponents() : null
+              }
+              <View style={styles.expenseContainer}>
+                <Text style={styles.expensesText}>Property Details</Text>
+              </View>
+              <DetailsComponent />
+              <View style={styles.expenseContainer}>
+                <Text style={styles.expensesText}>Property Description:</Text>
+              </View>
+              <DescriptionComponent />
+              <View style={styles.expenseContainer}>
+                <Text style={styles.expensesText}>Listing Details:</Text>
+              </View>
+              <ListingDetailsComponent />
+              <View style={styles.expenseContainer}>
+                <Text style={styles.expensesText}>Connect With An Agent</Text>
+              </View>
+              <ConnectWithAgentComponent />
+              <View style={styles.expenseContainer}>
+                <Text style={styles.expensesText}>Sale History</Text>
+              </View>
+              <SaleHistoryComponent />
+              <View style={styles.expenseContainer}>
+                <Text style={styles.expensesText}>Tax History</Text>
+              </View>
+              <TaxHistoryComponent />
+              <PlaceOfferComponent />
+              <MapComponent />
+              <View style={styles.expenseContainer}>
+                <Text style={styles.expensesText}>Open House</Text>
+              </View>
+              <OpenHouseComponent />
+              <View style={styles.expenseContainer}>
+                <Text style={styles.expensesText}>Nearby Schools</Text>
+              </View>
+              <SchoolsComponent />
+              <View style={styles.expenseContainer}>
+                <Text style={styles.expensesText}>Nearby Homes</Text>
+              </View>
+              <NearbyHomesComponent />
+              <View style={styles.expenseContainer}>
+                <Text style={styles.expensesText}>MLS Info</Text>
+              </View>
+              <DisclaimerComponent />
+            </ScrollView>
+          </View>
+        </View>
+      </View>
+    )
+  }
+
   const displayLoading = () => {
     return(
       <View style={styles.loadingScreen}>
@@ -144,7 +226,11 @@ const PropertyScreen = ({route}) => {
   return (
     <View>
       {
-        loading === true ? displayLoading() : displayProperty()
+        loading === true 
+          ? displayLoading() 
+          : deviceWidth >= 500
+            ? displayPropertyTablet()
+            : displayProperty()
       }
     </View>
   )
@@ -153,6 +239,9 @@ const PropertyScreen = ({route}) => {
 const styles = StyleSheet.create({
   screen: {
     marginTop: 58
+  },
+  screenTablet: {
+    marginTop: 16
   },
   investmentCOntainer: {
     zIndex: 1,
@@ -190,6 +279,18 @@ const styles = StyleSheet.create({
   },
   scroll: {
     height: 600
+  },
+  splitTablet: {
+    width: deviceWidth,
+    height: deviceHeight - 300,
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  splitImages: {
+    width: deviceWidth - 425
+  },
+  splitContent: {
+    width: 425
   }
 })
 

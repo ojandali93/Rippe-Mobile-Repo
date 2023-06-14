@@ -11,46 +11,84 @@ import { SearchFilterContext } from '../../Context/SearchFilterContext'
 
 const deviceWidth = Dimensions.get('window').width
 const aspectWidth = deviceWidth - 16
-const splitWidth = deviceWidth - 16
+const splitContentWidth = 375
 
 const TopbarComponent = () => {
 
   const {viewMaps, setViewMaps} = useContext(PropertiesContext)
   const {activeSearch} = useContext(PropertiesContext)
 
+  const phoneSplit = () => {
+    return(
+      <View style={styles.component}>
+        <View style={styles.search}>
+          <SearchComponent />
+        </View>
+        <View style={styles.split}></View>
+        <View style={styles.sortFilterPage}>
+          <View style={styles.sortFilter}>
+            <SortModalComponent />
+          </View>
+          <View style={styles.mapView}>
+            {
+              viewMaps 
+                ? <Text style={styles.button} onPress={() => {setViewMaps(!viewMaps)}}> List</Text>
+                : <Text style={styles.button} onPress={() => {setViewMaps(!viewMaps)}}> Map</Text>
+            }
+          </View>
+        </View>
+        <View style={styles.split}></View>
+        <View style={styles.bottomRow}>
+          <Text style={styles.buttonText}>
+            Results: "{activeSearch}"
+          </Text>
+          <PageNavigatorComponent />
+        </View>
+        <View style={styles.split}></View>
+      </View>
+    )
+  }
+
+  const tabletSplit = () => {
+    return(
+      <View style={styles.tabletComponent}>
+        <View style={styles.search}>
+          <SearchComponent />
+        </View>
+        <View style={styles.tabletSplit}></View>
+        <View style={styles.sortFilterPage}>
+          <View style={styles.sortFilter}>
+            <SortModalComponent />
+          </View>
+        </View>
+        <View style={styles.tabletSplit}></View>
+        <View style={styles.bottomRow}>
+          <Text style={styles.buttonText}>
+            Results: "{activeSearch}"
+          </Text>
+          <PageNavigatorComponent />
+        </View>
+        <View style={styles.tabletSplit}></View>
+      </View>
+    )
+  }
+
   return (
-    <View style={styles.component}>
-      <View style={styles.search}>
-        <SearchComponent />
-      </View>
-      <View style={styles.split}></View>
-      <View style={styles.sortFilterPage}>
-        <View style={styles.sortFilter}>
-          <SortModalComponent />
-        </View>
-        <View style={styles.mapView}>
-          {
-            viewMaps 
-              ? <Text style={styles.button} onPress={() => {setViewMaps(!viewMaps)}}> List</Text>
-              : <Text style={styles.button} onPress={() => {setViewMaps(!viewMaps)}}> Map</Text>
-          }
-        </View>
-      </View>
-      <View style={styles.split}></View>
-      <View style={styles.bottomRow}>
-        <Text style={styles.buttonText}>
-          Results: "{activeSearch}"
-        </Text>
-        <PageNavigatorComponent />
-      </View>
-      <View style={styles.split}></View>
-    </View>
+    <>
+      {
+        deviceWidth >= 500 ? tabletSplit() : phoneSplit()
+      }
+    </>
   )
 }
 
 const styles = StyleSheet.create({
   component: {
     width: aspectWidth,
+    marginLeft: 8
+  },
+  tabletComponent: {
+    width: splitContentWidth - 16,
     marginLeft: 8
   },
   search: {
@@ -61,7 +99,13 @@ const styles = StyleSheet.create({
   },
   split: {
     height: 2,
-    width: splitWidth,
+    width: aspectWidth,
+    backgroundColor: 'grey',
+    marginVertical: 8
+  },
+  tabletSplit: {
+    height: 2,
+    width: splitContentWidth - 16,
     backgroundColor: 'grey',
     marginVertical: 8
   },

@@ -14,6 +14,9 @@ import { auth } from '../Api/firebaseTesting'
 
 const deviceWidth = Dimensions.get('window').width
 const deviceHeight = Dimensions.get('window').height
+const splitWidth = 740
+const splitContentWidth = 375
+const splitMapWidth = deviceWidth - 375
 
 const PropertiesScreen = () => {
   const navigation = useNavigation()
@@ -51,6 +54,15 @@ const PropertiesScreen = () => {
     )
   }
 
+  const displayTabletLoading = () => {
+    return(
+      <View style={styles.tabletLoadingScreen}>
+        <Text style={styles.loadingText}>Loading properties</Text>
+        <ActivityIndicator style={styles.loading} size='large'/>
+      </View>
+    )
+  }
+
   const displayMap = () => {
     return(
       <View style={styles.map}>
@@ -59,17 +71,47 @@ const PropertiesScreen = () => {
     )
   }
 
+  const iphoneMain = () => {
+    return(
+      <View style={styles.screen}>
+        <TopbarComponent />
+        {
+          loading 
+            ? displayLoading() 
+            : viewMaps === false 
+              ? displayPropertyList()
+              : displayMap()
+        }
+      </View>
+    )
+  }
+
+  const iPadMain = () => {
+    return(
+      <View style={styles.ipad}>
+        <View style={styles.mapSplit}>
+          <MainMapsConponents />
+        </View>
+        <View style={styles.contentSplit}>
+          <TopbarComponent />
+          {
+            loading 
+              ? displayTabletLoading() 
+              : viewMaps === false 
+                ? displayPropertyList()
+                : displayMap()
+          }
+        </View>
+      </View>
+    )
+  }
+
   return (
-    <View style={styles.screen}>
-      <TopbarComponent />
+    <>
       {
-        loading 
-          ? displayLoading() 
-          : viewMaps === false 
-            ? displayPropertyList()
-            : displayMap()
+        deviceWidth >= 500 ? iPadMain() : iphoneMain()
       }
-    </View>
+    </>
   )
 }
 
@@ -78,12 +120,33 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: 58,
   },
+  ipad: {
+    width: deviceWidth,
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  mapSplit: {
+    width: splitMapWidth,
+  },
+  contentSplit: {
+    width: splitContentWidth,
+    paddingTop: 24
+  },
   map: {
     height: deviceHeight,
     width: deviceWidth,
   },
   loadingScreen: {
     width: deviceWidth - 16,
+    marginLeft: 8,
+    height: deviceHeight - 250,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  tabletLoadingScreen: {
+    width: splitContentWidth,
     marginLeft: 8,
     height: deviceHeight - 250,
     display: 'flex',

@@ -42,8 +42,8 @@ export const PropertiesContextProvider = ({children}) => {
   let counter = 0
 
   const [viewMaps, setViewMaps] = useState(false)
-  const [cityLat, setCityLat] = useState(118.2437)
-  const [cityLong, setCityLong] = useState(34.0522)
+  const [cityLat, setCityLat] = useState(34.052235)
+  const [cityLong, setCityLong] = useState(-118.243683)
   const [favoritesZpid, setFavoritesZpid] = useState([])
   
   const {sort, setSort} = useContext(SearchFilterContext)
