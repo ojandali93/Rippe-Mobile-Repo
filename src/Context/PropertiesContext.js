@@ -1,3 +1,4 @@
+require('dotenv').config()
 import axios from 'axios';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { properties, singleProperty } from '../Api/zillowApi'
@@ -40,7 +41,6 @@ export const PropertiesContextProvider = ({children}) => {
 
   const [singlePropertyFound, setSinglePropertyFound] = useState(false)
   
-  let resultsLength = 4
   let counter = 0
 
   const [viewMaps, setViewMaps] = useState(false)
@@ -145,9 +145,9 @@ export const PropertiesContextProvider = ({children}) => {
         ? null 
         : setMultiProperties(response)
     }).catch(function (error) {
-      error
-        ? setErrorMessage('There was an issue retreiving properties')
-        : null
+        error[0] === 'AxiosError: Request failed with status code 500'
+          ? setErrorMessage('There was an issue retreiving properties')
+          : null
     });
   }
 
@@ -159,7 +159,7 @@ export const PropertiesContextProvider = ({children}) => {
             state: getStateName(state.toUpperCase())
         },
         headers: {
-            'X-Api-Key': apiKey
+            'X-Api-Key': process.env.GEO_LOCATE_API_KEY
         },
         responseType: 'json'
     })
@@ -191,8 +191,8 @@ export const PropertiesContextProvider = ({children}) => {
         params: {zpid: results[i].zpid},
         headers: {
           'content-type': 'application/octet-stream',
-          'X-RapidAPI-Key': '22cff3b757msh1086049fc5382bcp19ed7ajsn955a1faa4f16',
-          'X-RapidAPI-Host': 'zillow56.p.rapidapi.com'
+          'X-RapidAPI-Key': process.env.ZILLOW_API_KEY,
+          'X-RapidAPI-Host': process.env.ZILLOW_API_HOST
         }
       };
       requestList.push(requestObject)
@@ -201,7 +201,7 @@ export const PropertiesContextProvider = ({children}) => {
   }
   
   const makeNewRequest = (requestList) => {
-    if(counter < resultsLength){
+    if(counter < requestList.length){
       axios.request(requestList[counter])
         .then((response) => {
           let downPaymentAmount = calculateDownPaymentAmount(response.data.price, 20)

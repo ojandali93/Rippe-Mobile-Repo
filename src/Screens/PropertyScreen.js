@@ -40,7 +40,7 @@ const PropertyScreen = ({route}) => {
   const [loadDetails, setLoadDetails] = useState(false)
   const [loadDescription, setLoadDecription] = useState(false)
 
-  const {loading, setPropertyDetails} = useContext(PropertyContext)
+  const {loading, setPropertyDetails, errorMessage} = useContext(PropertyContext)
   const {expenses, totalRevenue} = useContext(FinancesContext)
 
   useEffect(() => {
@@ -223,14 +223,24 @@ const PropertyScreen = ({route}) => {
     )
   }
 
+  const displayError = () => {
+    return(
+      <View style={styles.loadingScreen}>
+        <Text style={styles.errorText}>Loading Property</Text>
+      </View>
+    )
+  }
+
   return (
     <View>
       {
-        loading === true 
-          ? displayLoading() 
-          : deviceWidth >= 500
-            ? displayPropertyTablet()
-            : displayProperty()
+        errorMessage
+          ? displayError()
+          : loading === true 
+            ? displayLoading() 
+            : deviceWidth >= 500
+              ? displayPropertyTablet()
+              : displayProperty()
       }
     </View>
   )
@@ -258,6 +268,10 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 28,
+    fontWeight: 'bold'
+  },
+  errorText: {
+    fontSize: 18,
     fontWeight: 'bold'
   },
   loading: {

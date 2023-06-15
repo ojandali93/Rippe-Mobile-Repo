@@ -9,6 +9,7 @@ export const PropertyContextProvider = ({children}) => {
 
   const [mainImage, setMainImage] = useState('')
   const [imageList, setImageList] = useState([])
+  const [errorMessage, setErrorMessage] = ('')
 
   const [loading, setLoading] = useState(true)
 
@@ -22,7 +23,9 @@ export const PropertyContextProvider = ({children}) => {
         setLoading(false)
       })
       .catch((error) => {
-        console.error(error)
+        error[0] === 'AxiosError: Request failed with status code 500'
+            ? setErrorMessage('There was an issue retreiving properties')
+            : null
       })
   }
 
@@ -40,6 +43,7 @@ export const PropertyContextProvider = ({children}) => {
                                       loading, 
                                       mainImage, 
                                       imageList,
+                                      errorMessage,
                                       setProperty, 
                                       setPropertyDetails,
                                       setMainImage,

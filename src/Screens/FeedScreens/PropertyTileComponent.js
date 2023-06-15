@@ -22,6 +22,7 @@ const PropertyTileComponent = ({item}) => {
 
   const [propertyList, setPropertyList] = useState([])
   const [loading, setLoading] = useState(true)
+  const [errorMessage, setErrorMessage] = useState('')
 
   const {favoritesZpids, favorites, addFeedFavorite, removeFromFavorites} = useContext(FavoritesContext)
 
@@ -37,7 +38,9 @@ const PropertyTileComponent = ({item}) => {
         setLoading(false)
       })
       .catch((error) => {
-        console.log(error)
+        error[0] === 'AxiosError: Request failed with status code 500'
+          ? setErrorMessage('There was an issue retreiving properties')
+          : null
       })
   }
 
@@ -46,6 +49,14 @@ const PropertyTileComponent = ({item}) => {
       <View style={styles.tabletLoadingScreen}>
         <Text style={styles.tabletLoadingText}>Loading properties</Text>
         <ActivityIndicator style={styles.loading} size='large'/>
+      </View>
+    )
+  }
+
+  const showErrorTablet = () => {
+    return(
+      <View style={styles.tabletLoadingScreen}>
+        <Text style={styles.tabletLoadingText}>Due to high demand, our services are temporarily unavailable. Please try again later.</Text>
       </View>
     )
   }
@@ -99,7 +110,11 @@ const PropertyTileComponent = ({item}) => {
   return (
     <>
       {
-        loading ? showLoadingTablet() : showProperties()
+        errorMessage
+          ? showErrorTablet
+          : loading 
+            ? showLoadingTablet() 
+            : showProperties()
       }
     </>
   )

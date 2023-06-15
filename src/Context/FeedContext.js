@@ -227,7 +227,25 @@ export const FeedContextProvider = ({children}) => {
       .catch((error) => {
         error[0] === 'AxiosError: Request failed with status code 500'
             ? setErrorMessage('There was an issue retreiving properties')
-            : null
+            : error[0] === 'AxiosError: Request failed with status code 429'
+              ? resetRequest(search)
+              : null
+      })
+  }
+
+  const resetRequest = (search) => {
+    properties.params = search
+    axios.request(properties)
+      .then((response) => {
+        setSelectedFeed(response.data.results)
+        setLoading(false)
+      })
+      .catch((error) => {
+        error[0] === 'AxiosError: Request failed with status code 500'
+            ? setErrorMessage('There was an issue retreiving properties')
+            : error[0] === 'AxiosError: Request failed with status code 429'
+              ? resetRequest(search)
+              : null
       })
   }
 

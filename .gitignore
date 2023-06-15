@@ -20,3 +20,5 @@ zillowApi.js
 firebaseTesting.js
 
 authinfo.js
+
+.env
