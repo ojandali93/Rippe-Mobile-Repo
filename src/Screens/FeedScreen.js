@@ -24,7 +24,7 @@ const tabletAspectHeight = (tabletAspectWidth / 1.78) + 1
 const FeedScreen = () => {
   const navigation = useNavigation()
 
-  const {favoritesZpids, favorites, addFeedFavorite} = useContext(FavoritesContext)
+  const {favoritesZpids, addFeedFavorite, removeFromFavorites} = useContext(FavoritesContext)
 
   const {currentFeed, selectedFeed, 
     updateSelectedFeed, grabFeed, loading, emptyList, errorMessage} = useContext(FeedContext)
@@ -103,7 +103,7 @@ const FeedScreen = () => {
           selectedFeed.map((property) => {
             return(
               <View key={property.zpid}>
-                <TouchableOpacity style={styles.property} onPress={() => {console.log('clicked')}}> 
+                <TouchableOpacity style={styles.property} onPress={() => {navigation.navigate('PropertyFeedScreen', {zpid: property.zpid})}}> 
                   <View>
                     <Image style={{height: aspectHeightMain, width: aspectWidth}} source={{uri: property.imgSrc}}/>
                     <View style={styles.summary}>
@@ -158,7 +158,7 @@ const FeedScreen = () => {
     )
   }
 
-  const removeFromFavorites = (search) => {
+  const removeFromFeeds = (search) => {
     let selectedFavorite
     currentFeed.forEach((save) => {
       save.referenceNumber === search.referenceNumber
@@ -201,7 +201,7 @@ const FeedScreen = () => {
                 <View key={item.search.referenceNumber} style={styles.itemCOntainer}>
                   <TouchableOpacity style={styles.cityContainer} onPress={() => {updateSelectedFeed(item)}}>
                     <Text style={styles.cityText}>{item.search.location} {item.search.beds_min} Bed/{item.search.baths_min} Bath</Text>
-                    <TouchableOpacity onPress={() => {removeFromFavorites(item)}}>
+                    <TouchableOpacity onPress={() => {removeFromFeeds(item)}}>
                       <Feather style={{marginRight: 8}} size={20} name={'x-circle'}/>
                     </TouchableOpacity>
                   </TouchableOpacity>
@@ -215,15 +215,13 @@ const FeedScreen = () => {
         {
           auth.currentUser === null 
             ? displayEmpty()
-            : errorMessage
-              ? displayError()
-              : !loading 
-                  ? selectedFeed.length === 0 
-                    ? showNoValidProperties()
-                    : showValidProperties()
-                  : emptyList 
-                    ? displayNoList()
-                    : showLoading()
+            : !loading 
+              ? selectedFeed.length === 0 
+                ? showNoValidProperties()
+                : showValidProperties()
+              : errorMessage != ''
+                ? displayError()
+                : showLoading()
         }
         {
           auth.currentUser === null 
@@ -250,7 +248,7 @@ const FeedScreen = () => {
                 <View key={item.search.referenceNumber} style={styles.itemCOntainerTablet}>
                   <View style={styles.cityContainer} >
                     <Text style={styles.cityText}>{item.search.location} {item.search.beds_min} Bed/{item.search.baths_min} Bath</Text>
-                    <TouchableOpacity onPress={() => {removeFromFavorites(item)}}>
+                    <TouchableOpacity onPress={() => {removeFromFeeds(item)}}>
                       <Feather style={{marginRight: 8}} size={20} name={'x-circle'}/>
                     </TouchableOpacity>
                   </View>

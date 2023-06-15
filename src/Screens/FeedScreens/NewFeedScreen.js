@@ -64,7 +64,6 @@ const NewFeedScreen = () => {
           </Text>
           <TextInput
             style={styles.input}
-            inputMode='decimal'
             value={location}
             onChangeText={(value) => {setLocation(value)}}
           />

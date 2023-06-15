@@ -23,7 +23,7 @@ const PropertyTileComponent = ({item}) => {
   const [propertyList, setPropertyList] = useState([])
   const [loading, setLoading] = useState(true)
 
-  const {favoritesZpids, favorites, addFeedFavorite} = useContext(FavoritesContext)
+  const {favoritesZpids, favorites, addFeedFavorite, removeFromFavorites} = useContext(FavoritesContext)
 
   useEffect(() => {
     grabFeedContent()
