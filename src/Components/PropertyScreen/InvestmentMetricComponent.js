@@ -45,8 +45,6 @@ const InvestmentMetricCompnent = () => {
 
   const {property} = useContext(PropertyContext)
 
-  console.log(totalRevenue)
-
   useEffect(() => {
     setMonthlyNOI(calculateMonthlyNetOperatingIncome(totalRevenue, expensesNoMotgage))
   }, [totalRevenue, expenses, expensesNoMotgage])

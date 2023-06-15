@@ -23,7 +23,6 @@ const StaticComponents = () => {
   useEffect(() => {
     setPropertyTax(Math.round((property.price * (taxRate / 100)) / 12))
     setHomeInsurance((Math.round((property.price / 1000) * 4)).toFixed(0))
-    console.log(property.resoFacts.hoaFee)
     property.resoFacts.hoaFee === null 
       ? setHoa(0)
       : setHoa(property.resoFacts.hoaFee)

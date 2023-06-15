@@ -119,7 +119,6 @@ export const FeedContextProvider = ({children}) => {
       'createdAt': serverTimestamp()
     })
     .then((response) => {
-      console.log('successfully added')
       navigation.navigate('FeedScreen')
     })
     .catch((error) => {
@@ -191,7 +190,6 @@ export const FeedContextProvider = ({children}) => {
       'createdAt': serverTimestamp()
     })
     .then((response) => {
-      console.log('successfully added')
       navigation.navigate('SavedSearchScreen')
     })
     .catch((error) => {
@@ -208,7 +206,6 @@ export const FeedContextProvider = ({children}) => {
       snapshot.docs.forEach((doc) => {
         FeedList.push({ ...doc.data(), id: doc.id })
       })
-      console.log(FeedList.length) 
       FeedList.length > 0 ? grabListResults(FeedList) : setEmptyList(true)
     })
   }

@@ -4,6 +4,7 @@ import { auth, db } from '../Api/firebaseTesting'
 import { useNavigation } from '@react-navigation/native'
 import { ProfileContext } from '../Context/ProfileContext'
 import { doc, deleteDoc } from 'firebase/firestore';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { FavoritesContext } from '../Context/FavoritesContext'
 import { Entypo } from 'react-native-vector-icons'
 
@@ -63,7 +64,6 @@ const FavoritesScreen = () => {
     const docRef = doc(db, 'Favorites', selectedFavorite.id)
     deleteDoc(docRef)
       .then((response) => {
-        console.log('deleted favorite')
       })
       .catch((error) => {
         console.log(error)
@@ -101,7 +101,7 @@ const FavoritesScreen = () => {
           favorites.map((property) => {
             return(
               <View key={property.property.zpid}>
-                <TouchableOpacity style={styles.propertyTablet} onPress={() => {}}> 
+                <TouchableOpacity style={styles.propertyTablet} onPress={() => {navigation.navigate('PropertyFavoriteScreen', {zpid: property.zpid})}}> 
                   <View>
                     <Image style={{height: tabletImageHeight, width: tabletWidth}} source={{uri: property.property.imgSrc}}/>
                     <View style={styles.summary}>

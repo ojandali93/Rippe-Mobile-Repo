@@ -57,11 +57,9 @@ const SavedSearchScreen = () => {
         ? selectedFavorite = save 
         : null 
     })
-    console.log(selectedFavorite)
     const docRef = doc(db, 'Feed', selectedFavorite.id)
     deleteDoc(docRef)
       .then((response) => {
-        console.log('deleted favorite')
       })
       .catch((error) => {
         console.log(error)

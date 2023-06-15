@@ -7,38 +7,52 @@ import { PropertiesContext } from '../../Context/PropertiesContext'
 
 const MainMapsConponents = () => {
   const {cityLat, cityLong} = useContext(PropertiesContext)
-  const {results} = useContext(PropertiesContext)
+  const {results, refreshMap} = useContext(PropertiesContext)
+
+  const showReset = () => {
+    return(
+      <></>
+    )
+  }
+
+  const showMap = () => {
+    return(
+      <MapView 
+        scrollEnabled={true}
+        zoomEnabled={true}
+        zoomTapEnabled={true}
+        style={styles.mapWindow} 
+        initialRegion={{
+          latitude: cityLat,
+          longitude: cityLong,
+          latitudeDelta: 0.5,
+          longitudeDelta: 0.5,
+        }}
+      >
+        {
+          results.map((property) => {
+            return(
+              <Marker 
+                pinColor='blue'
+                key={property.zpid}
+                coordinate={{
+                  longitude: property.longitude,
+                  latitude: property.latitude
+                }}
+              />
+            )
+          })
+        }
+      </MapView>
+    )
+  }
 
   return (
     <View>
       <View>
-      <MapView 
-          scrollEnabled={true}
-          zoomEnabled={true}
-          zoomTapEnabled={true}
-          style={styles.mapWindow} 
-          initialRegion={{
-            latitude: cityLat,
-            longitude: cityLong,
-            latitudeDelta: 0.5,
-            longitudeDelta: 0.5,
-          }}
-        >
-          {
-            results.map((property) => {
-              return(
-                <Marker 
-                  pinColor='blue'
-                  key={property.zpid}
-                  coordinate={{
-                    longitude: property.longitude,
-                    latitude: property.latitude
-                  }}
-                />
-              )
-            })
-          }
-        </MapView>
+        {
+          refreshMap ? showReset() : showMap()
+        }
       </View>
     </View>
   )

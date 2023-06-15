@@ -18,3 +18,5 @@ web-build/
 
 zillowApi.js
 firebaseTesting.js
+
+authinfo.js

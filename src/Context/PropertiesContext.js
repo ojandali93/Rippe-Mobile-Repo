@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { properties, singleProperty } from '../Api/zillowApi'
+import { apiKey } from '../../authInfo';
 
 import { SearchFilterContext } from './SearchFilterContext';
 import { ProfileContext } from './ProfileContext';
@@ -10,7 +11,8 @@ import { calculateDownPaymentAmount,
          calculateLoanAmount,
          calculateMortgageAmount,
          calculatePropertyTaxAnnual,
-         calculateHomeInsuranceAmount} from '../../utilities';
+         calculateHomeInsuranceAmount,
+         getStateName} from '../../utilities';
 
 import { useNavigation } from '@react-navigation/native';
 import { FavoritesContext } from './FavoritesContext';
@@ -45,6 +47,7 @@ export const PropertiesContextProvider = ({children}) => {
   const [cityLat, setCityLat] = useState(34.052235)
   const [cityLong, setCityLong] = useState(-118.243683)
   const [favoritesZpid, setFavoritesZpid] = useState([])
+  const [refreshMap, setRefreshMap] = useState(false)
   
   const {sort, setSort} = useContext(SearchFilterContext)
   const {isSingleFamily} = useContext(SearchFilterContext)
@@ -75,6 +78,7 @@ export const PropertiesContextProvider = ({children}) => {
   const {setLoggedIn} = useContext(ProfileContext)
 
   const getProperties = () => {
+    setLoading(true)
     currentSearch === '' ? null : activeSearch === currentSearch ? null : setActiveSearch(currentSearch)
     currentSearch === ''
       ? activeSearch === '' 
@@ -144,10 +148,35 @@ export const PropertiesContextProvider = ({children}) => {
     });
   }
 
+  const getLatLong = (city, state) => {
+    setRefreshMap(true)
+    axios.get('https://api.api-ninjas.com/v1/geocoding', {
+        params: {
+            city: city,
+            state: getStateName(state.toUpperCase())
+        },
+        headers: {
+            'X-Api-Key': apiKey
+        },
+        responseType: 'json'
+    })
+    .then(response => {
+        setRefreshMap(true)
+        setCityLat(response.data[0].latitude)
+        setCityLong(response.data[0].longitude)
+        setRefreshMap(false)
+    })
+    .catch(error => {
+        console.error('Error:', error.response.data);
+    });
+  }
+
   const setMultiProperties = (response) => {
-    setCityLat(response.data.results[0].latitude)
-    setCityLong(response.data.results[0].longitude)
     setTotalPages(response.data.totalPages)
+    let currentSearchLength = currentSearch.split(',')
+    currentSearchLength.length === 2
+      ? getLatLong(currentSearchLength[0], currentSearchLength[1])
+      : null
     generateUrlList(response.data.results)
   }
 
@@ -249,6 +278,7 @@ export const PropertiesContextProvider = ({children}) => {
                                         activeSearch, 
                                         currentSearch,
                                         singlePropertyFound,
+                                        refreshMap,
                                         setResults,
                                         setResultsPerPage,
                                         setTotalPages,

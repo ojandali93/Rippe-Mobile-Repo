@@ -96,7 +96,6 @@ const ResultsComponent = () => {
       property: newProperty,
       createdAt: serverTimestamp()
     }).then(() => {
-      console.log('added to recently viewed')
       navigation.navigate('PropertyScreen', {zpid: property.zpid})
     }).catch((error) => {
       console.log(error)

@@ -30,10 +30,8 @@ const PropertyTileComponent = ({item}) => {
 
   const grabFeedContent = () => {
     properties.params = item.search
-    console.log(properties)
     axios.request(properties)
       .then((response) => {
-        console.log(response.data.results)
         setPropertyList(response.data.results)
         setLoading(false)
       })

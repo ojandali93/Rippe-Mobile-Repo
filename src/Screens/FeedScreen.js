@@ -5,6 +5,7 @@ import { FeedContext } from '../Context/FeedContext'
 import { Entypo, Feather } from 'react-native-vector-icons'
 import { auth, db } from '../Api/firebaseTesting'
 import { doc, deleteDoc } from 'firebase/firestore'
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 
 
 import { FavoritesContext } from '../Context/FavoritesContext'
@@ -85,14 +86,13 @@ const FeedScreen = () => {
   }
 
   const showValidProperties = () => {
-    console.log('show balid proeprties')
     return(
       <ScrollView style={styles.scrollView}>
         {
           selectedFeed.map((property) => {
             return(
               <View key={property.zpid}>
-                <TouchableOpacity style={styles.property} onPress={() => {}}> 
+                <TouchableOpacity style={styles.property} onPress={() => {console.log('clicked')}}> 
                   <View>
                     <Image style={{height: aspectHeightMain, width: aspectWidth}} source={{uri: property.imgSrc}}/>
                     <View style={styles.summary}>
@@ -132,7 +132,6 @@ const FeedScreen = () => {
   }
 
   const showValidPropertiesTablet = (item) => {
-    console.log('show balid proeprties')
     return(
       <>
         <PropertyTileComponent item={item}/>
@@ -155,11 +154,9 @@ const FeedScreen = () => {
         ? selectedFavorite = save 
         : null 
     })
-    console.log(selectedFavorite)
     const docRef = doc(db, 'Feed', selectedFavorite.id)
     deleteDoc(docRef)
       .then((response) => {
-        console.log('deleted favorite')
       })
       .catch((error) => {
         console.log(error)
@@ -168,7 +165,7 @@ const FeedScreen = () => {
 
   const showPhoneScreen = () => {
     return(
-      <View style={styles.screen}>
+      <View key={item.search.referenceNumber} style={styles.screen}>
         <View style={styles.listContainer}>
           <ScrollView horizontal>
           {
@@ -221,7 +218,7 @@ const FeedScreen = () => {
           {
             currentFeed.map((item) => {
               return(
-                <View style={styles.itemCOntainer}>
+                <View key={item.search.referenceNumber} style={styles.itemCOntainer}>
                   <View style={styles.cityContainer} >
                     <Text style={styles.cityText}>{item.search.location} {item.search.beds_min} Bed/{item.search.baths_min} Bath</Text>
                     <TouchableOpacity onPress={() => {removeFromFavorites(item)}}>

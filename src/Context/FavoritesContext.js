@@ -29,13 +29,11 @@ export const FavoritesContextProvider = ({children}) => {
   }
 
   const grabZpidList = (favoritesList) => {
-    console.log('generating zpid list')
     let zpidList = []
     favoritesList.forEach((fav) => {
       zpidList.push(fav.zpid)
     })
     setFavoritesZpids(zpidList)
-    console.log('set all zpids')
   }
 
   const addFavorite = (property) => {
@@ -70,7 +68,6 @@ export const FavoritesContextProvider = ({children}) => {
       'createdAt': serverTimestamp()
     })
     .then((response) => {
-      console.log('successfully added')
     })
     .catch((error) => {
       console.error(error)
@@ -105,7 +102,6 @@ export const FavoritesContextProvider = ({children}) => {
       'createdAt': serverTimestamp()
     })
     .then((response) => {
-      console.log('successfully added')
     })
     .catch((error) => {
       console.error(error)
@@ -122,7 +118,6 @@ export const FavoritesContextProvider = ({children}) => {
     const docRef = doc(db, 'Favorites', selectedFavorite.id)
     deleteDoc(docRef)
       .then((response) => {
-        console.log('deleted favorite')
       })
       .catch((error) => {
         console.log(error)

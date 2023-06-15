@@ -15,8 +15,8 @@ const StaticMapsComponent = () => {
           initialRegion={{
             latitude: 34.052235,
             longitude: -118.243683,
-            latitudeDelta: 0.5,
-            longitudeDelta: 0.5,
+            latitudeDelta: 1,
+            longitudeDelta: 1,
           }}
         ></MapView>
       </View>

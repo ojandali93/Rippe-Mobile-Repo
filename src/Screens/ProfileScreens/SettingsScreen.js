@@ -76,7 +76,6 @@ const SettingsScreen = () => {
   }
 
   const updateuserProfile = () => {
-    console.log(profile.id)
     const docRef = doc(db, 'Profiles', profile.id)
     updateDoc(docRef, {
       firstName: firstName,

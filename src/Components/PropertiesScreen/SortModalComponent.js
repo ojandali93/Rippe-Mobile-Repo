@@ -41,9 +41,9 @@ const SortModalComponent = () => {
   const {waterFront, setWaterFront} = useContext(SearchFilterContext)
 
   const applyFilter = () => {
-  setAccessFilter(!accessFilter)
-  setResults([])
-  getProperties()
+    setAccessFilter(!accessFilter)
+    setResults([])
+    getProperties()
   }
 
   const updateSortPart = (selectedSort) => {

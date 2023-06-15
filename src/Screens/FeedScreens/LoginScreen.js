@@ -62,7 +62,6 @@ const LoginScreen = () => {
     console.log('hello')
     sendPasswordResetEmail(auth, resetEmail.toLowerCase())
       .then(() => {
-        console.log('password reset compelte')
         Alert.alert('Reset Password', 'Reset password email was sent.', [
           {
             text: 'Close',
