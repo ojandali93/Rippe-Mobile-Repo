@@ -52,6 +52,7 @@ export const FeedContextProvider = ({children}) => {
   const [selectedFeed, setSelectedFeed] = useState() //results
 
   const [emptyList, setEmptyList] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
   const [loading, setLoading] = useState(true)
 
@@ -224,7 +225,9 @@ export const FeedContextProvider = ({children}) => {
         setLoading(false)
       })
       .catch((error) => {
-        console.log(error)
+        error[0] === 'AxiosError: Request failed with status code 500'
+            ? setErrorMessage('There was an issue retreiving properties')
+            : null
       })
   }
 
@@ -264,6 +267,7 @@ export const FeedContextProvider = ({children}) => {
                                   currentFeedSearch,
                                   loading,
                                   emptyList, 
+                                  errorMessage,
                                   setEmptyList,
                                   setSort,
                                   setIsSingleFamily,

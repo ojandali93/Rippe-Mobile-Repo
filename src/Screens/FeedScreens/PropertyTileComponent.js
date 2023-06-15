@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import React, { useContext, useEffect, useState } from 'react'
-import { Text, View, TouchableOpacity, ScrollView, Image, Dimensions, StyleSheet } from 'react-native'
+import { Text, View, TouchableOpacity, ScrollView, Image, Dimensions, StyleSheet, ActivityIndicator } from 'react-native'
 import { Entypo, Feather } from 'react-native-vector-icons'
 import { auth, db } from '../../Api/firebaseTesting'
 import { doc, deleteDoc } from 'firebase/firestore'
@@ -18,6 +18,7 @@ const tabletAspectWidth = 375
 const tabletAspectHeight = (tabletAspectWidth / 1.78) + 1
 
 const PropertyTileComponent = ({item}) => {
+  const navigation = useNavigation()
 
   const [propertyList, setPropertyList] = useState([])
   const [loading, setLoading] = useState(true)
@@ -40,10 +41,11 @@ const PropertyTileComponent = ({item}) => {
       })
   }
 
-  const showLoading = () => {
+  const showLoadingTablet = () => {
     return(
-      <View>
-        <Text>Loading</Text>
+      <View style={styles.tabletLoadingScreen}>
+        <Text style={styles.tabletLoadingText}>Loading properties</Text>
+        <ActivityIndicator style={styles.loading} size='large'/>
       </View>
     )
   }
@@ -55,7 +57,7 @@ const PropertyTileComponent = ({item}) => {
           propertyList.map((property) => {
             return(
               <View key={property.zpid}>
-                <TouchableOpacity style={styles.propertyTablet} onPress={() => {}}> 
+                <TouchableOpacity style={styles.propertyTablet} onPress={() => {navigation.navigate('PropertyFeedScreen', {zpid: property.zpid})}}> 
                   <View>
                     <Image style={{height: tabletAspectHeight, width: tabletAspectWidth}} source={{uri: property.imgSrc}}/>
                     <View style={styles.summary}>
@@ -97,7 +99,7 @@ const PropertyTileComponent = ({item}) => {
   return (
     <>
       {
-        loading ? showLoading() : showProperties()
+        loading ? showLoadingTablet() : showProperties()
       }
     </>
   )
@@ -151,6 +153,19 @@ const styles = StyleSheet.create({
     display:'flex',
     flexDirection: 'row',
     justifyContent: 'space-between'
+  },
+  tabletLoadingScreen: {
+    width: aspectWidth,
+    marginLeft: 8,
+    height: tabletAspectHeight,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  tabletLoadingText: {
+    fontSize: 18,
+    fontWeight: 'bold'
   },
 })
 

@@ -96,7 +96,7 @@ const FavoritesScreen = () => {
 
   const displayPropertiesTablet = () => {
     return(
-      <ScrollView>
+      <ScrollView style={styles.scrollTablet}>
         {
           favorites.map((property) => {
             return(
@@ -105,7 +105,7 @@ const FavoritesScreen = () => {
                   <View>
                     <Image style={{height: tabletImageHeight, width: tabletWidth}} source={{uri: property.property.imgSrc}}/>
                     <View style={styles.summary}>
-                      <View style={styles.background}></View>
+                      <View style={styles.backgroundTablet}></View>
                       <View style={styles.favoriteMenuTablet}>
                         {
                           favoritesZpids.includes(property.property.zpid)
@@ -142,12 +142,12 @@ const FavoritesScreen = () => {
 
   const displayProperties = () => {
     return(
-      <ScrollView>
+      <ScrollView style={styles.scroll}>
         {
           favorites.map((property) => {
             return(
               <View key={property.property.zpid}>
-                <TouchableOpacity style={styles.property} onPress={() => {}}> 
+                <TouchableOpacity style={styles.property} onPress={() => {navigation.navigate('PropertyFavoriteScreen', {zpid: property.zpid})}}> 
                   <View>
                     <Image style={{height: aspectHeightMain, width: aspectWidth}} source={{uri: property.property.imgSrc}}/>
                     <View style={styles.summary}>
@@ -200,9 +200,7 @@ const FavoritesScreen = () => {
             auth.currentUser === null 
               ? displayEmpty() : favorites.length === 0 
                                     ? displayNone() 
-                                    : deviceWidth >= 500
-                                        ? displayPropertiesTablet()
-                                        : displayProperties()
+                                    : displayPropertiesTablet()
           }
         </View>
       </View>
@@ -243,6 +241,12 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row'
   },
+  scroll: {
+    height: deviceHeight - 182
+  },
+  scrollTablet: {
+    height: deviceHeight - 182
+  },
   mapSplit: {
     width: tabletSplitWidth
   },
@@ -271,6 +275,13 @@ const styles = StyleSheet.create({
     padding: 8
   },
   background: {
+    position: 'absolute',
+    height: aspectHeight,
+    width: aspectWidth,
+    backgroundColor: 'black',
+    opacity: .4
+  },
+  backgroundTablet: {
     position: 'absolute',
     height: tabletImageHeight,
     width: tabletWidth - 16,

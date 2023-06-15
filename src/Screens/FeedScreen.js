@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import React, { useContext, useEffect } from 'react'
-import { Text, View, TouchableOpacity, ScrollView, Image, Dimensions, StyleSheet } from 'react-native'
+import { Text, View, TouchableOpacity, ScrollView, Image, Dimensions, StyleSheet, ActivityIndicator } from 'react-native'
 import { FeedContext } from '../Context/FeedContext'
 import { Entypo, Feather } from 'react-native-vector-icons'
 import { auth, db } from '../Api/firebaseTesting'
@@ -12,6 +12,7 @@ import { FavoritesContext } from '../Context/FavoritesContext'
 import PropertyTileComponent from './FeedScreens/PropertyTileComponent'
 
 const deviceWidth = Dimensions.get('window').width
+const deviceHeight = Dimensions.get('window').height
 const aspectWidth = deviceWidth - 16
 const aspectHeight = (deviceWidth / 1.78) + 1
 const screenHeight = Dimensions.get('window').height - 210
@@ -26,7 +27,7 @@ const FeedScreen = () => {
   const {favoritesZpids, favorites, addFeedFavorite} = useContext(FavoritesContext)
 
   const {currentFeed, selectedFeed, 
-    updateSelectedFeed, grabFeed, loading, emptyList} = useContext(FeedContext)
+    updateSelectedFeed, grabFeed, loading, emptyList, errorMessage} = useContext(FeedContext)
 
   useEffect(() => {
     auth.currentUser === null 
@@ -57,8 +58,18 @@ const FeedScreen = () => {
 
   const showLoading = () => {
     return(
-      <View style={styles.nonDataScreen}>
-        <Text style={styles.nonDataText}>Loading</Text>
+      <View style={styles.loadingScreen}>
+        <Text style={styles.loadingText}>Loading properties</Text>
+        <ActivityIndicator style={styles.loading} size='large'/>
+      </View>
+    )
+  }
+
+  const showLoadingTablet = () => {
+    return(
+      <View style={styles.tabletLoadingScreen}>
+        <Text style={styles.loadingText}>Loading properties</Text>
+        <ActivityIndicator style={styles.loading} size='large'/>
       </View>
     )
   }
@@ -163,15 +174,31 @@ const FeedScreen = () => {
       })
   }
 
+  const displayError = () => {
+    return(
+      <View style={styles.errorScreen}>
+        <Text style={styles.errorText}>Due to high demand, our services are temporarily unavailable. Please try again later.</Text>
+      </View>
+    )
+  }
+
+  const displayTabletError = () => {
+    return(
+      <View style={styles.tabletErrorScreen}>
+        <Text style={styles.errorText}>Due to high demand, our services are temporarily unavailable. Please try again later.</Text>
+      </View>
+    )
+  }
+
   const showPhoneScreen = () => {
     return(
-      <View key={item.search.referenceNumber} style={styles.screen}>
+      <View style={styles.screen}>
         <View style={styles.listContainer}>
           <ScrollView horizontal>
           {
             currentFeed.map((item) => {
               return(
-                <View style={styles.itemCOntainer}>
+                <View key={item.search.referenceNumber} style={styles.itemCOntainer}>
                   <TouchableOpacity style={styles.cityContainer} onPress={() => {updateSelectedFeed(item)}}>
                     <Text style={styles.cityText}>{item.search.location} {item.search.beds_min} Bed/{item.search.baths_min} Bath</Text>
                     <TouchableOpacity onPress={() => {removeFromFavorites(item)}}>
@@ -188,13 +215,15 @@ const FeedScreen = () => {
         {
           auth.currentUser === null 
             ? displayEmpty()
-            : !loading 
-              ? selectedFeed.length === 0 
-                ? showNoValidProperties()
-                : showValidProperties()
-              : emptyList 
-                ? displayNoList()
-                : showLoading()
+            : errorMessage
+              ? displayError()
+              : !loading 
+                  ? selectedFeed.length === 0 
+                    ? showNoValidProperties()
+                    : showValidProperties()
+                  : emptyList 
+                    ? displayNoList()
+                    : showLoading()
         }
         {
           auth.currentUser === null 
@@ -213,12 +242,12 @@ const FeedScreen = () => {
         <View style={styles.headerContainer}>
           <Text style={styles.header}>Feed</Text>
         </View>
-        <View style={styles.listContainer}>
+        <View style={styles.listContainerTablet}>
           <ScrollView>
           {
             currentFeed.map((item) => {
               return(
-                <View key={item.search.referenceNumber} style={styles.itemCOntainer}>
+                <View key={item.search.referenceNumber} style={styles.itemCOntainerTablet}>
                   <View style={styles.cityContainer} >
                     <Text style={styles.cityText}>{item.search.location} {item.search.beds_min} Bed/{item.search.baths_min} Bath</Text>
                     <TouchableOpacity onPress={() => {removeFromFavorites(item)}}>
@@ -226,7 +255,9 @@ const FeedScreen = () => {
                     </TouchableOpacity>
                   </View>
                   {
-                    showValidPropertiesTablet(item)
+                    errorMessage
+                      ? displayTabletError()
+                      : showValidPropertiesTablet(item)
                   }
                 </View>
               )
@@ -264,6 +295,12 @@ const styles = StyleSheet.create({
     marginTop: 32,
     width: aspectWidth,
     marginLeft: 8,
+  },
+  scrollView: {
+    height: deviceHeight - 250,
+  },
+  scrollViewTablet: {
+    height: tabletAspectHeight + 8,
   },
   closeContainer: {
     width: '100%',
@@ -307,10 +344,21 @@ const styles = StyleSheet.create({
   },
   itemCOntainer: {
     display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center', 
+  },
+  itemCOntainerTablet: {
+    display: 'flex',
     flexDirection: 'column',
     alignItems: '', 
   },
   listContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8
+  },
+  listContainerTablet: {
     height: screenHeight - 16,
     display: 'flex',
     flexDirection: 'row',
@@ -324,7 +372,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 8
   },
   property: {
-    width: tabletAspectWidth,
+    width: aspectWidth,
     borderRadius: 10,
     overflow: 'hidden',
     marginBottom: 16,
@@ -383,12 +431,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  scrollView: {
-    height: screenHeight - 40,
-  },
-  scrollViewTablet: {
-    height: tabletAspectHeight + 8,
-  },
   headerContainer: {
     width: '100%',
     display: 'flex',
@@ -403,6 +445,41 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 22,
+    fontWeight: 'bold'
+  },
+  errorScreen: {
+    width: deviceWidth - 16,
+    marginLeft: 8,
+    height: deviceHeight - 250,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  loadingScreen: {
+    width: deviceWidth - 16,
+    marginLeft: 8,
+    height: deviceHeight - 250,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  loadingText: {
+    fontSize: 28,
+    fontWeight: 'bold'
+  },
+  tabletLoadingScreen: {
+    width: aspectWidth,
+    marginLeft: 8,
+    height: tabletAspectHeight,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  tabletLoadingText: {
+    fontSize: 28,
     fontWeight: 'bold'
   },
 })

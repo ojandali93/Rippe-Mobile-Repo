@@ -21,7 +21,7 @@ const splitMapWidth = deviceWidth - 375
 const PropertiesScreen = () => {
   const navigation = useNavigation()
 
-  const {viewMaps, getProperties, loading} = useContext(PropertiesContext)
+  const {viewMaps, getProperties, loading, errorMessage} = useContext(PropertiesContext)
   const {setLoggedIn} = useContext(ProfileContext)
 
   useEffect(() => {
@@ -71,16 +71,34 @@ const PropertiesScreen = () => {
     )
   }
 
+  const displayError = () => {
+    return(
+      <View style={styles.errorScreen}>
+        <Text style={styles.errorText}>Due to high demand, our services are temporarily unavailable. Please try again later.</Text>
+      </View>
+    )
+  }
+
+  const displayTabletError = () => {
+    return(
+      <View style={styles.tabletErrorScreen}>
+        <Text style={styles.errorText}>Due to high demand, our services are temporarily unavailable. Please try again later.</Text>
+      </View>
+    )
+  }
+
   const iphoneMain = () => {
     return(
       <View style={styles.screen}>
         <TopbarComponent />
         {
-          loading 
-            ? displayLoading() 
-            : viewMaps === false 
-              ? displayPropertyList()
-              : displayMap()
+          errorMessage
+            ? displayError()
+            : loading 
+                ? displayTabletLoading() 
+                : viewMaps === false 
+                  ? displayPropertyList()
+                  : displayMap()
         }
       </View>
     )
@@ -95,11 +113,13 @@ const PropertiesScreen = () => {
         <View style={styles.contentSplit}>
           <TopbarComponent />
           {
-            loading 
-              ? displayTabletLoading() 
-              : viewMaps === false 
-                ? displayPropertyList()
-                : displayMap()
+            errorMessage
+              ? displayTabletError()
+              : loading 
+                  ? displayTabletLoading() 
+                  : viewMaps === false 
+                    ? displayPropertyList()
+                    : displayMap()
           }
         </View>
       </View>
@@ -145,6 +165,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
+  errorScreen: {
+    width: deviceWidth - 16,
+    marginLeft: 8,
+    height: deviceHeight - 250,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   tabletLoadingScreen: {
     width: splitContentWidth,
     marginLeft: 8,
@@ -153,6 +182,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  tabletErrorScreen: {
+    width: splitContentWidth - 40,
+    marginLeft: 8,
+    height: deviceHeight - 250,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  errorText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center'
   },
   loadingText: {
     fontSize: 28,

@@ -48,6 +48,7 @@ export const PropertiesContextProvider = ({children}) => {
   const [cityLong, setCityLong] = useState(-118.243683)
   const [favoritesZpid, setFavoritesZpid] = useState([])
   const [refreshMap, setRefreshMap] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   
   const {sort, setSort} = useContext(SearchFilterContext)
   const {isSingleFamily} = useContext(SearchFilterContext)
@@ -144,7 +145,9 @@ export const PropertiesContextProvider = ({children}) => {
         ? null 
         : setMultiProperties(response)
     }).catch(function (error) {
-      console.error(error);
+      error
+        ? setErrorMessage('There was an issue retreiving properties')
+        : null
     });
   }
 
@@ -167,7 +170,6 @@ export const PropertiesContextProvider = ({children}) => {
         setRefreshMap(false)
     })
     .catch(error => {
-        console.error('Error:', error.response.data);
     });
   }
 
@@ -256,7 +258,9 @@ export const PropertiesContextProvider = ({children}) => {
           makeNewRequest(requestList)
         })
         .catch((error) => {
-          console.log(error)
+          error[0] === 'AxiosError: Request failed with status code 500'
+            ? setErrorMessage('There was an issue retreiving properties')
+            : null
         })
     } else {
       counter = 0
@@ -279,6 +283,7 @@ export const PropertiesContextProvider = ({children}) => {
                                         currentSearch,
                                         singlePropertyFound,
                                         refreshMap,
+                                        errorMessage,
                                         setResults,
                                         setResultsPerPage,
                                         setTotalPages,
