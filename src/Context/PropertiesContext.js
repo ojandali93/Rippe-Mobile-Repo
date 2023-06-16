@@ -1,8 +1,7 @@
-require('dotenv').config()
+import authorized from '../../Authorize'
 import axios from 'axios';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { properties, singleProperty } from '../Api/zillowApi'
-import { apiKey } from '../../authInfo';
 
 import { SearchFilterContext } from './SearchFilterContext';
 import { ProfileContext } from './ProfileContext';
@@ -159,7 +158,7 @@ export const PropertiesContextProvider = ({children}) => {
             state: getStateName(state.toUpperCase())
         },
         headers: {
-            'X-Api-Key': process.env.GEO_LOCATE_API_KEY
+            'X-Api-Key': authorized.GEO_LOCATE_API_KEY
         },
         responseType: 'json'
     })
@@ -191,8 +190,8 @@ export const PropertiesContextProvider = ({children}) => {
         params: {zpid: results[i].zpid},
         headers: {
           'content-type': 'application/octet-stream',
-          'X-RapidAPI-Key': process.env.ZILLOW_API_KEY,
-          'X-RapidAPI-Host': process.env.ZILLOW_API_HOST
+          'X-RapidAPI-Key': authorized.ZILLOW_API_KEY,
+          'X-RapidAPI-Host': authorized.ZILLOW_API_HOST
         }
       };
       requestList.push(requestObject)

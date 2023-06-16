@@ -22,3 +22,5 @@ firebaseTesting.js
 authinfo.js
 
 .env
+
+Authorize.js
