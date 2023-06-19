@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
   splitter: {
     width: 2,
     height: 30,
-    backgroundColor: '#4132e1'
+    backgroundColor: '#0039a6'
   },
   form: {
     width: '80%',
@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: '#4132e1',
+    backgroundColor: '#0039a6',
     paddingVertical: 8,
     borderRadius: 10,
     marginVertical: 8
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8
   },
   text: {
-    color: '#4132e1',
+    color: '#0039a6',
     marginLeft: 4
   },
   input: {

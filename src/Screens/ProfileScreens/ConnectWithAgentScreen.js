@@ -58,7 +58,7 @@ const ConnectWithAgentScreen = () => {
       </View>
       <View style={styles.agentContainer}>
         <View style={styles.imageContainer}>
-          <Image style={{height: 100, width: 100}} source={{uri: 'https://dummyimage.com/100X100/000/fff'}}/>
+          <Image style={{height: 100, width: 100}} source={require('../../Assets/real-estate-agent.png')}/>
         </View>
         <View style={styles.agentInfoContainer}>
           <View>

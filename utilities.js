@@ -135,6 +135,23 @@ function getStateName(stateCode) {
   }
 }
 
+const convertToDollarAmount = (numberString) => {
+  const cleanString = numberString.replace(/[^\d.-]/g, '');
+  const number = parseFloat(cleanString);
+  if (isNaN(number)) {
+    return numberString
+  }
+
+  const formattedAmount = number.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
+  return formattedAmount;
+}
+
 module.exports = {
   calculateMonthlyNetOperatingIncome,
   calculateYearlyNetOperatingIncome,
@@ -151,5 +168,6 @@ module.exports = {
   calculateHomeInsuranceAmount,
   calculateMortgageInsurance,
   convertString,
-  getStateName
+  getStateName,
+  convertToDollarAmount
 }
