@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { View, Text, StyleSheet, Dimensions } from 'react-native'
 import { PropertyContext } from '../../Context/PropertyContext'
 
-import { convertString } from '../../../utilities'
+import { convertNumberToFormattedNumber, convertString, convertToDollarAmount } from '../../../utilities'
 
 const deviceWidth = Dimensions.get('window').width
 const deviceheight = Dimensions.get('window').height
@@ -17,7 +17,7 @@ const QuickSummaryComponent = () => {
       <View>
         <View style={styles.main}>
           <Text style={styles.price}>
-            ${property.price}
+            ${convertToDollarAmount(property.price)}
           </Text>
           <Text style={styles.status}>
             {convertString(property.homeStatus)}
@@ -25,7 +25,7 @@ const QuickSummaryComponent = () => {
         </View>
         <View>
           <Text style={[styles.summary]}>
-            {property.bedrooms} Beds | {property.bathrooms} Baths | {property.livingArea} Sqft | {property.lotSize} Sqft
+            {property.bedrooms} Beds | {property.bathrooms} Baths | {convertNumberToFormattedNumber(property.livingArea)} Sqft 
           </Text>
         </View>
         <View>

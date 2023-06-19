@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import {View, Text, TextInput, Dimensions, StyleSheet, TouchableOpacity} from 'react-native'
 import { FinancesContext } from '../../../Context/FinancesContext'
 import { Feather } from 'react-native-vector-icons'
+import { convertToDollarAmount } from '../../../../utilities'
 
 const deviceWidth = Dimensions.get('window').width
 const deviceWidthTablet = 425
@@ -90,7 +91,7 @@ const AdditionalExpensesComponent = () => {
         <TouchableOpacity onPress={() => {setAccessExpenses(!accessExpenses)}}>
           <View style={styles.mortgageAContainer}>
             <Text style={styles.mortgageAText}>
-              Other Expenses: ${parseInt(otherExpenses)}
+              Other Expenses: ${convertToDollarAmount(parseInt(otherExpenses))}
             </Text>
             <Feather size={20} name={'chevrons-down'} />
           </View>
@@ -108,7 +109,7 @@ const AdditionalExpensesComponent = () => {
         <TouchableOpacity onPress={() => {setAccessExpenses(!accessExpenses)}}>
           <View style={styles.mortgageAContainer}>
             <Text style={styles.mortgageAText}>
-              Other Expenses: ${parseInt(otherExpenses)}
+              Other Expenses: ${convertToDollarAmount(parseInt(otherExpenses))}
             </Text>
             <Feather size={20} name={'chevrons-down'} />
           </View>

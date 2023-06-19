@@ -7,7 +7,8 @@ import { FinancesContext } from '../../../Context/FinancesContext'
 import { calculateDownPaymentAmount,
           calculateDownPaymentPercent,
           calculateLoanAmount,
-          calculateMortgageAmount } from '../../../../utilities' 
+          calculateMortgageAmount, 
+          convertToDollarAmount} from '../../../../utilities' 
 
 const deviceWidth = Dimensions.get('window').width
 const deviceWidthTablet = 425
@@ -167,7 +168,7 @@ const MortgageComponent = () => {
       <View style={styles.container}>
         <TouchableOpacity onPress={() => {setAccessMortgage(!accessMortgage)}} >
           <View style={styles.mortgageAContainer}>
-            <Text style={styles.mortgageAText}>Mortgage: ${mortgage}</Text>
+            <Text style={styles.mortgageAText}>Mortgage: ${convertToDollarAmount(mortgage)}</Text>
             <Feather size={20} name={'chevrons-down'} />
           </View>
         </TouchableOpacity>
@@ -183,7 +184,7 @@ const MortgageComponent = () => {
       <View style={styles.containerTablet}>
         <TouchableOpacity onPress={() => {setAccessMortgage(!accessMortgage)}} >
           <View style={styles.mortgageAContainer}>
-            <Text style={styles.mortgageAText}>Mortgage: ${mortgage}</Text>
+            <Text style={styles.mortgageAText}>Mortgage: ${convertToDollarAmount(mortgage)}</Text>
             <Feather size={20} name={'chevrons-down'} />
           </View>
         </TouchableOpacity>

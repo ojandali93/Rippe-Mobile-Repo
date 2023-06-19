@@ -3,6 +3,7 @@ import { View, Text, TextInput, Dimensions, StyleSheet, TouchableOpacity } from 
 import { PropertyContext } from '../../../Context/PropertyContext'
 import { FinancesContext } from '../../../Context/FinancesContext'
 import { Feather } from 'react-native-vector-icons'
+import { convertToDollarAmount } from '../../../../utilities'
 
 const deviceWidth = Dimensions.get('window').width
 const deviceWidthTablet = 425
@@ -77,7 +78,7 @@ const StaticComponents = () => {
         <TouchableOpacity onPress={() => {setAccessPropertyTax(!accessPropertyTax)}}>
           <View style={styles.mortgageAContainer}>
             <Text style={styles.mortgageAText}>
-              Property Tax: ${propertyTax}
+              Property Tax: ${convertToDollarAmount(propertyTax)}
             </Text>
             <Feather size={20} name={'chevrons-down'} />
           </View>
@@ -88,7 +89,7 @@ const StaticComponents = () => {
         <TouchableOpacity onPress={() => {setAccessHomeInsurance(!accessHomeInsurance)}}>
           <View style={styles.mortgageAContainer}>
             <Text style={styles.mortgageAText}>
-              Home Insurance: ${Math.round(homeInsurance / 12).toFixed(0)}
+              Home Insurance: ${convertToDollarAmount(Math.round(homeInsurance / 12).toFixed(0))}
             </Text>
             <Feather size={20} name={'chevrons-down'} />
           </View>
@@ -101,7 +102,7 @@ const StaticComponents = () => {
             {
               hoa === 0 
                 ? <Text style={styles.mortgageAText}>HOA Fee: $0</Text> 
-                : <Text style={styles.mortgageAText}>Hoa Fee: ${hoa}</Text>
+                : <Text style={styles.mortgageAText}>Hoa Fee: ${convertToDollarAmount(hoa)}</Text>
             }
           </View>
         </View>
@@ -115,7 +116,7 @@ const StaticComponents = () => {
         <TouchableOpacity onPress={() => {setAccessPropertyTax(!accessPropertyTax)}}>
           <View style={styles.mortgageAContainer}>
             <Text style={styles.mortgageAText}>
-              Property Tax: ${propertyTax}
+              Property Tax: ${convertToDollarAmount(propertyTax)}
             </Text>
             <Feather size={20} name={'chevrons-down'} />
           </View>
@@ -126,7 +127,7 @@ const StaticComponents = () => {
         <TouchableOpacity onPress={() => {setAccessHomeInsurance(!accessHomeInsurance)}}>
           <View style={styles.mortgageAContainer}>
             <Text style={styles.mortgageAText}>
-              Home Insurance: ${Math.round(homeInsurance / 12).toFixed(0)}
+              Home Insurance: ${convertToDollarAmount(Math.round(homeInsurance / 12).toFixed(0))}
             </Text>
             <Feather size={20} name={'chevrons-down'} />
           </View>
@@ -139,7 +140,7 @@ const StaticComponents = () => {
             {
               hoa === 0 
                 ? <Text style={styles.mortgageAText}>HOA Fee: $0</Text> 
-                : <Text style={styles.mortgageAText}>Hoa Fee: ${hoa}</Text>
+                : <Text style={styles.mortgageAText}>Hoa Fee: ${convertToDollarAmount(hoa)}</Text>
             }
           </View>
         </View>

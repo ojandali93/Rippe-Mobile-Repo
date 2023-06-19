@@ -10,6 +10,7 @@ import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 
 import { FavoritesContext } from '../Context/FavoritesContext'
 import PropertyTileComponent from './FeedScreens/PropertyTileComponent'
+import { convertNumberToFormattedNumber, convertToDollarAmount } from '../../utilities'
 
 const deviceWidth = Dimensions.get('window').width
 const deviceHeight = Dimensions.get('window').height
@@ -116,7 +117,7 @@ const FeedScreen = () => {
                         }
                       </View>
                       <View>
-                        <Text style={[styles.text, styles.price, styles.summaryInfo]}>${property.price}</Text>
+                        <Text style={[styles.text, styles.price, styles.summaryInfo]}>${convertToDollarAmount(property.price)}</Text>
                       </View>
                       <View>
                       <Text style={styles.address}>
@@ -128,7 +129,7 @@ const FeedScreen = () => {
                       </View>
                       <View style={styles.bottomRowSummary}>
                         <Text style={styles.address}>
-                          {property.bedrooms} Beds | {property.bathrooms} Bath | {property.livingArea} Sqft.
+                          {property.bedrooms} Beds | {property.bathrooms} Bath | {convertNumberToFormattedNumber(property.livingArea)} Sqft.
                         </Text>
                       </View>
                     </View>

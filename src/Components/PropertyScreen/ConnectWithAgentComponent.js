@@ -87,20 +87,17 @@ const ConnectWithAgentComponent = () => {
       <View style={styles.listingContainer}>
         <View style={styles.agentContainer}>
           <View style={styles.imageContainer}>
-            <Image style={{height: 100, width: 100}} source={{uri: 'https://dummyimage.com/100X100/000/fff'}}/>
+            <Image style={{height: 100, width: 100}} source={require('../../Assets/real-estate-agent.png')}/>
           </View>
           <View style={styles.agentInfoContainer}>
             <View>
-              <Text style={styles.text}><Text style={{fontWeight: 'bold'}}>Omar Jandali</Text> | DRE# 02151051</Text>
+              <Text style={[styles.text, {fontWeight: 'bold'}]}>Omar Jandali</Text>
+            </View>
+            <View>
+              <Text style={styles.text}>DRE# 02151051</Text>
             </View>
             <View>
               <Text style={styles.text}>Realy One Group</Text>
-            </View>
-            <View>
-              <Text style={styles.text}>951-534-3666</Text>
-            </View>
-            <View>
-              <Text style={styles.text}>omarjandali93@gmail.com</Text>
             </View>
           </View>
         </View>
@@ -246,16 +243,13 @@ const ConnectWithAgentComponent = () => {
           </View>
           <View style={styles.agentInfoContainer}>
             <View>
-              <Text style={styles.text}><Text style={{fontWeight: 'bold'}}>Omar Jandali</Text> | DRE# 02151051</Text>
+              <Text style={[styles.text, {fontWeight: 'bold'}]}>Omar Jandali</Text>
+            </View>
+            <View>
+              <Text style={styles.text}>DRE# 02151051</Text>
             </View>
             <View>
               <Text style={styles.text}>Realy One Group</Text>
-            </View>
-            <View>
-              <Text style={styles.text}>951-534-3666</Text>
-            </View>
-            <View>
-              <Text style={styles.text}>omarjandali93@gmail.com</Text>
             </View>
           </View>
         </View>

@@ -3,6 +3,7 @@ import {View, Text, Dimensions, TextInput, StyleSheet, TouchableOpacity} from 'r
 import { FinancesContext } from '../../Context/FinancesContext'
 import { PropertyContext } from '../../Context/PropertyContext'
 import { Feather } from 'react-native-vector-icons'
+import { convertToDollarAmount } from '../../../utilities'
 
 const deviceWidth = Dimensions.get('window').width
 const deviceWidthTablet = 425
@@ -70,7 +71,7 @@ const RevenueComponent = () => {
         <TouchableOpacity onPress={() => {setAccessRevenue(!accessRevenue)}}>
           <View style={styles.mortgageAContainer}>
             <Text style={styles.mortgageAText}>
-              Revenue: ${totalRevenue}
+              Revenue: ${convertToDollarAmount(totalRevenue)}
             </Text>
             <Feather size={20} name={'chevrons-down'} />
           </View>
@@ -88,7 +89,7 @@ const RevenueComponent = () => {
         <TouchableOpacity onPress={() => {setAccessRevenue(!accessRevenue)}}>
           <View style={styles.mortgageAContainer}>
             <Text style={styles.mortgageAText}>
-              Revenue: ${totalRevenue}
+              Revenue: ${convertToDollarAmount(totalRevenue)}
             </Text>
             <Feather size={20} name={'chevrons-down'} />
           </View>

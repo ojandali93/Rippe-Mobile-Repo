@@ -70,6 +70,15 @@ const convertString = (inputString) => {
   return convertedString;
 }
 
+const convertToPropertDate = (dateString) => {
+  const parts = dateString.split('-');
+  const year = parts[0];
+  const month = parts[1];
+  const day = parts[2];
+
+  return `${month}/${day}/${year}`;
+}
+
 function getStateName(stateCode) {
   const states = {
     AL: 'Alabama',
@@ -136,21 +145,35 @@ function getStateName(stateCode) {
 }
 
 const convertToDollarAmount = (numberString) => {
-  const cleanString = numberString.replace(/[^\d.-]/g, '');
-  const number = parseFloat(cleanString);
-  if (isNaN(number)) {
-    return numberString
-  }
-
-  const formattedAmount = number.toLocaleString('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-
-  return formattedAmount;
+  let newString
+  numberString === undefined
+    ? newString = '0'
+    : numberString === null 
+        ? newString = '0'
+        : typeof numberString === 'string'
+          ? newString = numberString
+          : newString = numberString.toString()
+  const reversedString = newString.split('').reverse().join('');
+  const formattedString = reversedString.replace(/(\d{3})(?!$)/g, '$1,');
+  const finalString = formattedString.split('').reverse().join('');
+  return finalString;
 }
+
+const convertNumberToFormattedNumber = (numberString) => {
+  let newString
+  numberString === undefined
+    ? newString = '0'
+    : numberString === null 
+        ? newString = '0'
+        : typeof numberString === 'string'
+          ? newString = numberString
+          : newString = numberString.toString()
+  const reversedString = newString.split('').reverse().join('');
+  const formattedString = reversedString.replace(/(\d{3})(?!$)/g, '$1,');
+  const finalString = formattedString.split('').reverse().join('');
+  return finalString;
+}
+
 
 module.exports = {
   calculateMonthlyNetOperatingIncome,
@@ -169,5 +192,7 @@ module.exports = {
   calculateMortgageInsurance,
   convertString,
   getStateName,
-  convertToDollarAmount
+  convertToDollarAmount,
+  convertNumberToFormattedNumber,
+  convertToPropertDate
 }

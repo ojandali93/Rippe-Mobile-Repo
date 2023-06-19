@@ -10,6 +10,7 @@ import { Entypo } from 'react-native-vector-icons'
 
 import MainMapsConponents from '../Components/PropertiesScreen/MainMapsConponents'
 import StaticMapsComponent from '../Components/PropertiesScreen/StaticMapsComponent'
+import { convertNumberToFormattedNumber, convertToDollarAmount } from '../../utilities'
 
 
 const deviceWidth = Dimensions.get('window').width
@@ -114,7 +115,7 @@ const FavoritesScreen = () => {
                         }
                       </View>
                       <View>
-                        <Text style={[styles.text, styles.price, styles.summaryInfoTablet]}>${property.property.price}</Text>
+                        <Text style={[styles.text, styles.price, styles.summaryInfoTablet]}>${convertToDollarAmount(property.property.price)}</Text>
                       </View>
                       <View>
                       <Text style={styles.address}>
@@ -126,7 +127,7 @@ const FavoritesScreen = () => {
                       </View>
                       <View style={styles.bottomRowSummary}>
                         <Text style={styles.address}>
-                          {property.property.bedrooms} Beds | {property.property.bathrooms} Bath | {property.property.livingArea} Sqft.
+                          {property.property.bedrooms} Beds | {property.property.bathrooms} Bath | {convertNumberToFormattedNumber(property.property.livingArea)} Sqft.
                         </Text>
                       </View>
                     </View>
@@ -160,7 +161,7 @@ const FavoritesScreen = () => {
                         }
                       </View>
                       <View>
-                        <Text style={[styles.text, styles.price, styles.summaryInfo]}>${property.property.price}</Text>
+                        <Text style={[styles.text, styles.price, styles.summaryInfo]}>${convertToDollarAmount(property.property.price)}</Text>
                       </View>
                       <View>
                       <Text style={styles.address}>
@@ -172,7 +173,7 @@ const FavoritesScreen = () => {
                       </View>
                       <View style={styles.bottomRowSummary}>
                         <Text style={styles.address}>
-                          {property.property.bedrooms} Beds | {property.property.bathrooms} Bath | {property.property.livingArea} Sqft.
+                          {property.property.bedrooms} Beds | {property.property.bathrooms} Bath | {convertNumberToFormattedNumber(property.property.livingArea)} Sqft.
                         </Text>
                       </View>
                     </View>

@@ -9,7 +9,8 @@ import { calculateMonthlyNetOperatingIncome,
           calculateYearlyCashFlow,
           calculateCapRate,
           calculateCashOnCashReturn,
-          calculateYearReturnOnInvestment} from '../../../utilities'    
+          calculateYearReturnOnInvestment,
+          convertToDollarAmount} from '../../../utilities'    
 import { PropertyContext } from '../../Context/PropertyContext'
 
 const deviceWidth = Dimensions.get('window').width
@@ -93,7 +94,7 @@ const InvestmentMetricCompnent = () => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.metricText}>${totalRevenue}</Text>
+            <Text style={styles.metricText}>${convertToDollarAmount(totalRevenue)}</Text>
           </View>
 
           <Modal
@@ -120,7 +121,7 @@ const InvestmentMetricCompnent = () => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.metricText}>${expenses}</Text>
+            <Text style={styles.metricText}>${convertToDollarAmount(expenses)}</Text>
           </View>
 
           <Modal
@@ -147,7 +148,7 @@ const InvestmentMetricCompnent = () => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.metricText}>${monthlyNOI}</Text>
+            <Text style={styles.metricText}>${convertToDollarAmount(monthlyNOI)}</Text>
           </View>
 
           <Modal
@@ -174,7 +175,7 @@ const InvestmentMetricCompnent = () => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.metricText}>${monthlyCF}</Text>
+            <Text style={styles.metricText}>${convertToDollarAmount(monthlyCF)}</Text>
           </View>
 
           <Modal
@@ -230,7 +231,7 @@ const InvestmentMetricCompnent = () => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.metricText}>${totalRevenue * 12}</Text>
+            <Text style={styles.metricText}>${convertToDollarAmount(totalRevenue * 12)}</Text>
           </View>
 
           <Modal
@@ -257,7 +258,7 @@ const InvestmentMetricCompnent = () => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.metricText}>${expenses * 12}</Text>
+            <Text style={styles.metricText}>${convertToDollarAmount(expenses * 12)}</Text>
           </View>
 
           <Modal
@@ -284,7 +285,7 @@ const InvestmentMetricCompnent = () => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.metricText}>${yearlyNOI}</Text>
+            <Text style={styles.metricText}>${convertToDollarAmount(yearlyNOI)}</Text>
           </View>
 
           <Modal
@@ -311,7 +312,7 @@ const InvestmentMetricCompnent = () => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.metricText}>${yearlyCf}</Text>
+            <Text style={styles.metricText}>${convertToDollarAmount(yearlyCf)}</Text>
           </View>
 
           <Modal
@@ -404,7 +405,7 @@ const InvestmentMetricCompnent = () => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.metricText}>${totalRevenue}</Text>
+            <Text style={styles.metricText}>${convertToDollarAmount(totalRevenue)}</Text>
           </View>
 
           <Modal
@@ -431,7 +432,7 @@ const InvestmentMetricCompnent = () => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.metricText}>${expenses}</Text>
+            <Text style={styles.metricText}>${convertToDollarAmount(expenses)}</Text>
           </View>
 
           <Modal
@@ -458,7 +459,7 @@ const InvestmentMetricCompnent = () => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.metricText}>${monthlyNOI}</Text>
+            <Text style={styles.metricText}>${convertToDollarAmount(monthlyNOI)}</Text>
           </View>
 
           <Modal
@@ -485,7 +486,7 @@ const InvestmentMetricCompnent = () => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.metricText}>${monthlyCF}</Text>
+            <Text style={styles.metricText}>${convertToDollarAmount(monthlyCF)}</Text>
           </View>
 
           <Modal
@@ -541,7 +542,7 @@ const InvestmentMetricCompnent = () => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.metricText}>${totalRevenue * 12}</Text>
+            <Text style={styles.metricText}>${convertToDollarAmount(totalRevenue * 12)}</Text>
           </View>
 
           <Modal
@@ -568,7 +569,7 @@ const InvestmentMetricCompnent = () => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.metricText}>${expenses * 12}</Text>
+            <Text style={styles.metricText}>${convertToDollarAmount(expenses * 12)}</Text>
           </View>
 
           <Modal
@@ -595,7 +596,7 @@ const InvestmentMetricCompnent = () => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.metricText}>${yearlyNOI}</Text>
+            <Text style={styles.metricText}>${convertToDollarAmount(yearlyNOI)}</Text>
           </View>
 
           <Modal
@@ -622,7 +623,7 @@ const InvestmentMetricCompnent = () => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.metricText}>${yearlyCf}</Text>
+            <Text style={styles.metricText}>${convertToDollarAmount(yearlyCf)}</Text>
           </View>
 
           <Modal

@@ -7,6 +7,7 @@ import { doc, deleteDoc } from 'firebase/firestore'
 import { FavoritesContext } from '../../Context/FavoritesContext'
 import { properties } from '../../Api/zillowApi'
 import axios from 'axios'
+import { convertNumberToFormattedNumber, convertToDollarAmount } from '../../../utilities'
 
 const deviceWidth = Dimensions.get('window').width
 const aspectWidth = deviceWidth - 16
@@ -81,7 +82,7 @@ const PropertyTileComponent = ({item}) => {
                         }
                       </View>
                       <View>
-                        <Text style={[styles.text, styles.price, styles.summaryInfo]}>${property.price}</Text>
+                        <Text style={[styles.text, styles.price, styles.summaryInfo]}>${convertToDollarAmount(property.price)}</Text>
                       </View>
                       <View>
                       <Text style={styles.address}>
@@ -93,7 +94,7 @@ const PropertyTileComponent = ({item}) => {
                       </View>
                       <View style={styles.bottomRowSummary}>
                         <Text style={styles.address}>
-                          {property.bedrooms} Beds | {property.bathrooms} Bath | {property.livingArea} Sqft.
+                          {property.bedrooms} Beds | {property.bathrooms} Bath | {convertNumberToFormattedNumber(property.livingArea)} Sqft.
                         </Text>
                       </View>
                     </View>

@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions, ScrollView } from 'react-native'
 import { PropertyContext } from '../../Context/PropertyContext'
+import { convertNumberToFormattedNumber, convertToDollarAmount } from '../../../utilities'
 
 const deviceWidth = Dimensions.get('window').width
 const deviceheight = Dimensions.get('window').height
@@ -36,7 +37,7 @@ const NearbyHomesComponent = () => {
                   <View style={styles.summary}>
                     <View style={styles.background}></View>
                     <View>
-                      <Text style={[styles.text, styles.price, styles.summaryInfo]}>${property.price}</Text>
+                      <Text style={[styles.text, styles.price, styles.summaryInfo]}>${convertToDollarAmount(property.price)}</Text>
                     </View>
                     <View>
                       <Text style={styles.address}>
@@ -48,7 +49,7 @@ const NearbyHomesComponent = () => {
                     </View>
                     <View style={styles.bottomRowSummary}>
                       <Text style={styles.address}>
-                        {property.bedrooms} Beds | {property.bathrooms} Bath | {property.livingArea} Sqft.
+                        {property.bedrooms} Beds | {property.bathrooms} Bath | {convertNumberToFormattedNumber(property.livingArea)} Sqft.
                       </Text>
                       <Text style={styles.address}>
                         {formatStatus(property.homeStatus)}
@@ -76,7 +77,7 @@ const NearbyHomesComponent = () => {
                   <View style={styles.summary}>
                     <View style={styles.backgroundTablet}></View>
                     <View>
-                      <Text style={[styles.text, styles.price, styles.summaryInfo]}>${property.price}</Text>
+                      <Text style={[styles.text, styles.price, styles.summaryInfoTablet]}>${convertToDollarAmount(property.price)}</Text>
                     </View>
                     <View>
                       <Text style={styles.address}>
@@ -88,7 +89,7 @@ const NearbyHomesComponent = () => {
                     </View>
                     <View style={styles.bottomRowSummary}>
                       <Text style={styles.address}>
-                        {property.bedrooms} Beds | {property.bathrooms} Bath | {property.livingArea} Sqft.
+                        {property.bedrooms} Beds | {property.bathrooms} Bath | {convertNumberToFormattedNumber(property.livingArea)} Sqft.
                       </Text>
                       <Text style={styles.address}>
                         {formatStatus(property.homeStatus)}
@@ -160,6 +161,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   summaryInfo: {
+    marginTop: aspectHeightTablet - 124
+  },
+  summaryInfoTablet: {
     marginTop: aspectHeightTablet - 112
   },
   text: {

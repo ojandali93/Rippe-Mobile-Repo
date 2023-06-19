@@ -3,6 +3,7 @@ import {View, Text, TouchableOpacity, ScrollView, Image, Dimensions, StyleSheet}
 import { auth, db } from '../../Api/firebaseTesting';
 import { useNavigation } from '@react-navigation/native'
 import { where, query, collection, onSnapshot } from 'firebase/firestore';
+import { convertNumberToFormattedNumber, convertToDollarAmount } from '../../../utilities';
 
 const deviceWidth = Dimensions.get('window').width
 const deviceHeight = Dimensions.get('window').height
@@ -66,7 +67,7 @@ const RecentlyViewedScreen = () => {
                     <View style={styles.summary}>
                       <View style={styles.background}></View>
                       <View>
-                        <Text style={[styles.text, styles.price, styles.summaryInfo]}>${property.property.price}</Text>
+                        <Text style={[styles.text, styles.price, styles.summaryInfo]}>${convertToDollarAmount(property.property.price)}</Text>
                       </View>
                       <View>
                       <Text style={styles.address}>
@@ -78,7 +79,7 @@ const RecentlyViewedScreen = () => {
                       </View>
                       <View style={styles.bottomRowSummary}>
                         <Text style={styles.address}>
-                          {property.property.bedrooms} Beds | {property.property.bathrooms} Bath | {property.property.livingArea} Sqft.
+                          {property.property.bedrooms} Beds | {property.property.bathrooms} Bath | {convertNumberToFormattedNumber(property.property.livingArea)} Sqft.
                         </Text>
                       </View>
                     </View>

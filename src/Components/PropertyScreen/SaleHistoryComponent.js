@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { StyleSheet, Text, View, Dimensions } from 'react-native'
 import { PropertyContext } from '../../Context/PropertyContext'
+import { convertToDollarAmount, convertToPropertDate } from '../../../utilities'
 
 const deviceWidth = Dimensions.get('window').width
 const deviceWidthTablet = 425
@@ -45,12 +46,12 @@ const SaleHistoryComponent = () => {
                   </View>
                   <View style={styles.centerColumn}>
                     <Text style={styles.text}>
-                      {item.date}
+                      {convertToPropertDate(item.date)}
                     </Text>
                   </View>
                   <View style={styles.rightColumn}>
                     <Text style={styles.text}>
-                      {item.price} 
+                      ${convertToDollarAmount(item.price)} 
                     </Text>
                   </View>
                 </View>

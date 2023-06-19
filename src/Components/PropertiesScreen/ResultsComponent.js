@@ -12,6 +12,7 @@ import { FavoritesContext } from '../../Context/FavoritesContext'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { db, auth } from '../../Api/firebaseTesting'
 import { PropertyContext } from '../../Context/PropertyContext'
+import { convertNumberToFormattedNumber, convertToDollarAmount } from '../../../utilities'
 
 const deviceWidth = Dimensions.get('window').width
 const deviceheight = Dimensions.get('window').height
@@ -121,7 +122,7 @@ const ResultsComponent = () => {
                       }
                     </View>
                     <View>
-                      <Text style={[styles.text, styles.price, styles.tabletSummaryInfo]}>${property.price}</Text>
+                      <Text style={[styles.text, styles.price, styles.tabletSummaryInfo]}>${convertToDollarAmount(property.price)}</Text>
                     </View>
                     <View>
                       <Text style={styles.address}>
@@ -133,7 +134,7 @@ const ResultsComponent = () => {
                     </View>
                     <View style={styles.bottomRowSummary}>
                       <Text style={styles.address}>
-                        {property.bedrooms} Beds | {property.bathrooms} Bath | {property.livingArea} Sqft.
+                        {property.bedrooms} Beds | {property.bathrooms} Bath | {convertNumberToFormattedNumber(property.livingArea)} Sqft.
                       </Text>
                       <Text style={styles.address}>
                         {formatStatus(property.homeStatus)}
@@ -149,7 +150,7 @@ const ResultsComponent = () => {
                             <Feather size={16} name={'info'}/>
                           </TouchableOpacity>
                         </View>
-                        <Text style={styles.tabletMetricText}>${property.investment.monthlyRevenue}</Text>
+                        <Text style={styles.tabletMetricText}>${convertToDollarAmount(property.investment.monthlyRevenue)}</Text>
                       </View>
 
                       <Modal
@@ -173,7 +174,7 @@ const ResultsComponent = () => {
                             <Feather size={16} name={'info'}/>
                           </TouchableOpacity>
                         </View>
-                        <Text style={styles.tabletMetricText}>${property.investment.expenses}</Text>
+                        <Text style={styles.tabletMetricText}>${convertToDollarAmount(property.investment.expenses)}</Text>
                       </View>
                       <Modal
                         visible={accessMonthlyExpenses}
@@ -196,7 +197,7 @@ const ResultsComponent = () => {
                             <Feather size={16} name={'info'}/>
                           </TouchableOpacity>
                         </View>
-                        <Text style={styles.tabletMetricText}>${property.investment.mortgageAmount}</Text>
+                        <Text style={styles.tabletMetricText}>${convertToDollarAmount(property.investment.mortgageAmount)}</Text>
                       </View>
                       <Modal
                         visible={accessMortgage}
@@ -219,7 +220,7 @@ const ResultsComponent = () => {
                             <Feather size={16} name={'info'}/>
                           </TouchableOpacity>
                         </View>
-                        <Text style={styles.tabletMetricText}>${property.investment.monthlyCashFLow}</Text>
+                        <Text style={styles.tabletMetricText}>${convertToDollarAmount(property.investment.monthlyCashFLow)}</Text>
                       </View>
 
                       <Modal
@@ -243,7 +244,7 @@ const ResultsComponent = () => {
                             <Feather size={16} name={'info'}/>  
                           </TouchableOpacity>
                         </View>
-                        <Text style={styles.tabletMetricText}>${property.investment.netOperatingIncome}</Text>
+                        <Text style={styles.tabletMetricText}>${convertToDollarAmount(property.investment.netOperatingIncome)}</Text>
                       </View>
                       <Modal
                         visible={accessNOI}
@@ -364,7 +365,7 @@ const ResultsComponent = () => {
                       }
                     </View>
                     <View>
-                      <Text style={[styles.text, styles.price, styles.summaryInfo]}>${property.price}</Text>
+                      <Text style={[styles.text, styles.price, styles.summaryInfo]}>${convertToDollarAmount(property.price)}</Text>
                     </View>
                     <View>
                       <Text style={styles.address}>
@@ -376,7 +377,7 @@ const ResultsComponent = () => {
                     </View>
                     <View style={styles.bottomRowSummary}>
                       <Text style={styles.address}>
-                        {property.bedrooms} Beds | {property.bathrooms} Bath | {property.livingArea} Sqft.
+                        {property.bedrooms} Beds | {property.bathrooms} Bath | {convertNumberToFormattedNumber(property.livingArea)} Sqft.
                       </Text>
                       <Text style={styles.address}>
                         {formatStatus(property.homeStatus)}
@@ -392,7 +393,7 @@ const ResultsComponent = () => {
                             <Feather size={20} name={'info'}/>
                           </TouchableOpacity>
                         </View>
-                        <Text style={styles.metricText}>${property.investment.monthlyRevenue}</Text>
+                        <Text style={styles.metricText}>${convertToDollarAmount(property.investment.monthlyRevenue)}</Text>
                       </View>
 
                       <Modal
@@ -416,7 +417,7 @@ const ResultsComponent = () => {
                             <Feather size={20} name={'info'}/>
                           </TouchableOpacity>
                         </View>
-                        <Text style={styles.metricText}>${property.investment.expenses}</Text>
+                        <Text style={styles.metricText}>${convertToDollarAmount(property.investment.expenses)}</Text>
                       </View>
                       <Modal
                         visible={accessMonthlyExpenses}
@@ -439,7 +440,7 @@ const ResultsComponent = () => {
                             <Feather size={20} name={'info'}/>
                           </TouchableOpacity>
                         </View>
-                        <Text style={styles.metricText}>${property.investment.mortgageAmount}</Text>
+                        <Text style={styles.metricText}>${convertToDollarAmount(property.investment.mortgageAmount)}</Text>
                       </View>
                       <Modal
                         visible={accessMortgage}
@@ -462,7 +463,7 @@ const ResultsComponent = () => {
                             <Feather size={20} name={'info'}/>
                           </TouchableOpacity>
                         </View>
-                        <Text style={styles.metricText}>${property.investment.monthlyCashFLow}</Text>
+                        <Text style={styles.metricText}>${convertToDollarAmount(property.investment.monthlyCashFLow)}</Text>
                       </View>
 
                       <Modal
@@ -486,7 +487,7 @@ const ResultsComponent = () => {
                             <Feather size={20} name={'info'}/>  
                           </TouchableOpacity>
                         </View>
-                        <Text style={styles.metricText}>${property.investment.netOperatingIncome}</Text>
+                        <Text style={styles.metricText}>${convertToDollarAmount(property.investment.netOperatingIncome)}</Text>
                       </View>
                       <Modal
                         visible={accessNOI}

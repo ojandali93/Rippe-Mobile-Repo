@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { StyleSheet, Text, View, Dimensions } from 'react-native'
 import { PropertyContext } from '../../Context/PropertyContext'
+import { convertToDollarAmount } from '../../../utilities'
 
 const deviceWidth = Dimensions.get('window').width
 const deviceWidthTablet = 425
@@ -57,12 +58,12 @@ const TaxHistoryComponent = () => {
                   </View>
                   <View style={styles.centerColumn}>
                     <Text style={styles.text}>
-                      {item.value}
+                      ${convertToDollarAmount(item.value)}
                     </Text>
                   </View>
                   <View style={styles.rightColumn}>
                     <Text style={styles.text}>
-                      {item.taxPaid} 
+                      ${convertToDollarAmount(item.taxPaid)} 
                     </Text>
                   </View>
                 </View>

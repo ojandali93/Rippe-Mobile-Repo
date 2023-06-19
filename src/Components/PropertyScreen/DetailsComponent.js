@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { View, Text, StyleSheet, Dimensions } from 'react-native'
 import { PropertyContext } from '../../Context/PropertyContext'
+import { convertNumberToFormattedNumber } from '../../../utilities'
 
 const deviceWidth = Dimensions.get('window').width
 const deviceWidthTablet = 425
@@ -44,7 +45,7 @@ const DetailsComponent = () => {
               Living Area:
             </Text>
             <Text style={styles.text}>
-              {property.livingAreaValue} {property.livingAreaUnitsShort}
+              {convertNumberToFormattedNumber(property.livingAreaValue)} {property.livingAreaUnitsShort}
             </Text>
           </View>
           <View style={styles.row}>
@@ -115,7 +116,7 @@ const DetailsComponent = () => {
               Days Listed:
               </Text>
               <Text style={styles.text}>
-              {property.yearBuilt}
+              {property.daysOnZillow}
               </Text>
             </View>
             <View style={styles.row}>
@@ -123,7 +124,7 @@ const DetailsComponent = () => {
               Lot Area:
               </Text>
               <Text style={styles.text}>
-              {property.lotAreaValue}
+              {convertNumberToFormattedNumber(property.lotAreaValue)}
               {
                 property.lotAreaUnits === 'Square Feet' ? <Text> Sqft.</Text> : <Text>{property.lotAreaUnits}</Text>
               }
@@ -214,7 +215,7 @@ const DetailsComponent = () => {
               Living Area:
             </Text>
             <Text style={styles.text}>
-              {property.livingAreaValue} {property.livingAreaUnitsShort}
+              {convertNumberToFormattedNumber(property.livingAreaValue)} {property.livingAreaUnitsShort}
             </Text>
           </View>
           <View style={styles.row}>
@@ -285,7 +286,7 @@ const DetailsComponent = () => {
               Days Listed:
               </Text>
               <Text style={styles.text}>
-              {property.yearBuilt}
+              {property.daysOnZillow}
               </Text>
             </View>
             <View style={styles.row}>
@@ -293,7 +294,7 @@ const DetailsComponent = () => {
               Lot Area:
               </Text>
               <Text style={styles.text}>
-              {property.lotAreaValue}
+              {convertNumberToFormattedNumber(property.lotAreaValue)}
               {
                 property.lotAreaUnits === 'Square Feet' ? <Text> Sqft.</Text> : <Text>{property.lotAreaUnits}</Text>
               }

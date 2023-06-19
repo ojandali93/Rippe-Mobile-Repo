@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 import { Slider } from '@miblanchard/react-native-slider';
 
-import { calculateLoanAmount, calculateDownPaymentAmount } from '../../../utilities';
+import { calculateLoanAmount, calculateDownPaymentAmount, convertToDollarAmount } from '../../../utilities';
 import { calculateClosingCost, calculateMortgageAmount } from '../../../utilities';
 
 const deviceWidth = Dimensions.get('window').width
@@ -74,31 +74,31 @@ const PaymentCalculationScreen = () => {
       <View style={styles.totalContainer}>
         <View style={styles.row}>
           <Text style={styles.headerLabel}>Total Payment</Text>
-          <Text style={styles.headerLabel}>${ totalPayment}</Text>
+          <Text style={styles.headerLabel}>${convertToDollarAmount(totalPayment)}</Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.label}>Monthly Principle & Interest</Text>
-          <Text style={styles.label}>${ totalPandI}</Text>
+          <Text style={styles.label}>${convertToDollarAmount(totalPandI)}</Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.label}>Monthly Property Tax</Text>
-          <Text style={styles.label}>${ totalPropTax}</Text>
+          <Text style={styles.label}>${convertToDollarAmount(totalPropTax)}</Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.label}>Monthly Home Insurance</Text>
-          <Text style={styles.label}>${ totalHomeInsurance}</Text>
+          <Text style={styles.label}>${convertToDollarAmount(totalHomeInsurance)}</Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.label}>Monthly HOA</Text>
-          <Text style={styles.label}>${totalHoa}</Text>
+          <Text style={styles.label}>${convertToDollarAmount(totalHoa)}</Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.label}>Utilities</Text>
-          <Text style={styles.label}>${utilities}</Text>
+          <Text style={styles.label}>${convertToDollarAmount(utilities)}</Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.label}>Other Expenses</Text>
-          <Text style={styles.label}>${otherExpenses}</Text>
+          <Text style={styles.label}>${convertToDollarAmount(otherExpenses)}</Text>
         </View>
       </View>
 
@@ -109,7 +109,7 @@ const PaymentCalculationScreen = () => {
           <View style={styles.content}>
             <View style={styles.sectionLabel}>
               <Text style={styles.label}>Home Price:</Text>
-              <Text style={styles.label}>${ homePrice}</Text>
+              <Text style={styles.label}>${convertToDollarAmount(homePrice)}</Text>
             </View>
             <Slider
               value={homePrice}

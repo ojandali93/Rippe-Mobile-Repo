@@ -61,19 +61,16 @@ const ConnectWithAgentScreen = () => {
           <Image style={{height: 100, width: 100}} source={require('../../Assets/real-estate-agent.png')}/>
         </View>
         <View style={styles.agentInfoContainer}>
-          <View>
-            <Text style={styles.text}><Text style={{fontWeight: 'bold'}}>Omar Jandali</Text> | DRE# 02151051</Text>
+            <View>
+              <Text style={[styles.text, {fontWeight: 'bold'}]}>Omar Jandali</Text>
+            </View>
+            <View>
+              <Text style={styles.text}>DRE# 02151051</Text>
+            </View>
+            <View>
+              <Text style={styles.text}>Realy One Group</Text>
+            </View>
           </View>
-          <View>
-            <Text style={styles.text}>Realy One Group</Text>
-          </View>
-          <View>
-            <Text style={styles.text}>951-534-3666</Text>
-          </View>
-          <View>
-            <Text style={styles.text}>omarjandali93@gmail.com</Text>
-          </View>
-        </View>
       </View>
       <View style={styles.disclaimer}>
         <Text style={styles.message}>Interested in this property or ask a question. Connect with an agent by filling out the form below.</Text>
