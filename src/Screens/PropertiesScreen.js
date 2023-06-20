@@ -12,6 +12,8 @@ import { useNavigation } from '@react-navigation/native'
 
 import { auth } from '../Api/firebaseTesting'
 
+//this 
+
 const deviceWidth = Dimensions.get('window').width
 const deviceHeight = Dimensions.get('window').height
 const splitWidth = 740
