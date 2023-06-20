@@ -13,7 +13,7 @@ import { useNavigation } from '@react-navigation/native'
 import { auth } from '../Api/firebaseTesting'
 
 //this is the firs tthing and this si going to be
-//helloasdfasdf  sxc
+//helloasdfasdf  sxc asdfasdf
 
 const deviceWidth = Dimensions.get('window').width
 const deviceHeight = Dimensions.get('window').height
