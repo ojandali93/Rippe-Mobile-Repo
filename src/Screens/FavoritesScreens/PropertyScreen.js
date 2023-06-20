@@ -41,10 +41,11 @@ const PropertyScreen = ({route}) => {
   const [loadDetails, setLoadDetails] = useState(false)
   const [loadDescription, setLoadDecription] = useState(false)
 
-  const {loading, setPropertyDetails} = useContext(PropertyContext)
+  const {loading, setLoading, setPropertyDetails} = useContext(PropertyContext)
   const {expenses, totalRevenue} = useContext(FinancesContext)
 
   useEffect(() => {
+    setLoading(true)
     setPropertyDetails(route.params.zpid)
 
   }, [])
