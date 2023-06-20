@@ -12,7 +12,7 @@ import { useNavigation } from '@react-navigation/native'
 
 import { auth } from '../Api/firebaseTesting'
 
-//this 
+//this is the firs tthing
 
 const deviceWidth = Dimensions.get('window').width
 const deviceHeight = Dimensions.get('window').height
