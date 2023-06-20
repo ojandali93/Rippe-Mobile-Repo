@@ -45,8 +45,6 @@ const PropertiesScreen = () => {
     )
   }
 
-  //THis is just a test comment
-
   const displayLoading = () => {
     return(
       <View style={styles.loadingScreen}>
