@@ -10,7 +10,7 @@ const SearchComponent = () => {
 
   const [newSearch, setNewSearch] = useState(false)
 
-  const {currentSearch, setCurrentSearch} = useContext(PropertiesContext)
+  const {currentSearch, setCurrentSearch, setLoading} = useContext(PropertiesContext)
   const {setActiveSearch} = useContext(PropertiesContext)
   const {setResults, getProperties} = useContext(PropertiesContext)
 
@@ -19,7 +19,7 @@ const SearchComponent = () => {
     setCurrentSearch(term)
   }
 
-  const SubmitSearch = (term) => {
+  const SubmitSearch = () => {
     setNewSearch(false)
     setResults([])
     getProperties()
@@ -36,7 +36,7 @@ const SearchComponent = () => {
           placeholder='Los Angeles, CA'
         />
       </View>
-      <TouchableOpacity onPress={() => {SubmitSearch(currentSearch)}}>
+      <TouchableOpacity onPress={() => {SubmitSearch()}}>
         <Text style={styles.SearchText}>
           Search
         </Text>
@@ -62,16 +62,18 @@ const styles = StyleSheet.create({
     width: '80%',
     display: 'flex',
     flexDirection: 'row',
+    paddingVertical: 8
   },
   input: {
     width: '90%',
-    fontSize: 14,
+    fontSize: 18,
     marginLeft: 6,
     borderBottomColor: 'black',
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
   },
   SearchText: {
     fontSize: 20,
+    color: '#0039a6'
   }
 })
 

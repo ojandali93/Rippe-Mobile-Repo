@@ -1,32 +1,35 @@
+import { useNavigation } from '@react-navigation/native'
 import React from 'react'
-import { View, Text, StyleSheet, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native'
 
 const deviceWidth = Dimensions.get('window').width
 const deviceWidthTablet = 425
 const aspectWidth = deviceWidth - 16
 const aspectWidthTablet = deviceWidthTablet - 16
 
-const displayPhone = () => {
-  return(
-    <View>
-      <View style={styles.container}>
-        <Text style={styles.button}>Make An Offer</Text>
-      </View>
-    </View>
-  )
-}
-
-const displayTablet = () => {
-  return(
-    <View>
-      <View style={styles.containerTablet}>
-        <Text style={styles.button}>Make An Offer</Text>
-      </View>
-    </View>
-  )
-}
-
 const PlaceOfferComponent = () => {
+  const navigation = useNavigation()
+
+  const displayPhone = () => {
+    return(
+      <View>
+        <TouchableOpacity style={styles.container} onPress={() => {navigation.navigate('OfferScreen')}}>
+          <Text style={styles.button}>Make An Offer</Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+  
+  const displayTablet = () => {
+    return(
+      <View>
+        <TouchableOpacity style={styles.containerTablet} onPress={() => {navigation.navigate('OfferScreen')}}>
+          <Text style={styles.button}>Make An Offer</Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
   return (
     <>
       {

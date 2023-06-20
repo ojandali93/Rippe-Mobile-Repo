@@ -72,7 +72,7 @@ const MortgageComponent = () => {
     value > 0 ? null : value = 0
     setDownPaymentPercent(value)
     let newDownPaymentAmount = calculateDownPaymentAmount(homePrice, value) 
-    let newLoanAmount = calculateLoanAmount(homePrice, newDownPaymentAmount).
+    let newLoanAmount = calculateLoanAmount(homePrice, newDownPaymentAmount)
     setDbAmount(newDownPaymentAmount)
     setDownPaymentAmount(newDownPaymentAmount)
     setLoanAmount(newLoanAmount)
