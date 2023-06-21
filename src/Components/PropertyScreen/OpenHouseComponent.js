@@ -68,7 +68,6 @@ const OpenHouseComponent = () => {
       firstName: firstName,
       lastName: lastName,
       address: address,
-      date: date,
       created: serverTimestamp()
     })
     .then(() => {
@@ -99,38 +98,6 @@ const OpenHouseComponent = () => {
           <Text style={styles.mainText}>
             Schedule A Showing:
           </Text>
-          <View style={styles.row}>
-            <TouchableOpacity onPress={() => {setOpen(true)}}>
-              <Text style={styles.text}>Select Date</Text>
-            </TouchableOpacity>
-            <DatePicker
-              modal
-              date={date}
-              customStyles={{ dateInput:{
-                                borderWidth: 0,
-                                borderBottomWidth: 2,
-                                borderBottomColor: 'grey',
-                                backgroundColor: 'lightgrey',
-                                height: 30
-                              },
-                              dateText:{
-                                fontSize: 18
-                              },
-                              dateIcon:{
-                                height: 0, 
-                                width:0
-                              }
-                            }}
-              mode="date"
-              placeholder="select date"
-              format="MM-DD-YYYY"
-              minDate="01-01-2023"
-              maxDate="12-31-2040"
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              onDateChange={(date) => {setDate(date)}}
-            />
-          </View>
         </View>
         <View style={styles.newRow}>
           <View style={styles.column}>
@@ -224,38 +191,6 @@ const OpenHouseComponent = () => {
           <Text style={styles.mainText}>
             Schedule A Showing:
           </Text>
-          <View style={styles.row}>
-            <TouchableOpacity onPress={() => {setOpen(true)}}>
-              <Text style={styles.text}>Select Date</Text>
-            </TouchableOpacity>
-            <DatePicker
-              modal
-              date={date}
-              customStyles={{ dateInput:{
-                                borderWidth: 0,
-                                borderBottomWidth: 2,
-                                borderBottomColor: 'grey',
-                                backgroundColor: 'lightgrey',
-                                height: 30
-                              },
-                              dateText:{
-                                fontSize: 18
-                              },
-                              dateIcon:{
-                                height: 0, 
-                                width:0
-                              }
-                            }}
-              mode="date"
-              placeholder="select date"
-              format="MM-DD-YYYY"
-              minDate="01-01-2023"
-              maxDate="12-31-2040"
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              onDateChange={(date) => {setDate(date)}}
-            />
-          </View>
         </View>
         <View style={styles.newRow}>
           <View style={styles.column}>

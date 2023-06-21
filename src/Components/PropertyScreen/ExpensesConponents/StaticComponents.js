@@ -24,9 +24,9 @@ const StaticComponents = () => {
   useEffect(() => {
     setPropertyTax(Math.round((property.price * (taxRate / 100)) / 12))
     setHomeInsurance((Math.round((property.price / 1000) * 4)).toFixed(0))
-    property.resoFacts.hoaFee === null 
+    property.monthlyHoaFee === null 
       ? setHoa(0)
-      : setHoa(property.resoFacts.hoaFee)
+      : setHoa(property.monthlyHoaFee)
   }, [])
 
   const updatePropertyTaxRate = (value) => {
@@ -100,7 +100,7 @@ const StaticComponents = () => {
         <View style={styles.mortgageAContainer}>
           <View style={styles.mortgageAText}>
             {
-              hoa === 0 
+              property.monthlyHoaFee === null
                 ? <Text style={styles.mortgageAText}>HOA Fee: $0</Text> 
                 : <Text style={styles.mortgageAText}>Hoa Fee: ${convertToDollarAmount(hoa)}</Text>
             }
@@ -111,6 +111,7 @@ const StaticComponents = () => {
   }
 
   const displayTablet = () => {
+    console.log(property.zpid)
     return(
       <View style={styles.containerTablet}>
         <TouchableOpacity onPress={() => {setAccessPropertyTax(!accessPropertyTax)}}>
@@ -138,7 +139,7 @@ const StaticComponents = () => {
         <View style={styles.mortgageAContainer}>
           <View style={styles.mortgageAText}>
             {
-              hoa === 0 
+              property.monthlyHoaFee === null
                 ? <Text style={styles.mortgageAText}>HOA Fee: $0</Text> 
                 : <Text style={styles.mortgageAText}>Hoa Fee: ${convertToDollarAmount(hoa)}</Text>
             }

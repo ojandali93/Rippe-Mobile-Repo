@@ -68,14 +68,6 @@ const DetailsComponent = () => {
           </View>
           <View style={styles.row}>
             <Text style={styles.text}>
-            Garage Spaces:
-            </Text>
-            <Text style={styles.text}>
-            {property.resoFacts.garageSpaces}
-            </Text>
-          </View>
-          <View style={styles.row}>
-            <Text style={styles.text}>
             Has HOA: 
             </Text>
             <Text style={styles.text}>
@@ -124,18 +116,13 @@ const DetailsComponent = () => {
               Lot Area:
               </Text>
               <Text style={styles.text}>
-              {convertNumberToFormattedNumber(property.lotAreaValue)}
               {
-                property.lotAreaUnits === 'Square Feet' ? <Text> Sqft.</Text> : <Text>{property.lotAreaUnits}</Text>
+                property.lotAreaValue === null
+                ? <Text>Unknown Sqft.</Text> 
+                : property.lotAreaUnits === 'Square Feet' 
+                    ? <Text>{convertNumberToFormattedNumber(property.lotAreaValue)} Sqft.</Text> 
+                    : <Text>{property.lotAreaValue.toFixed(2)} {property.lotAreaUnits}</Text>
               }
-              </Text>
-            </View>
-            <View style={styles.row}>
-              <Text style={styles.text}>
-              Architecture:
-              </Text>
-              <Text style={styles.text}>
-              {property.resoFacts.architecturalStyle}
               </Text>
             </View>
             <View style={styles.row}>
@@ -238,14 +225,6 @@ const DetailsComponent = () => {
           </View>
           <View style={styles.row}>
             <Text style={styles.text}>
-            Garage Spaces:
-            </Text>
-            <Text style={styles.text}>
-            {property.resoFacts.garageSpaces}
-            </Text>
-          </View>
-          <View style={styles.row}>
-            <Text style={styles.text}>
             Has HOA: 
             </Text>
             <Text style={styles.text}>
@@ -294,18 +273,13 @@ const DetailsComponent = () => {
               Lot Area:
               </Text>
               <Text style={styles.text}>
-              {convertNumberToFormattedNumber(property.lotAreaValue)}
               {
-                property.lotAreaUnits === 'Square Feet' ? <Text> Sqft.</Text> : <Text>{property.lotAreaUnits}</Text>
+                property.lotAreaValue === null
+                  ? <Text>Unknown Sqft.</Text> 
+                  : property.lotAreaUnits === 'Square Feet' 
+                      ? <Text>{convertNumberToFormattedNumber(property.lotAreaValue)} Sqft.</Text> 
+                      : <Text>{property.lotAreaValue.toFixed(2)} {property.lotAreaUnits}</Text>
               }
-              </Text>
-            </View>
-            <View style={styles.row}>
-              <Text style={styles.text}>
-              Architecture:
-              </Text>
-              <Text style={styles.text}>
-              {property.resoFacts.architecturalStyle}
               </Text>
             </View>
             <View style={styles.row}>

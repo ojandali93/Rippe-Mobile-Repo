@@ -28,7 +28,7 @@ import NearbyHomesComponent from '../Components/PropertyScreen/NearbyHomesCompon
 import DisclaimerComponent from '../Components/PropertyScreen/DisclaimerComponent'
 import PlaceOfferComponent from '../Components/PropertyScreen/PlaceOfferComponent'
 import ImageCarouseTabletComponent from '../Components/PropertyScreen/ImageCarouseTabletComponent'
-import { convertToDollarAmount } from '../../utilities'
+import { convertNumberToFormattedNumber, convertToDollarAmount } from '../../utilities'
 
 const deviceWidth = Dimensions.get('window').width
 const deviceHeight = Dimensions.get('window').height
@@ -72,7 +72,7 @@ const PropertyScreen = ({route}) => {
           <QuickSummaryComponent/>
           <TouchableOpacity onPress={() => {setLoadRevenue(!loadRevenue)}}>
             <View style={styles.expenseContainer}>
-              <Text style={styles.expensesText}>Total Revenue: ${convertToDollarAmount(totalRevenue)}</Text>
+              <Text style={styles.expensesText}>Total Revenue: ${convertNumberToFormattedNumber(totalRevenue)}</Text>
                 <Feather size={22} name={'chevrons-down'} />
             </View>
           </TouchableOpacity>
@@ -81,7 +81,7 @@ const PropertyScreen = ({route}) => {
           }
           <TouchableOpacity onPress={() => {setLoadExpenses(!loadExpenses)}}>
             <View style={styles.expenseContainer}>
-              <Text style={styles.expensesText}>Total Expenses: ${convertToDollarAmount(expenses)}</Text>
+              <Text style={styles.expensesText}>Total Expenses: ${convertNumberToFormattedNumber(expenses)}</Text>
                 <Feather size={22} name={'chevrons-down'} />
             </View>
           </TouchableOpacity>
