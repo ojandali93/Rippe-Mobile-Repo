@@ -21,6 +21,9 @@ const RevenueComponent = () => {
   const [additionalRevenue, setAdditionalRevenue] = useState(0) 
 
   useEffect(() => {
+    revenue === null 
+      ? setRevenue(0)
+      : null
     setTotalRevenue(parseInt(revenue) + parseInt(additionalRevenue))
   }, [])
 

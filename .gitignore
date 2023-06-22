@@ -24,3 +24,5 @@ authinfo.js
 .env
 
 Authorize.js
+
+eas.json

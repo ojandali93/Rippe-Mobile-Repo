@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react'
 import { Text, View, StyleSheet, Dimensions, TouchableOpacity, TextInput } from 'react-native'
-import DatePicker from 'react-native-datepicker'
 import { PropertyContext } from '../../Context/PropertyContext'
 import RNPickerSelect from 'react-native-picker-select'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
