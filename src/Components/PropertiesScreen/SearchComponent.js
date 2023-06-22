@@ -9,18 +9,15 @@ import { PropertiesContext } from '../../Context/PropertiesContext'
 const SearchComponent = () => {
 
   const [newSearch, setNewSearch] = useState(false)
+  const [search, setSearch] = useState('')
 
-  const {currentSearch, setCurrentSearch, setLoading} = useContext(PropertiesContext)
-  const {setActiveSearch} = useContext(PropertiesContext)
+  const {currentSearch, setCurrentSearch, setSubmitNewSearch} = useContext(PropertiesContext)
   const {setResults, getProperties} = useContext(PropertiesContext)
 
-  const updateSearchTerm = (term) => {
-    setNewSearch(true)
-    setCurrentSearch(term)
-  }
-
   const SubmitSearch = () => {
-    setNewSearch(false)
+    setSubmitNewSearch(true)
+    setNewSearch(true)
+    setCurrentSearch(search)
     setResults([])
     getProperties()
   }
@@ -31,8 +28,8 @@ const SearchComponent = () => {
         <Feather size={20} name='search'/>
         <TextInput
           style={styles.input}
-          onChangeText={(value) => updateSearchTerm(value)}
-          value={currentSearch}
+          onChangeText={(value) => setSearch(value)}
+          value={search}
           placeholder='Los Angeles, CA'
         />
       </View>

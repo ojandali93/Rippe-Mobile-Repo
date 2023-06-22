@@ -194,6 +194,9 @@ const FeedScreen = () => {
   const showPhoneScreen = () => {
     return(
       <View style={styles.screen}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.header}>Feed</Text>
+        </View>
         <View style={styles.listContainer}>
           <ScrollView horizontal>
           {
@@ -206,7 +209,6 @@ const FeedScreen = () => {
                       <Feather style={{marginRight: 8}} size={20} name={'x-circle'}/>
                     </TouchableOpacity>
                   </TouchableOpacity>
-                  <View style={styles.split}></View>
                 </View>
               )
             })
@@ -296,7 +298,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   scrollView: {
-    height: deviceHeight - 250,
+    height: deviceHeight - 284,
   },
   scrollViewTablet: {
     height: tabletAspectHeight + 8,
@@ -335,7 +337,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'lightgrey',
-    marginBottom: 8
+    borderRadius: 8
   },
   cityText: {
     paddingVertical: 8,
@@ -362,7 +364,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: '',
-    marginBottom: 8
+    borderRadius: 8
   },
   split: {
     height: 22,
@@ -449,7 +451,7 @@ const styles = StyleSheet.create({
   errorScreen: {
     width: deviceWidth - 16,
     marginLeft: 8,
-    height: deviceHeight - 250,
+    height: deviceHeight - 284,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -458,7 +460,7 @@ const styles = StyleSheet.create({
   loadingScreen: {
     width: deviceWidth - 16,
     marginLeft: 8,
-    height: deviceHeight - 250,
+    height: deviceHeight - 284,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',

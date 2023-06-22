@@ -32,6 +32,8 @@ export const PropertiesContextProvider = ({children}) => {
   const [totalPages, setTotalPages] = useState(null)
   const [totalResultsCount, setTotalResultsCount] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
+
+  const [submitNewSearch, setSubmitNewSearch] = useState(false)
   
   const [loading, setLoading] = useState(true)
 
@@ -201,69 +203,71 @@ export const PropertiesContextProvider = ({children}) => {
   
   const makeNewRequest = (requestList) => {
     if(counter < requestList.length){
-      axios.request(requestList[counter])
-        .then((response) => {
-          let downPaymentAmount = calculateDownPaymentAmount(response.data.price, 20)
-          let downPaymentPercent = calculateDownPaymentPercent(response.data.price, downPaymentAmount)
-          let loanAmount = calculateLoanAmount(response.data.price, downPaymentAmount)
-          let mortgageAmount = calculateMortgageAmount(loanAmount, 30, response.data.mortgageRates.thirtyYearFixedRate)
-          let monthlyTaxAmount = calculatePropertyTaxAnnual(response.data.propertyTaxRate, response.data.price)
-          let homeInsurance = calculateHomeInsuranceAmount(response.data.price)
-          let monthlyRevenue = response.data.rentZestimate
-          let expenses = 0
-          let hoaFee = response.data.hoaFee
-          hoaFee === null 
-            ? expenses = mortgageAmount + hoaFee + monthlyTaxAmount + homeInsurance 
-            : expenses = mortgageAmount + monthlyTaxAmount + homeInsurance
-          let monthlyExpenses = 0
-          let monthlyExpensesWithoutMortgage = 0
-          hoaFee === null
-            ? monthlyExpensesWithoutMortgage = hoaFee + monthlyTaxAmount + homeInsurance
-            : monthlyExpensesWithoutMortgage = monthlyTaxAmount + homeInsurance
-          hoaFee === null
-            ? monthlyExpenses = mortgageAmount + hoaFee + monthlyTaxAmount + homeInsurance
-            : monthlyExpenses = mortgageAmount + monthlyTaxAmount + homeInsurance
-          let netOperatingIncome = Math.round(monthlyRevenue - monthlyExpensesWithoutMortgage)
-          let yearlyNetOperatingIncome = netOperatingIncome * 12
-          let monthlyCashFLow = Math.round(netOperatingIncome - mortgageAmount)
-          let yearlyCashFlow = monthlyCashFLow * 12
-          let currentCapRate = ((yearlyNetOperatingIncome / response.data.price) * 100).toFixed(2)
-          let currentCashOnCashReturn = ((yearlyCashFlow / downPaymentAmount) * 100).toFixed(2)
-          let year1ReturnOnInvestment = ((yearlyNetOperatingIncome / downPaymentAmount) * 100).toFixed(2)
+      submitNewSearch
+        ? null
+        : axios.request(requestList[counter])
+            .then((response) => {
+              let downPaymentAmount = calculateDownPaymentAmount(response.data.price, 20)
+              let downPaymentPercent = calculateDownPaymentPercent(response.data.price, downPaymentAmount)
+              let loanAmount = calculateLoanAmount(response.data.price, downPaymentAmount)
+              let mortgageAmount = calculateMortgageAmount(loanAmount, 30, response.data.mortgageRates.thirtyYearFixedRate)
+              let monthlyTaxAmount = calculatePropertyTaxAnnual(response.data.propertyTaxRate, response.data.price)
+              let homeInsurance = calculateHomeInsuranceAmount(response.data.price)
+              let monthlyRevenue = response.data.rentZestimate
+              let expenses = 0
+              let hoaFee = response.data.hoaFee
+              hoaFee === null 
+                ? expenses = mortgageAmount + hoaFee + monthlyTaxAmount + homeInsurance 
+                : expenses = mortgageAmount + monthlyTaxAmount + homeInsurance
+              let monthlyExpenses = 0
+              let monthlyExpensesWithoutMortgage = 0
+              hoaFee === null
+                ? monthlyExpensesWithoutMortgage = hoaFee + monthlyTaxAmount + homeInsurance
+                : monthlyExpensesWithoutMortgage = monthlyTaxAmount + homeInsurance
+              hoaFee === null
+                ? monthlyExpenses = mortgageAmount + hoaFee + monthlyTaxAmount + homeInsurance
+                : monthlyExpenses = mortgageAmount + monthlyTaxAmount + homeInsurance
+              let netOperatingIncome = Math.round(monthlyRevenue - monthlyExpensesWithoutMortgage)
+              let yearlyNetOperatingIncome = netOperatingIncome * 12
+              let monthlyCashFLow = Math.round(netOperatingIncome - mortgageAmount)
+              let yearlyCashFlow = monthlyCashFLow * 12
+              let currentCapRate = ((yearlyNetOperatingIncome / response.data.price) * 100).toFixed(2)
+              let currentCashOnCashReturn = ((yearlyCashFlow / downPaymentAmount) * 100).toFixed(2)
+              let year1ReturnOnInvestment = ((yearlyNetOperatingIncome / downPaymentAmount) * 100).toFixed(2)
 
-          let propertyDetails = response.data
-          propertyDetails.investment = {
-            downPaymentAmount: downPaymentAmount,
-            downPaymentPercent: downPaymentPercent,
-            loanAmount: loanAmount,
-            mortgageAmount: mortgageAmount,
-            monthlyTaxAmount: monthlyTaxAmount,
-            homeInsurance: homeInsurance,
-            monthlyRevenue: monthlyRevenue,
-            expenses: expenses,
-            netOperatingIncome: netOperatingIncome,
-            yearlyNetOperatingIncome: yearlyNetOperatingIncome,
-            monthlyCashFLow: monthlyCashFLow,
-            yearlyCashFlow: yearlyCashFlow,
-            currentCapRate: currentCapRate,
-            currentCashOnCashReturn: currentCashOnCashReturn,
-            year1ReturnOnInvestment: year1ReturnOnInvestment,
-            monthlyExpensesWithoutMortgage: monthlyExpensesWithoutMortgage,
-          }
-          setResults(results => [...results, propertyDetails])
-          setCurrentSearch('')
-          setLoading(false)
-          counter++
-          makeNewRequest(requestList)
-        })
-        .catch((error) => {
-          error[0] === 'AxiosError: Request failed with status code 500'
-            ? setErrorMessage('There was an issue retreiving properties')
-            : null
-        })
-    } else {
-      counter = 0
-    }
+              let propertyDetails = response.data
+              propertyDetails.investment = {
+                downPaymentAmount: downPaymentAmount,
+                downPaymentPercent: downPaymentPercent,
+                loanAmount: loanAmount,
+                mortgageAmount: mortgageAmount,
+                monthlyTaxAmount: monthlyTaxAmount,
+                homeInsurance: homeInsurance,
+                monthlyRevenue: monthlyRevenue,
+                expenses: expenses,
+                netOperatingIncome: netOperatingIncome,
+                yearlyNetOperatingIncome: yearlyNetOperatingIncome,
+                monthlyCashFLow: monthlyCashFLow,
+                yearlyCashFlow: yearlyCashFlow,
+                currentCapRate: currentCapRate,
+                currentCashOnCashReturn: currentCashOnCashReturn,
+                year1ReturnOnInvestment: year1ReturnOnInvestment,
+                monthlyExpensesWithoutMortgage: monthlyExpensesWithoutMortgage,
+              }
+              setResults(results => [...results, propertyDetails])
+              setCurrentSearch('')
+              setLoading(false)
+              counter++
+              makeNewRequest(requestList)
+            })
+            .catch((error) => {
+              error[0] === 'AxiosError: Request failed with status code 500'
+                ? setErrorMessage('There was an issue retreiving properties')
+                : null
+            })
+        } else {
+          counter = 0
+        }
   }
 
   return(
@@ -288,6 +292,7 @@ export const PropertiesContextProvider = ({children}) => {
                                         setTotalPages,
                                         setTotalResultsCount,
                                         getProperties,
+                                        setSubmitNewSearch,
                                         setViewMaps,
                                         setLoading,
                                         setCurrentPage,

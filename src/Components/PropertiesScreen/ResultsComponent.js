@@ -38,12 +38,40 @@ const ResultsComponent = () => {
   const [accessCashFlow, setAccessCashFlow] = useState(false)
   const [accessCashOnCashFlow, setAccessCashOnCashFlow] = useState(false)
   const [accessROI, setAccessROI] = useState(false)
+  const [goodInvestment, setGoodInvestment] = useState(false)
+  const [greatInvestment, setGreatInvestment] = useState(false)
 
   const {property} = useContext(PropertyContext)
 
   const {results} = useContext(PropertiesContext)
 
   const {loggedIn} = useContext(ProfileContext)
+
+  const validateInvestment = () => {
+    parseInt(property.investment.monthlyCashFLow) > 1000
+      ? parseInt(property.investment.netOperatingIncome) > 1500
+          ? parseFloat(property.investment.currentCapRate) > 8
+              ? parseFloat(property.investment.currentCashOnCashReturn) > 12
+                  ? parseFloat(property.investment.year1ReturnOnInvestment) > 18
+                    ? setGreatInvestment(true)
+                    : parseInt(property.investment.monthlyCashFLow) > 450
+                      ? parseInt(property.investment.netOperatingIncome) > 1000
+                          ? parseFloat(property.investment.currentCapRate) > 1 
+                              ? parseFloat(property.investment.currentCashOnCashReturn) > 5
+                                  ? parseFloat(property.investment.year1ReturnOnInvestment) > 10
+                                    ? setGoodInvestment(true)
+                                    : null
+                                  : null
+                              : null
+                          : null
+                      : null
+                  : null
+              : null
+          : null
+      : null
+  }
+
+
 
   const addToFavorites = (property) => {
     loggedIn === false 
@@ -101,6 +129,36 @@ const ResultsComponent = () => {
     }).catch((error) => {
       console.log(error)
     })
+  }
+
+  const showGreatInvestment = () => {
+    return(
+      <View style={styles.favoriteMenu}>
+        <View style={styles.greatInvestmentContainer}>
+          <Feather size={20} color={'white'} style={styles.zap} name={'zap'}/>
+          <Text style={styles.greatText}>Great Investment</Text>
+        </View>
+        <View>
+          {
+            favoritesZpids.includes(property.zpid)
+              ? <TouchableOpacity onPress={() => {updateRemoveFavorite(property)}}><Entypo color={'white'} size={28} name='heart'  stlye={styles.menu}/></TouchableOpacity>
+              : <TouchableOpacity onPress={() => {updateAddFavorite(property)}}><Entypo color={'white'} size={28} name='heart-outlined'  stlye={styles.menu}/></TouchableOpacity>
+          }
+        </View>
+      </View>
+    )
+  }
+
+  const showStandardMenu = () => {
+    return(
+      <View style={styles.favoriteMenuStandard}>
+        {
+          favoritesZpids.includes(property.zpid)
+            ? <TouchableOpacity onPress={() => {updateRemoveFavorite(property)}}><Entypo color={'white'} size={28} name='heart'  stlye={styles.menu}/></TouchableOpacity>
+            : <TouchableOpacity onPress={() => {updateAddFavorite(property)}}><Entypo color={'white'} size={28} name='heart-outlined'  stlye={styles.menu}/></TouchableOpacity>
+        }
+      </View>
+    )
   }
 
   const tabletScreen = () => {
@@ -356,14 +414,14 @@ const ResultsComponent = () => {
                 <TouchableOpacity onPress={() => {addPropertyView(property)}}> 
                   <Image style={{height: aspectHeight, width: aspectWidth}} source={{uri: property.hiResImageLink}}/>
                   <View style={styles.summary}>
-                    <View style={styles.background}></View>
-                    <View style={styles.favoriteMenu}>
+                    <View style={styles.background}></View>  
+                    <>
                       {
-                        favoritesZpids.includes(property.zpid)
-                          ? <TouchableOpacity onPress={() => {updateRemoveFavorite(property)}}><Entypo color={'white'} size={28} name='heart'  stlye={styles.menu}/></TouchableOpacity>
-                          : <TouchableOpacity onPress={() => {updateAddFavorite(property)}}><Entypo color={'white'} size={28} name='heart-outlined'  stlye={styles.menu}/></TouchableOpacity>
+                        parseInt(property.investment.monthlyCashFLow) > 750 && parseInt(property.investment.netOperatingIncome) > 900 && parseFloat(property.investment.currentCapRate) > 6 && parseFloat(property.investment.currentCashOnCashReturn) > 6 && parseFloat(property.investment.year1ReturnOnInvestment) > 7
+                          ? showGreatInvestment()
+                          : showStandardMenu()
                       }
-                    </View>
+                    </>
                     <View>
                       <Text style={[styles.text, styles.price, styles.summaryInfo]}>${convertToDollarAmount(property.price)}</Text>
                     </View>
@@ -641,18 +699,30 @@ const styles = StyleSheet.create({
   },
   favoriteMenu: {
     width: aspectWidth - 16,
+    height: 40,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginTop: 4
+  },
+  favoriteMenuStandard: {
+    width: aspectWidth - 16,
+    height: 40,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    alignItems: 'center'
   },
   tabletFavoriteMenu: {
     width: splitWidth - 16,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    marginTop: 4
   },
   summaryInfo: {
-    marginTop: aspectHeight - 120
+    marginTop: aspectHeight - 130
   },
   tabletSummaryInfo: {
     marginTop: splitHeight - 134
@@ -768,7 +838,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     color: 'blue',
     fontWeight: 'bold',
-  }
+  },
+  greatInvestmentContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    paddingVertical: 6,
+    paddingHorizontal: 8,
+    backgroundColor: '#0039a6',
+    borderRadius: 8
+  },
+  greatText: {
+    color: 'white',
+    fontSize: 16, 
+    fontWeight: 600,
+    marginLeft: 4
+  },
 })
 
 export default ResultsComponent
