@@ -10,6 +10,7 @@ export const PropertyContextProvider = ({children}) => {
   const [mainImage, setMainImage] = useState('')
   const [imageList, setImageList] = useState([])
   const [errorMessage, setErrorMessage] = ('')
+  const [accessInvestmentMetrics, setAccessInvestmentMetrics] = useState(false)
 
   const [loading, setLoading] = useState(true)
 
@@ -47,7 +48,9 @@ export const PropertyContextProvider = ({children}) => {
                                       setProperty, 
                                       setPropertyDetails,
                                       setMainImage,
-                                      setLoading}}>
+                                      setLoading,
+                                      accessInvestmentMetrics, 
+                                      setAccessInvestmentMetrics}}>
       {children}
     </PropertyContext.Provider>
   )

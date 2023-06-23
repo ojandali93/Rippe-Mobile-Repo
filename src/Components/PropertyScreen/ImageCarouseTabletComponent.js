@@ -14,6 +14,7 @@ const ImageCarouseTabletComponent = () => {
 
   const {imageList} = useContext(PropertyContext)
   const {property} = useContext(PropertyContext)
+  const {accessInvestmentMetrics} = useContext(PropertyContext)
 
   const {
     favoritesZpids,
@@ -33,28 +34,64 @@ const ImageCarouseTabletComponent = () => {
       : removeFromFavorites(property) 
   }
 
-  return (
-    <View style={styles.carouselContainer}>
-      <FlatList 
-        data={imageList}
-        renderItem={(item) => {
-          return(
-            <TouchableOpacity key={item.item.index}>
-              <Image style={styles.image} source={{uri: item.item.url}} />
-            </TouchableOpacity>
-          )  
-        }}
-      />
-      <View style={styles.favoriteMenu}>
-        <View style={styles.menu}>
-          {
-            favoritesZpids.includes(property.zpid)
-              ? <TouchableOpacity stlye={styles.menu} onPress={() => {updateRemoveFavorite(property)}}><Entypo color={'black'} size={28} style={{paddingTop: 4, opacity: 1}} name='heart'/></TouchableOpacity>
-              : <TouchableOpacity stlye={styles.menu} onPress={() => {updateAddFavorite(property)}}><Entypo color={'black'} size={28}  style={{paddingTop: 4, opacity: 1}} name='heart-outlined'/></TouchableOpacity>
-          }
+  const displayTabletFull = () => {
+    return(
+      <View style={styles.carouselContainer}>
+        <FlatList 
+          data={imageList}
+          renderItem={(item) => {
+            return(
+              <TouchableOpacity key={item.item.index}>
+                <Image style={styles.image} source={{uri: item.item.url}} />
+              </TouchableOpacity>
+            )  
+          }}
+        />
+        <View style={styles.favoriteMenu}>
+          <View style={styles.menu}>
+            {
+              favoritesZpids.includes(property.zpid)
+                ? <TouchableOpacity stlye={styles.menu} onPress={() => {updateRemoveFavorite(property)}}><Entypo color={'black'} size={28} style={{paddingTop: 4, opacity: 1}} name='heart'/></TouchableOpacity>
+                : <TouchableOpacity stlye={styles.menu} onPress={() => {updateAddFavorite(property)}}><Entypo color={'black'} size={28}  style={{paddingTop: 4, opacity: 1}} name='heart-outlined'/></TouchableOpacity>
+            }
+          </View>
         </View>
       </View>
-    </View>
+    )
+  }
+
+  const displayTabletpartial = () => {
+    return(
+      <View style={styles.carouselContainerMetrics}>
+        <FlatList 
+          data={imageList}
+          renderItem={(item) => {
+            return(
+              <TouchableOpacity key={item.item.index}>
+                <Image style={styles.image} source={{uri: item.item.url}} />
+              </TouchableOpacity>
+            )  
+          }}
+        />
+        <View style={styles.favoriteMenu}>
+          <View style={styles.menu}>
+            {
+              favoritesZpids.includes(property.zpid)
+                ? <TouchableOpacity stlye={styles.menu} onPress={() => {updateRemoveFavorite(property)}}><Entypo color={'black'} size={28} style={{paddingTop: 4, opacity: 1}} name='heart'/></TouchableOpacity>
+                : <TouchableOpacity stlye={styles.menu} onPress={() => {updateAddFavorite(property)}}><Entypo color={'black'} size={28}  style={{paddingTop: 4, opacity: 1}} name='heart-outlined'/></TouchableOpacity>
+            }
+          </View>
+        </View>
+      </View>
+    )
+  }
+
+  return (
+    <>
+      {
+        accessInvestmentMetrics ? displayTabletFull() : displayTabletpartial()
+      }
+    </>
   )
 }
 
@@ -67,9 +104,11 @@ const styles = StyleSheet.create({
   },
   carouselContainer: {
     paddingVertical: 8,
-    borderBottomColor: 'grey',
-    borderBottomWidth: 2,
-    height: deviceheight - 275
+    height: deviceheight - 290
+  },
+  carouselContainerMetrics: {
+    paddingVertical: 8,
+    height: deviceheight - 118
   },
   favoriteMenu: {
     marginTop: 8,

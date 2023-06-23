@@ -43,6 +43,7 @@ const PropertyScreen = ({route}) => {
 
   const {loading, setLoading, setPropertyDetails, errorMessage} = useContext(PropertyContext)
   const {expenses, totalRevenue} = useContext(FinancesContext)
+  const {accessInvestmentMetrics, setAccessInvestmentMetrics} = useContext(PropertyContext)
 
   useEffect(() => {
     setLoading(true)
@@ -60,7 +61,7 @@ const PropertyScreen = ({route}) => {
     )
   }
 
-  const displayProperty = () => {
+  const displayPropertyWithMetrics = () => {
     return(
       <View style={styles.screen}>
         <View style={styles.investmentCOntainer}>
@@ -135,7 +136,92 @@ const PropertyScreen = ({route}) => {
     )
   }
 
-  const displayPropertyTablet = () => {
+  const displayPropertyWithoutMetrics = () => {
+    return(
+      <View style={styles.screenNoInvestment}>
+        <View style={styles.investmentCOntainer}>
+          <InvestmentMetricCompnent />
+        </View>
+        <ScrollView style={styles.scroll}>
+          <MainImage />
+          <ImageCarousel />
+          <QuickSummaryComponent/>
+          <TouchableOpacity onPress={() => {setLoadRevenue(!loadRevenue)}}>
+            <View style={styles.expenseContainer}>
+              <Text style={styles.expensesText}>Total Revenue: ${convertNumberToFormattedNumber(totalRevenue)}</Text>
+                <Feather size={22} name={'chevrons-down'} />
+            </View>
+          </TouchableOpacity>
+          {
+            loadRevenue ? <RevenueComponent /> : null
+          }
+          <TouchableOpacity onPress={() => {setLoadExpenses(!loadExpenses)}}>
+            <View style={styles.expenseContainer}>
+              <Text style={styles.expensesText}>Total Expenses: ${convertNumberToFormattedNumber(expenses)}</Text>
+                <Feather size={22} name={'chevrons-down'} />
+            </View>
+          </TouchableOpacity>
+          {
+            loadExpenses ? displayExpensesComponents() : null
+          }
+          <View style={styles.expenseContainer}>
+            <Text style={styles.expensesText}>Property Details</Text>
+          </View>
+          <DetailsComponent />
+          <View style={styles.expenseContainer}>
+            <Text style={styles.expensesText}>Property Description:</Text>
+          </View>
+          <DescriptionComponent />
+          <View style={styles.expenseContainer}>
+            <Text style={styles.expensesText}>Listing Details:</Text>
+          </View>
+          <ListingDetailsComponent />
+          <View style={styles.expenseContainer}>
+            <Text style={styles.expensesText}>Connect With An Agent</Text>
+          </View>
+          <ConnectWithAgentComponent />
+          <View style={styles.expenseContainer}>
+            <Text style={styles.expensesText}>Sale History</Text>
+          </View>
+          <SaleHistoryComponent />
+          <View style={styles.expenseContainer}>
+            <Text style={styles.expensesText}>Tax History</Text>
+          </View>
+          <TaxHistoryComponent />
+          <PlaceOfferComponent />
+          <MapComponent />
+          <View style={styles.expenseContainer}>
+            <Text style={styles.expensesText}>Open House</Text>
+          </View>
+          <OpenHouseComponent />
+          <View style={styles.expenseContainer}>
+            <Text style={styles.expensesText}>Nearby Schools</Text>
+          </View>
+          <SchoolsComponent />
+          <View style={styles.expenseContainer}>
+            <Text style={styles.expensesText}>Nearby Homes</Text>
+          </View>
+          <NearbyHomesComponent />
+          <View style={styles.expenseContainer}>
+            <Text style={styles.expensesText}>MLS Info</Text>
+          </View>
+          <DisclaimerComponent />
+        </ScrollView>
+      </View>
+    )
+  }
+
+  const displayProperty = () => {
+    return(
+      <>
+        {
+          accessInvestmentMetrics ? displayPropertyWithMetrics()  : displayPropertyWithoutMetrics()
+        }
+      </>
+    )
+  }
+
+  const displayPropertyTabletWithMetrics = () => {
     return(
       <View style={styles.screenTablet}>
         <View style={styles.investmentCOntainer}>
@@ -212,6 +298,96 @@ const PropertyScreen = ({route}) => {
           </View>
         </View>
       </View>
+    )
+  }
+
+  const displayPropertyTabletWithoutMetrics = () => {
+    return(
+      <View style={styles.screenTablet}>
+        <View style={styles.investmentCOntainer}>
+          <InvestmentMetricCompnent />
+        </View>
+        <View style={styles.splitTabletFull}>
+          <View style={styles.splitImages}>
+            <ImageCarouseTabletComponent/>
+          </View>
+          <View style={styles.splitContent}>
+            <ScrollView style={[styles.scrollTablet]}>
+              <QuickSummaryComponent/>
+              <TouchableOpacity onPress={() => {setLoadRevenue(!loadRevenue)}}>
+                <View style={styles.expenseContainer}>
+                  <Text style={styles.expensesText}>Total Revenue: ${convertToDollarAmount(totalRevenue)}</Text>
+                    <Feather size={22} name={'chevrons-down'} />
+                </View>
+              </TouchableOpacity>
+              {
+                loadRevenue ? <RevenueComponent /> : null
+              }
+              <TouchableOpacity onPress={() => {setLoadExpenses(!loadExpenses)}}>
+                <View style={styles.expenseContainer}>
+                  <Text style={styles.expensesText}>Total Expenses: ${convertToDollarAmount(expenses)}</Text>
+                    <Feather size={22} name={'chevrons-down'} />
+                </View>
+              </TouchableOpacity>
+              {
+                loadExpenses ? displayExpensesComponents() : null
+              }
+              <View style={styles.expenseContainer}>
+                <Text style={styles.expensesText}>Property Details</Text>
+              </View>
+              <DetailsComponent />
+              <View style={styles.expenseContainer}>
+                <Text style={styles.expensesText}>Property Description:</Text>
+              </View>
+              <DescriptionComponent />
+              <View style={styles.expenseContainer}>
+                <Text style={styles.expensesText}>Listing Details:</Text>
+              </View>
+              <ListingDetailsComponent />
+              <View style={styles.expenseContainer}>
+                <Text style={styles.expensesText}>Connect With An Agent</Text>
+              </View>
+              <ConnectWithAgentComponent />
+              <View style={styles.expenseContainer}>
+                <Text style={styles.expensesText}>Sale History</Text>
+              </View>
+              <SaleHistoryComponent />
+              <View style={styles.expenseContainer}>
+                <Text style={styles.expensesText}>Tax History</Text>
+              </View>
+              <TaxHistoryComponent />
+              <PlaceOfferComponent />
+              <MapComponent />
+              <View style={styles.expenseContainer}>
+                <Text style={styles.expensesText}>Open House</Text>
+              </View>
+              <OpenHouseComponent />
+              <View style={styles.expenseContainer}>
+                <Text style={styles.expensesText}>Nearby Schools</Text>
+              </View>
+              <SchoolsComponent />
+              <View style={styles.expenseContainer}>
+                <Text style={styles.expensesText}>Nearby Homes</Text>
+              </View>
+              <NearbyHomesComponent />
+              <View style={styles.expenseContainer}>
+                <Text style={styles.expensesText}>MLS Info</Text>
+              </View>
+              <DisclaimerComponent />
+            </ScrollView>
+          </View>
+        </View>
+      </View>
+    )
+  }
+
+  const displayPropertyTablet = () => {
+    return(
+      <>
+        {
+          accessInvestmentMetrics ? displayPropertyTabletWithMetrics() : displayPropertyTabletWithoutMetrics()
+        }
+      </>
     )
   }
 
@@ -295,11 +471,23 @@ const styles = StyleSheet.create({
   scroll: {
     height: 600
   },
+  screenNoInvestment: {
+    height: deviceHeight - 118
+  },
   splitTablet: {
     width: deviceWidth,
     height: deviceHeight - 300,
     display: 'flex',
     flexDirection: 'row',
+  },
+  splitTabletFull: {
+    width: deviceWidth,
+    height: deviceHeight - 120,
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  splitImages: {
+    width: deviceWidth - 425
   },
   splitImages: {
     width: deviceWidth - 425

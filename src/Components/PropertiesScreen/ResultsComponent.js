@@ -102,18 +102,18 @@ const ResultsComponent = () => {
 
   const addPropertyView = (property) => {
     auth.currentUser === null   
-      ? null 
+      ? navigation.navigate('PropertyScreen', {zpid: property.zpid})
       : updatePropertyView(property)
   }
 
   const updatePropertyView = (property) => {
     let newProperty = {}
     newProperty.zpid = property.zpid
-    newProperty.ingSrc = property.hiResImageLink
+    newProperty.ingSrc = property.imgSrc
     newProperty.bedrooms = property.bedrooms
     newProperty.bathrooms = property.bathrooms
     newProperty.livingArea = property.livingArea
-    newProperty.address = property.abbreviatedAddress
+    newProperty.address = property.streetAddress
     newProperty.city = property.city
     newProperty.state = property.state
     newProperty.zipcode = property.zipcode

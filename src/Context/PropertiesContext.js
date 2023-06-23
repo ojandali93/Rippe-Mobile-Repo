@@ -170,7 +170,7 @@ export const PropertiesContextProvider = ({children}) => {
   }
 
   const setPropertyDetails = (token, generalResponse) => {
-    let limit = 5
+    let limit = 31
     generalResponse.results.map((property, index) => {
       if(index < limit){
         let taxRate
