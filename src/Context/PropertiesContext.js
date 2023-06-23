@@ -32,8 +32,6 @@ export const PropertiesContextProvider = ({children}) => {
   const [totalPages, setTotalPages] = useState(null)
   const [totalResultsCount, setTotalResultsCount] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
-
-  const [submitNewSearch, setSubmitNewSearch] = useState(false)
   
   const [loading, setLoading] = useState(true)
 
@@ -42,7 +40,7 @@ export const PropertiesContextProvider = ({children}) => {
 
   const [singlePropertyFound, setSinglePropertyFound] = useState(false)
   
-  let counter = 0
+  const [tempToken, setTempToken] = useState(null)
 
   const [viewMaps, setViewMaps] = useState(false)
   const [cityLat, setCityLat] = useState(34.052235)
@@ -76,8 +74,6 @@ export const PropertiesContextProvider = ({children}) => {
   const {mountainView} = useContext(SearchFilterContext)
   const {waterView} = useContext(SearchFilterContext)
   const {waterFront} = useContext(SearchFilterContext)
-
-  const {setLoggedIn} = useContext(ProfileContext)
 
   const getProperties = () => {
     setLoading(true)
@@ -140,11 +136,17 @@ export const PropertiesContextProvider = ({children}) => {
     properties.params.isTownhouse = isTownhouse
     properties.params.page = currentPage
     properties.params.sortSelection = sort
-    axios.request(properties).then(function (response) {
+    axios.request(properties)
+    .then(function (response) {
+      setTotalPages(response.data.totalPages)
+      setRefreshMap(true)
+      setCityLat(response.data.results[0].latitude)
+      setCityLong(response.data.results[0].longitude)
+      setRefreshMap(false)
       grabFavorites()
       response.data.abbreviatedAddress != null
         ? null 
-        : setMultiProperties(response)
+        : grabMoreDetails(response.data)
     }).catch(function (error) {
         error[0] === 'AxiosError: Request failed with status code 500'
           ? setErrorMessage('There was an issue retreiving properties')
@@ -152,122 +154,95 @@ export const PropertiesContextProvider = ({children}) => {
     });
   }
 
-  const getLatLong = (city, state) => {
-    setRefreshMap(true)
-    axios.get('https://api.api-ninjas.com/v1/geocoding', {
-        params: {
-            city: city,
-            state: getStateName(state.toUpperCase())
-        },
-        headers: {
-            'X-Api-Key': authorized.GEO_LOCATE_API_KEY
-        },
-        responseType: 'json'
+  const grabMoreDetails = (generalResponse) => {
+    axios.post('https://api.precisely.com/oauth/token', 'grant_type=client_credentials', {
+      headers: {
+        'Authorization': 'Basic RGdIYnVyRjNPdlllVEdKYWxtUUdveUd3NTR6VzNjUVk6N3lhQlRsT01CQTdqcXJrbQ==',
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
     })
-    .then(response => {
-        setRefreshMap(true)
-        setCityLat(response.data[0].latitude)
-        setCityLong(response.data[0].longitude)
-        setRefreshMap(false)
+    .then((response) => {
+      setPropertyDetails(response.data.access_token, generalResponse)
     })
-    .catch(error => {
-    });
+    .catch((error) => {
+      console.log('token error: ', error)
+    })
   }
 
-  const setMultiProperties = (response) => {
-    setTotalPages(response.data.totalPages)
-    let currentSearchLength = currentSearch.split(',')
-    currentSearchLength.length === 2
-      ? getLatLong(currentSearchLength[0], currentSearchLength[1])
-      : null
-    generateUrlList(response.data.results)
-  }
-
-  const generateUrlList = (results) => {
-    const requestList = []
-    for(let i = 0; i < results.length; i++){
-      let requestObject = {
-        method: 'GET',
-        url: 'https://zillow56.p.rapidapi.com/property',
-        params: {zpid: results[i].zpid},
-        headers: {
-          'content-type': 'application/octet-stream',
-          'X-RapidAPI-Key': authorized.ZILLOW_API_KEY,
-          'X-RapidAPI-Host': authorized.ZILLOW_API_HOST
-        }
-      };
-      requestList.push(requestObject)
-    }
-    makeNewRequest(requestList)
-  }
+  const setPropertyDetails = (token, generalResponse) => {
+    let limit = 5
+    generalResponse.results.map((property, index) => {
+      if(index < limit){
+        let taxRate
+        let propertyAddress = property.streetAddress + ", " +
+                              property.city + ', ' +
+                              property.state + ' ' + property.zipcode
+        axios.get('https://api.precisely.com/property/v2/attributes/byaddress', {
+          params: {
+            address: propertyAddress,
+            attributes: 'taxAmount, assessedValue'
+          },
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          }
+        })
+        .then((response) => {
+          taxRate = ((parseInt(response.data.propertyAttributes.taxAmount) / parseInt(response.data.propertyAttributes.assessedValue)) * 100).toFixed(2)
+          let downPaymentAmount = calculateDownPaymentAmount(property.price, 20)
+          let downPaymentPercent = calculateDownPaymentPercent(property.price, downPaymentAmount)
+          let loanAmount = calculateLoanAmount(property.price, downPaymentAmount)
+          let mortgageAmount = calculateMortgageAmount(loanAmount, 30, 6.485)
+          let monthlyTaxAmount = Math.round((calculatePropertyTaxAnnual(taxRate, property.price)) / 12)
+          let homeInsurance = calculateHomeInsuranceAmount(property.price)
+          let monthlyRevenue = property.rentZestimate
+          let expenses = 0
+          let hoaFee = property.hoaFee
+          hoaFee === null 
+            ? expenses = mortgageAmount + hoaFee + monthlyTaxAmount + homeInsurance 
+            : expenses = mortgageAmount + monthlyTaxAmount + homeInsurance
+          let monthlyExpenses = 0
+          let monthlyExpensesWithoutMortgage = 0
+          hoaFee === null
+            ? monthlyExpensesWithoutMortgage = hoaFee + monthlyTaxAmount + homeInsurance
+            : monthlyExpensesWithoutMortgage = monthlyTaxAmount + homeInsurance
+          hoaFee === null
+            ? monthlyExpenses = mortgageAmount + hoaFee + monthlyTaxAmount + homeInsurance
+            : monthlyExpenses = mortgageAmount + monthlyTaxAmount + homeInsurance
+          let netOperatingIncome = Math.round(monthlyRevenue - monthlyExpensesWithoutMortgage)
+          let yearlyNetOperatingIncome = netOperatingIncome * 12
+          let monthlyCashFLow = Math.round(netOperatingIncome - mortgageAmount)
+          let yearlyCashFlow = monthlyCashFLow * 12
+          let currentCapRate = ((yearlyNetOperatingIncome / property.price) * 100).toFixed(2)
+          let currentCashOnCashReturn = ((yearlyCashFlow / downPaymentAmount) * 100).toFixed(2)
+          let year1ReturnOnInvestment = ((yearlyNetOperatingIncome / downPaymentAmount) * 100).toFixed(2)
   
-  const makeNewRequest = (requestList) => {
-    if(counter < requestList.length){
-      submitNewSearch
-        ? null
-        : axios.request(requestList[counter])
-            .then((response) => {
-              let downPaymentAmount = calculateDownPaymentAmount(response.data.price, 20)
-              let downPaymentPercent = calculateDownPaymentPercent(response.data.price, downPaymentAmount)
-              let loanAmount = calculateLoanAmount(response.data.price, downPaymentAmount)
-              let mortgageAmount = calculateMortgageAmount(loanAmount, 30, response.data.mortgageRates.thirtyYearFixedRate)
-              let monthlyTaxAmount = calculatePropertyTaxAnnual(response.data.propertyTaxRate, response.data.price)
-              let homeInsurance = calculateHomeInsuranceAmount(response.data.price)
-              let monthlyRevenue = response.data.rentZestimate
-              let expenses = 0
-              let hoaFee = response.data.hoaFee
-              hoaFee === null 
-                ? expenses = mortgageAmount + hoaFee + monthlyTaxAmount + homeInsurance 
-                : expenses = mortgageAmount + monthlyTaxAmount + homeInsurance
-              let monthlyExpenses = 0
-              let monthlyExpensesWithoutMortgage = 0
-              hoaFee === null
-                ? monthlyExpensesWithoutMortgage = hoaFee + monthlyTaxAmount + homeInsurance
-                : monthlyExpensesWithoutMortgage = monthlyTaxAmount + homeInsurance
-              hoaFee === null
-                ? monthlyExpenses = mortgageAmount + hoaFee + monthlyTaxAmount + homeInsurance
-                : monthlyExpenses = mortgageAmount + monthlyTaxAmount + homeInsurance
-              let netOperatingIncome = Math.round(monthlyRevenue - monthlyExpensesWithoutMortgage)
-              let yearlyNetOperatingIncome = netOperatingIncome * 12
-              let monthlyCashFLow = Math.round(netOperatingIncome - mortgageAmount)
-              let yearlyCashFlow = monthlyCashFLow * 12
-              let currentCapRate = ((yearlyNetOperatingIncome / response.data.price) * 100).toFixed(2)
-              let currentCashOnCashReturn = ((yearlyCashFlow / downPaymentAmount) * 100).toFixed(2)
-              let year1ReturnOnInvestment = ((yearlyNetOperatingIncome / downPaymentAmount) * 100).toFixed(2)
-
-              let propertyDetails = response.data
-              propertyDetails.investment = {
-                downPaymentAmount: downPaymentAmount,
-                downPaymentPercent: downPaymentPercent,
-                loanAmount: loanAmount,
-                mortgageAmount: mortgageAmount,
-                monthlyTaxAmount: monthlyTaxAmount,
-                homeInsurance: homeInsurance,
-                monthlyRevenue: monthlyRevenue,
-                expenses: expenses,
-                netOperatingIncome: netOperatingIncome,
-                yearlyNetOperatingIncome: yearlyNetOperatingIncome,
-                monthlyCashFLow: monthlyCashFLow,
-                yearlyCashFlow: yearlyCashFlow,
-                currentCapRate: currentCapRate,
-                currentCashOnCashReturn: currentCashOnCashReturn,
-                year1ReturnOnInvestment: year1ReturnOnInvestment,
-                monthlyExpensesWithoutMortgage: monthlyExpensesWithoutMortgage,
-              }
-              setResults(results => [...results, propertyDetails])
-              setCurrentSearch('')
-              setLoading(false)
-              counter++
-              makeNewRequest(requestList)
-            })
-            .catch((error) => {
-              error[0] === 'AxiosError: Request failed with status code 500'
-                ? setErrorMessage('There was an issue retreiving properties')
-                : null
-            })
-        } else {
-          counter = 0
-        }
+          property.investment = {
+            downPaymentAmount: downPaymentAmount,
+            downPaymentPercent: downPaymentPercent,
+            loanAmount: loanAmount,
+            mortgageAmount: mortgageAmount,
+            monthlyTaxAmount: monthlyTaxAmount,
+            homeInsurance: homeInsurance,
+            monthlyRevenue: monthlyRevenue,
+            expenses: expenses,
+            netOperatingIncome: netOperatingIncome,
+            yearlyNetOperatingIncome: yearlyNetOperatingIncome,
+            monthlyCashFLow: monthlyCashFLow,
+            yearlyCashFlow: yearlyCashFlow,
+            currentCapRate: currentCapRate,
+            currentCashOnCashReturn: currentCashOnCashReturn,
+            year1ReturnOnInvestment: year1ReturnOnInvestment,
+            monthlyExpensesWithoutMortgage: monthlyExpensesWithoutMortgage,
+          }
+          setResults(results => [...results, property])
+        })
+        .catch((error) => {
+          console.log('property error: ', error)
+        })
+      }
+    })
+    setLoading(false)
   }
 
   return(
@@ -292,7 +267,6 @@ export const PropertiesContextProvider = ({children}) => {
                                         setTotalPages,
                                         setTotalResultsCount,
                                         getProperties,
-                                        setSubmitNewSearch,
                                         setViewMaps,
                                         setLoading,
                                         setCurrentPage,

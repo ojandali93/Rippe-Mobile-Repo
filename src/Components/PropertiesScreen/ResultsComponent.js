@@ -149,9 +149,39 @@ const ResultsComponent = () => {
     )
   }
 
+  const showGreatInvestmentTablet = () => {
+    return(
+      <View style={styles.tabletFavoriteMenu}>
+        <View style={styles.greatInvestmentContainer}>
+          <Feather size={20} color={'white'} style={styles.zap} name={'zap'}/>
+          <Text style={styles.greatText}>Great Investment</Text>
+        </View>
+        <View>
+          {
+            favoritesZpids.includes(property.zpid)
+              ? <TouchableOpacity onPress={() => {updateRemoveFavorite(property)}}><Entypo color={'white'} size={28} name='heart'  stlye={styles.menu}/></TouchableOpacity>
+              : <TouchableOpacity onPress={() => {updateAddFavorite(property)}}><Entypo color={'white'} size={28} name='heart-outlined'  stlye={styles.menu}/></TouchableOpacity>
+          }
+        </View>
+      </View>
+    )
+  }
+
   const showStandardMenu = () => {
     return(
       <View style={styles.favoriteMenuStandard}>
+        {
+          favoritesZpids.includes(property.zpid)
+            ? <TouchableOpacity onPress={() => {updateRemoveFavorite(property)}}><Entypo color={'white'} size={28} name='heart'  stlye={styles.menu}/></TouchableOpacity>
+            : <TouchableOpacity onPress={() => {updateAddFavorite(property)}}><Entypo color={'white'} size={28} name='heart-outlined'  stlye={styles.menu}/></TouchableOpacity>
+        }
+      </View>
+    )
+  }
+
+  const showStandardMenuTablet = () => {
+    return(
+      <View style={styles.tabletFavoriteMenuStandard}>
         {
           favoritesZpids.includes(property.zpid)
             ? <TouchableOpacity onPress={() => {updateRemoveFavorite(property)}}><Entypo color={'white'} size={28} name='heart'  stlye={styles.menu}/></TouchableOpacity>
@@ -169,16 +199,16 @@ const ResultsComponent = () => {
             return(
               <View key={property.zpid} style={styles.tabletProperty}>
                 <TouchableOpacity onPress={() => {addPropertyView(property)}}> 
-                  <Image style={{height: splitHeight, width: splitWidth}} source={{uri: property.hiResImageLink}}/>
+                  <Image style={{height: splitHeight, width: splitWidth}} source={{uri: property.imgSrc}}/>
                   <View style={styles.summary}>
                     <View style={styles.tabletBackground}></View>
-                    <View style={styles.tabletFavoriteMenu}>
+                    <>
                       {
-                        favoritesZpids.includes(property.zpid)
-                          ? <TouchableOpacity onPress={() => {updateRemoveFavorite(property)}}><Entypo color={'white'} size={24} name='heart'  stlye={styles.menu}/></TouchableOpacity>
-                          : <TouchableOpacity onPress={() => {updateAddFavorite(property)}}><Entypo color={'white'} size={24} name='heart-outlined'  stlye={styles.menu}/></TouchableOpacity>
+                        parseInt(property.investment.monthlyCashFLow) > 750 && parseInt(property.investment.netOperatingIncome) > 900 && parseFloat(property.investment.currentCapRate) > 6 && parseFloat(property.investment.currentCashOnCashReturn) > 6 && parseFloat(property.investment.year1ReturnOnInvestment) > 7
+                          ? showGreatInvestmentTablet()
+                          : showStandardMenuTablet ()
                       }
-                    </View>
+                    </>
                     <View>
                       <Text style={[styles.text, styles.price, styles.tabletSummaryInfo]}>${convertToDollarAmount(property.price)}</Text>
                     </View>
@@ -393,7 +423,7 @@ const ResultsComponent = () => {
                   </View>
                   <View style={styles.hSplit}></View>
                   <View style={styles.disclaimerContainer}>
-                    <Text style={styles.tabletDisclaimer}>Values & Metrics based on 20% down / 30 years / {property.mortgageRates.thirtyYearFixedRate}% IR</Text>
+                    <Text style={styles.tabletDisclaimer}>Values & Metrics based on 20% down / 30 years / 6.485% IR</Text>
                   </View>
                 </TouchableOpacity>
               </View>
@@ -412,7 +442,7 @@ const ResultsComponent = () => {
             return(
               <View key={property.zpid} style={styles.property}>
                 <TouchableOpacity onPress={() => {addPropertyView(property)}}> 
-                  <Image style={{height: aspectHeight, width: aspectWidth}} source={{uri: property.hiResImageLink}}/>
+                  <Image style={{height: aspectHeight, width: aspectWidth}} source={{uri: property.imgSrc}}/>
                   <View style={styles.summary}>
                     <View style={styles.background}></View>  
                     <>
@@ -636,7 +666,7 @@ const ResultsComponent = () => {
                   </View>
                   <View style={styles.hSplit}></View>
                   <View style={styles.disclaimerContainer}>
-                    <Text style={styles.disclaimer}>Values & Metrics based on 20% down / 30 years / {property.mortgageRates.thirtyYearFixedRate}% IR</Text>
+                    <Text style={styles.disclaimer}>Values & Metrics based on 20% down / 30 years / 6.485% IR</Text>
                   </View>
                 </TouchableOpacity>
               </View>
@@ -649,6 +679,9 @@ const ResultsComponent = () => {
 
   return (
     <>
+      {
+        console.log(results.length)
+      }
       {
         deviceWidth >= 500 ? tabletScreen() : phoneScreen()
       }
@@ -706,6 +739,14 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     marginTop: 4
   },
+  tabletFavoriteMenu: {
+    width: splitWidth - 16,
+    height: 40,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 4
+  },
   favoriteMenuStandard: {
     width: aspectWidth - 16,
     height: 40,
@@ -714,8 +755,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center'
   },
-  tabletFavoriteMenu: {
+  tabletFavoriteMenuStandard: {
     width: splitWidth - 16,
+    height: 40,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-end',
@@ -725,7 +767,7 @@ const styles = StyleSheet.create({
     marginTop: aspectHeight - 130
   },
   tabletSummaryInfo: {
-    marginTop: splitHeight - 134
+    marginTop: splitHeight - 150
   },
   text: {
     color: 'white'

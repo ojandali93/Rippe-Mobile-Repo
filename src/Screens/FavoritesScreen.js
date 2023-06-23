@@ -217,7 +217,7 @@ const FavoritesScreen = () => {
         {
           auth.currentUser === null 
             ? displayEmpty() : favorites.length === 0 
-                                  ? displayNone() 
+                                  ? displayNone()
                                   : displayProperties()
         }
       </View>
