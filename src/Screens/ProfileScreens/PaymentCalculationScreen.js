@@ -64,7 +64,17 @@ const PaymentCalculationScreen = () => {
   }, [totalPropTax, totalPandI, totalHomeInsurance, totalHoa, utilities, otherExpenses])
 
   return (
-    <View style={styles.container}>
+    <View style={
+      deviceheight > 1000
+        ? styles.containerTablet
+        : deviceheight > 900 
+            ? styles.container 
+            : deviceheight > 800 && deviceheight < 900 
+              ? styles.containerM 
+              : deviceheight < 800
+                ? styles.containerS
+                : null
+    }>
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Payment Calculator</Text>
       </View>
@@ -104,7 +114,17 @@ const PaymentCalculationScreen = () => {
 
       <View style={styles.separater}></View>
 
-      <ScrollView style={styles.scroll}>
+      <ScrollView style={
+        deviceheight > 1000
+        ? styles.scrollTablet
+        : deviceheight > 900 && deviceheight < 1000 
+          ? styles.scroll 
+          : deviceheight > 800 && deviceheight < 900 
+            ? styles.scrollM 
+            : deviceheight < 800
+              ? styles.scrollS
+              : null
+      }>
         <View style={styles.contentContainer}>
           <View style={styles.content}>
             <View style={styles.sectionLabel}>
@@ -291,6 +311,15 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 54
   },
+  containerM: {
+    marginTop: 40
+  },
+  containerS: {
+    marginTop: 18
+  },
+  containerTablet: {
+    marginTop: 18
+  },
   header: {
     fontSize: 22,
     fontWeight: 'bold'
@@ -317,7 +346,16 @@ const styles = StyleSheet.create({
     top: 8
   },
   scroll: {
-    height: aspectHeight
+    height: deviceheight - 415
+  },
+  scrollM: {
+    height: deviceheight - 405
+  },
+  scrollS: {
+    height: deviceheight - 350
+  },
+  scrollTablet: {
+    height: deviceheight - 100
   },
   totalContainer: {
     width: '100%',

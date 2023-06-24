@@ -59,7 +59,15 @@ const FeedScreen = () => {
 
   const showLoading = () => {
     return(
-      <View style={styles.loadingScreen}>
+      <View style={
+        deviceHeight > 900 
+          ? styles.loadingScreen 
+          : deviceHeight > 800 && deviceHeight < 900 
+            ? styles.loadingScreenM 
+            : deviceHeight < 800
+              ? styles.loadingScreenS
+              : null
+      }>
         <Text style={styles.loadingText}>Loading properties</Text>
         <ActivityIndicator style={styles.loading} size='large'/>
       </View>
@@ -99,7 +107,15 @@ const FeedScreen = () => {
 
   const showValidProperties = () => {
     return(
-      <ScrollView style={styles.scrollView}>
+      <ScrollView style={
+        deviceHeight > 900 
+          ? styles.scrollView 
+          : deviceHeight > 800 && deviceHeight < 900 
+            ? styles.scrollViewM 
+            : deviceHeight < 800
+              ? styles.scrollViewS
+              : null
+      }>
         {
           selectedFeed.map((property) => {
             return(
@@ -193,7 +209,15 @@ const FeedScreen = () => {
 
   const showPhoneScreen = () => {
     return(
-      <View style={styles.screen}>
+      <View style={
+        deviceHeight > 900 
+          ? styles.screen 
+          : deviceHeight > 800 && deviceHeight < 900 
+            ? styles.screenM 
+            : deviceHeight < 800
+              ? styles.screenS
+              : null
+      }>
         <View style={styles.headerContainer}>
           <Text style={styles.header}>Feed</Text>
         </View>
@@ -243,7 +267,11 @@ const FeedScreen = () => {
         <View style={styles.headerContainer}>
           <Text style={styles.header}>Feed</Text>
         </View>
-        <View style={styles.listContainerTablet}>
+        <View style={
+          deviceHeight > 1300
+            ? styles.listContainerTablet
+            : styles.listContainearTabletS
+        }>
           <ScrollView>
           {
             currentFeed.map((item) => {
@@ -289,16 +317,32 @@ const FeedScreen = () => {
 const styles = StyleSheet.create({
   screen: {
     marginTop: 58,
-    width: aspectWidth,
     marginLeft: 8,
+    width: aspectWidth,
+  },
+  screenM: {
+    marginTop: 40,
+    marginLeft: 8,
+    width: aspectWidth,
+  },
+  screenS: {
+    marginTop: 16,
+    marginLeft: 8,
+    width: aspectWidth,
   },
   tabletScreen: {
-    marginTop: 32,
+    marginTop: 18,
     width: aspectWidth,
     marginLeft: 8,
   },
   scrollView: {
-    height: deviceHeight - 284,
+    height: deviceHeight - 294,
+  },
+  scrollViewM: {
+    height: deviceHeight - 275,
+  },
+  scrollViewS: {
+    height: deviceHeight - 220,
   },
   scrollViewTablet: {
     height: tabletAspectHeight + 8,
@@ -337,7 +381,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'lightgrey',
-    borderRadius: 8
+    borderRadius: 8,
+    marginBottom: 8
   },
   cityText: {
     paddingVertical: 8,
@@ -360,7 +405,14 @@ const styles = StyleSheet.create({
     marginBottom: 8
   },
   listContainerTablet: {
-    height: screenHeight - 16,
+    height: deviceHeight - 200,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: '',
+    borderRadius: 8
+  },
+  listContainearTabletS: {
+    height: deviceHeight - 150,
     display: 'flex',
     flexDirection: 'row',
     alignItems: '',
@@ -460,7 +512,25 @@ const styles = StyleSheet.create({
   loadingScreen: {
     width: deviceWidth - 16,
     marginLeft: 8,
-    height: deviceHeight - 284,
+    height: deviceHeight - 294,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  loadingScreenM: {
+    width: deviceWidth - 16,
+    marginLeft: 8,
+    height: deviceHeight - 275,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  loadingScreenS: {
+    width: deviceWidth - 16,
+    marginLeft: 8,
+    height: deviceHeight - 220,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',

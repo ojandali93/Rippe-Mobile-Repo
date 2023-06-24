@@ -8,6 +8,7 @@ import { db, auth } from '../../Api/firebaseTesting'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 
 const deviceWidth = Dimensions.get('window').width
+const deviceHeight = Dimensions.get('window').height
 const aspectWidth = deviceWidth - 24
 const aspectHeight = (deviceWidth / 1.78) + 1
 
@@ -117,7 +118,17 @@ const SellHomeScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={
+      deviceHeight > 1000
+        ? styles.containerTablet
+        : deviceHeight > 900 && deviceHeight < 1000 
+            ? styles.container 
+            : deviceHeight > 800 && deviceHeight < 900 
+              ? styles.containerM 
+              : deviceHeight < 800
+                ? styles.containerS
+                : null
+    }>
       <ScrollView>
         <View style={styles.headerContainer}>
           <Text style={styles.header}>Sell My Home</Text>
@@ -397,6 +408,15 @@ const SellHomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     marginTop: 54
+  },
+  containerM: {
+    marginTop: 40
+  },
+  containerS: {
+    marginTop: 18
+  },
+  containerTablet: {
+    marginTop: 18
   },
   headerText: {
     fontSize: 22,

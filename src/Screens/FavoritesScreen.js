@@ -95,6 +95,20 @@ const FavoritesScreen = () => {
     )
   }
 
+  const displayEmptyTablet = () => {
+    return(
+      <View style={styles.nonDataScreenTablet}> 
+        <Text style={styles.nonDataText}>Save Your Favorite Properties</Text>
+        <TouchableOpacity style={styles.closeContainer} onPress={() => {signinUser()}}>
+          <Text style={styles.close}>Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.closeContainer} onPress={() => {signupUser()}}>
+          <Text style={styles.close}>Signup</Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
   const displayPropertiesTablet = () => {
     return(
       <ScrollView style={styles.scrollTablet}>
@@ -143,7 +157,15 @@ const FavoritesScreen = () => {
 
   const displayProperties = () => {
     return(
-      <ScrollView style={styles.scroll}>
+      <ScrollView style={
+        deviceHeight > 900 
+          ? styles.scroll 
+          : deviceHeight > 800 && deviceHeight < 900 
+            ? styles.scrollM 
+            : deviceHeight < 800
+              ? styles.scrollS
+              : null
+      }>
         {
           favorites.map((property) => {
             return(
@@ -199,7 +221,7 @@ const FavoritesScreen = () => {
           </View>
           {
             auth.currentUser === null 
-              ? displayEmpty() : favorites.length === 0 
+              ? displayEmptyTablet() : favorites.length === 0 
                                     ? displayNone() 
                                     : displayPropertiesTablet()
           }
@@ -210,7 +232,15 @@ const FavoritesScreen = () => {
 
   const phoneScreen = () => {
     return(
-      <View style={styles.screen}>
+      <View style={
+        deviceHeight > 900 
+          ? styles.screen 
+          : deviceHeight > 800 && deviceHeight < 900 
+            ? styles.screenM 
+            : deviceHeight < 800
+              ? styles.screenS
+              : null
+      }>
         <View style={styles.headerContainer}>
           <Text style={styles.header}>Favorites</Text>
         </View>
@@ -227,7 +257,7 @@ const FavoritesScreen = () => {
   return (
     <>
       {
-        deviceWidth >= 500 ? tabletScreen() : phoneScreen()
+        deviceWidth >= 700 ? tabletScreen() : phoneScreen()
       }
     </>
   )
@@ -238,12 +268,26 @@ const styles = StyleSheet.create({
     marginTop: 58,
     marginLeft: 8
   },
+  screenM: {
+    marginTop: 40,
+    marginLeft: 8
+  },
+  screenS: {
+    marginTop: 16,
+    marginLeft: 8
+  },
   tabletScreen: {
     display: 'flex',
     flexDirection: 'row'
   },
   scroll: {
     height: deviceHeight - 182
+  },
+  scrollM: {
+    height: deviceHeight - 176
+  },
+  scrollS: {
+    height: deviceHeight - 118
   },
   scrollTablet: {
     height: deviceHeight - 182
@@ -253,7 +297,7 @@ const styles = StyleSheet.create({
   },
   contentSplit: {
     marginTop: 18,
-    width: tabletContentWidth
+    width: deviceWidth - 375
   },
   propertyTablet: {
     width: tabletWidth - 16,
@@ -354,6 +398,15 @@ const styles = StyleSheet.create({
   },
   nonDataScreen: {
     width: aspectWidth,
+    height: screenHeight - 32,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  nonDataScreenTablet: {
+    width: 359,
+    marginLeft: 8,
     height: screenHeight - 32,
     display: 'flex',
     flexDirection: 'column',

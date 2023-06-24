@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native'
 import { ProfileContext } from '../Context/ProfileContext'
 
 const deviceWidth = Dimensions.get('window').width
-const deviceheight = Dimensions.get('window').height
+const deviceHeight = Dimensions.get('window').height
 const aspectWidth = deviceWidth - 16
 
 const ProfileScreen = () => {
@@ -113,7 +113,15 @@ const ProfileScreen = () => {
 
   const displayProfile = () => {
     return(
-      <View style={styles.screen}>
+      <View style={
+        deviceHeight > 900 
+          ? styles.screen 
+          : deviceHeight > 800 && deviceHeight < 900 
+            ? styles.screenM 
+            : deviceHeight < 800
+              ? styles.screenS
+              : null
+      }>
         <View style={styles.container}>
           <ScrollView>
             <View style={styles.header}>
@@ -379,6 +387,12 @@ const ProfileScreen = () => {
 const styles = StyleSheet.create({
   screen: {
     marginTop: 58
+  },
+  screenM: {
+    marginTop: 40
+  },
+  screenS: {
+    marginTop: 16
   },
   screenTablet:{
     marginTop: 16

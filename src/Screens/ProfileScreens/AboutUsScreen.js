@@ -1,7 +1,9 @@
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Linking, Image } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Linking, Image, Dimensions } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
+
+const deviceHeight = Dimensions.get('window').height
 
 const AboutScreen = () => {
   const navigation = useNavigation()
@@ -31,7 +33,15 @@ const AboutScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={
+      deviceHeight > 900 
+        ? styles.container 
+        : deviceHeight > 800 && deviceHeight < 900 
+          ? styles.containerM 
+          : deviceHeight < 800
+            ? styles.containerS
+            : null
+    }>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => {navigation.goBack()}}>
           <Feather name='chevron-left' size={28}/>
@@ -91,6 +101,15 @@ const AboutScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 54
+  },
+  containerM: {
+    marginTop: 40
+  },
+  containerS: {
+    marginTop: 20
+  },
+  containerTablet: {
     marginTop: 54
   },
   header: {

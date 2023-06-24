@@ -94,7 +94,17 @@ const RecentlyViewedScreen = () => {
   }
 
   return (
-    <View style={styles.screen}>
+    <View style={
+      deviceHeight > 1000
+      ? styles.sreenTablet
+      : deviceHeight > 900 && deviceHeight < 1000 
+        ? styles.screen 
+        : deviceHeight > 800 && deviceHeight < 900 
+          ? styles.screenM 
+          : deviceHeight < 800
+            ? styles.screenS
+            : null
+    }>
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Recently Viewed</Text>
       </View>
@@ -113,6 +123,18 @@ const RecentlyViewedScreen = () => {
 const styles = StyleSheet.create({
   screen: {
     marginTop: 58,
+    marginLeft: 8
+  },
+  screenM: {
+    marginTop: 40,
+    marginLeft: 8
+  },
+  screenS: {
+    marginTop: 22,
+    marginLeft: 8
+  },
+  sreenTablet: {
+    marginTop: 22,
     marginLeft: 8
   },
   property: {

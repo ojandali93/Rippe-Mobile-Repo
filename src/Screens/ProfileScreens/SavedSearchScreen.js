@@ -196,7 +196,17 @@ const SavedSearchScreen = () => {
 
   const displaySaved = () => {
     return(
-      <ScrollView style={styles.scroll}>
+      <ScrollView style={
+        deviceHeight > 1000
+          ? styles.scrollTablet
+          : deviceHeight > 900 && deviceHeight < 1000 
+            ? styles.scroll 
+            : deviceHeight > 800 && deviceHeight < 900 
+              ? styles.scrollM 
+              : deviceHeight < 800
+                ? styles.scrollS
+                : null
+      }>
         {
           savedSearch.map((search) => {
             let propertyTypes = []
@@ -278,7 +288,17 @@ const SavedSearchScreen = () => {
   }
 
   return (
-    <View style={styles.screen}>
+    <View style={
+      deviceHeight > 1000
+      ? styles.sreenTablet
+      : deviceHeight > 900 && deviceHeight < 1000 
+        ? styles.screen 
+        : deviceHeight > 800 && deviceHeight < 900 
+          ? styles.screenM 
+          : deviceHeight < 800
+            ? styles.screenS
+            : null
+    }>
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Saved Search</Text>
       </View>
@@ -306,8 +326,29 @@ const styles = StyleSheet.create({
     marginTop: 58,
     width: '100%'
   },
+  screenM: {
+    marginTop: 40,
+    width: '100%'
+  },
+  screenS: {
+    marginTop: 22,
+    width: '100%'
+  },
+  sreenTablet: {
+    marginTop: 22,
+    width: '100%'
+  },
   scroll: {
     height: deviceHeight - 250
+  },
+  scrollM: {
+    height: deviceHeight - 234
+  },
+  scrollS: {
+    height: deviceHeight - 188
+  },
+  scrollTablet: {
+    height: deviceHeight - 204
   },
   itemContainer: {
     width: '100%',

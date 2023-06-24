@@ -4,12 +4,15 @@ import { TextInput } from 'react-native-gesture-handler'
 
 import { db, auth } from '../../Api/firebaseTesting'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
+import { useNavigation } from '@react-navigation/native'
 
 const deviceWidth = Dimensions.get('window').width
 const deviceHeight = Dimensions.get('window').height
 const aspectWidth = deviceWidth - 16
 
 const ConnectWithAgentScreen = () => {
+  const navigation = useNavigation()
+
   const [property, setProperty] = useState('')
 
   const [firstName, setFirstName] = useState('')
@@ -52,10 +55,23 @@ const ConnectWithAgentScreen = () => {
   }
 
   return (
-    <View style={styles.scroll}>
+    <View style={
+      deviceHeight > 1000
+        ? styles.scrollTablet
+        : deviceHeight > 900 && deviceHeight < 1000 
+          ? styles.scroll 
+          : deviceHeight > 800 && deviceHeight < 900 
+            ? styles.scrollM 
+            : deviceHeight < 800
+              ? styles.scrollS
+              : null
+    }>
       <View style={styles.headerContainer}>
-        <Text style={styles.header}>Connect With An Agent</Text>
+        <Text style={styles.header}>Sell My Home</Text>
       </View>
+      <TouchableOpacity style={styles.backContainer} onPress={() => {navigation.goBack()}}>
+        <Text style={styles.subHeader}>Back</Text>
+      </TouchableOpacity>
       <View style={styles.agentContainer}>
         <View style={styles.imageContainer}>
           <Image style={{height: 100, width: 100}} source={require('../../Assets/real-estate-agent.png')}/>
@@ -130,6 +146,15 @@ const ConnectWithAgentScreen = () => {
 const styles = StyleSheet.create({
   scroll: {
     marginTop: 58
+  },
+  scrollM: {
+    marginTop: 40
+  },
+  scrollS: {
+    marginTop: 18
+  },
+  scrollTablet: {
+    marginTop: 18
   },
   header: {
     fontSize: 24,
@@ -255,7 +280,16 @@ const styles = StyleSheet.create({
     color: 'white',
     borderRadius: 5,
     overflow: 'hidden'
-  }
+  },
+  backContainer: {
+    position: 'absolute',
+    left: 8,
+    top: 8
+  },
+  subHeader: {
+    fontSize: 18,
+    color: 'blue'
+  },
 })
 
 export default ConnectWithAgentScreen
