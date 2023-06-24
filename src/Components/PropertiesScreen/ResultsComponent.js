@@ -423,7 +423,7 @@ const ResultsComponent = () => {
                   </View>
                   <View style={styles.hSplit}></View>
                   <View style={styles.disclaimerContainer}>
-                    <Text style={styles.tabletDisclaimer}>Values & Metrics based on 20% down / 30 years / 6.485% IR</Text>
+                    <Text style={styles.tabletDisclaimer}>Metrics based on 20% down / 30 years / 6.485% IR</Text>
                   </View>
                 </TouchableOpacity>
               </View>
@@ -666,7 +666,7 @@ const ResultsComponent = () => {
                   </View>
                   <View style={styles.hSplit}></View>
                   <View style={styles.disclaimerContainer}>
-                    <Text style={styles.disclaimer}>Values & Metrics based on 20% down / 30 years / 6.485% IR</Text>
+                    <Text style={styles.disclaimer}>Metrics based on 20% down / 30 years / 6.485% IR</Text>
                   </View>
                 </TouchableOpacity>
               </View>
@@ -679,9 +679,6 @@ const ResultsComponent = () => {
 
   return (
     <>
-      {
-        console.log(results.length)
-      }
       {
         deviceWidth >= 500 ? tabletScreen() : phoneScreen()
       }
@@ -764,7 +761,7 @@ const styles = StyleSheet.create({
     marginTop: 4
   },
   summaryInfo: {
-    marginTop: aspectHeight - 130
+    marginTop: aspectHeight - 145
   },
   tabletSummaryInfo: {
     marginTop: splitHeight - 150

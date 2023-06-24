@@ -16,13 +16,13 @@ web-build/
 # Temporary files created by Metro to check the health of the file watcher
 .metro-health-check*
 
-zillowApi.js
-firebaseTesting.js
+# zillowApi.js
+# firebaseTesting.js
 
-authinfo.js
+# authinfo.js
 
-.env
+# .env
 
-Authorize.js
+# Authorize.js
 
-eas.json
+# eas.json

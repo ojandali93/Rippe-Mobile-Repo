@@ -83,7 +83,17 @@ const InvestmentMetricCompnent = () => {
 
   const displayPartialTabPhone = () => {
     return(
-      <TouchableOpacity onPress={() => {setAccessInvestmentMetrics(!accessInvestmentMetrics)}} style={styles.partialInvestmentComponentPhone}>
+      <TouchableOpacity 
+        onPress={() => {setAccessInvestmentMetrics(!accessInvestmentMetrics)}} 
+        style={
+          deviceheight > 900 
+            ? styles.partialInvestmentComponentPhone 
+            : deviceheight > 800 && deviceheight < 900 
+              ? styles.partialInvestmentComponentPhoneM 
+              : deviceheight < 800
+                ? styles.partialInvestmentComponentPhoneS
+                : null
+        }>
         <View>
           <Feather style={styles.icon} size={24} color={'black'} name={'chevrons-up'}/>
         </View>
@@ -99,7 +109,15 @@ const InvestmentMetricCompnent = () => {
 
   const displayFullTabPhone = () => {
     return(
-      <View style={styles.investmentComponent}>
+      <View style={
+        deviceheight > 900 
+          ? styles.investmentComponent 
+          : deviceheight > 800 && deviceheight < 900 
+            ? styles.investmentComponentM 
+            : deviceheight < 800
+              ? styles.investmentComponentS
+              : null
+      }>
         <TouchableOpacity onPress={() => {setAccessInvestmentMetrics(!accessInvestmentMetrics)}} style={styles.centerHeader}>
           <View>
             <Feather style={styles.icon} size={24} color={'black'} name={'chevrons-down'}/>
@@ -782,11 +800,33 @@ const InvestmentMetricCompnent = () => {
 
 const styles = StyleSheet.create({
   investmentComponent: {
-    height: 200,
+    height: 220,
     width: '100%',
     position: 'absolute',
     left: 0,
-    top: 600,
+    top: deviceheight - 354,
+    backgroundColor: 'white',
+    paddingHorizontal: 8,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  investmentComponentM: {
+    height: 214,
+    width: '100%',
+    position: 'absolute',
+    left: 0,
+    top: deviceheight - 332,
+    backgroundColor: 'white',
+    paddingHorizontal: 8,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  investmentComponentS: {
+    height: 220,
+    width: '100%',
+    position: 'absolute',
+    left: 0,
+    top: deviceheight - 288,
     backgroundColor: 'white',
     paddingHorizontal: 8,
     borderTopLeftRadius: 20,
@@ -804,7 +844,37 @@ const styles = StyleSheet.create({
     width: '100%',
     position: 'absolute',
     left: 0,
-    top: deviceheight - 118,
+    top: deviceheight - 174,
+    backgroundColor: 'white',
+    paddingHorizontal: 8,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  partialInvestmentComponentPhoneM: {
+    height: 40,
+    width: '100%',
+    position: 'absolute',
+    left: 0,
+    top: deviceheight - 154,
+    backgroundColor: 'white',
+    paddingHorizontal: 8,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  partialInvestmentComponentPhoneS: {
+    height: 40,
+    width: '100%',
+    position: 'absolute',
+    left: 0,
+    top: deviceheight - 108,
     backgroundColor: 'white',
     paddingHorizontal: 8,
     borderTopLeftRadius: 20,

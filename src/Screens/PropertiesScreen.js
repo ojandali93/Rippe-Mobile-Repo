@@ -104,6 +104,40 @@ const PropertiesScreen = () => {
     )
   }
 
+  const display11PM = () => {
+    return(
+      <View style={styles.screenM}>
+        <TopbarComponent />
+        {
+          errorMessage
+            ? displayError()
+            : loading 
+                ? displayTabletLoading() 
+                : viewMaps === false 
+                  ? displayPropertyList()
+                  : displayMap()
+        }
+      </View>
+    )
+  }
+
+  const display8Plus = () => {
+    return(
+      <View style={styles.screenS}>
+        <TopbarComponent />
+        {
+          errorMessage
+            ? displayError()
+            : loading 
+                ? displayTabletLoading() 
+                : viewMaps === false 
+                  ? displayPropertyList()
+                  : displayMap()
+        }
+      </View>
+    )
+  }
+
   const iPadMain = () => {
     return(
       <View style={styles.ipad}>
@@ -129,7 +163,15 @@ const PropertiesScreen = () => {
   return (
     <>
       {
-        deviceWidth >= 500 ? iPadMain() : iphoneMain()
+        deviceWidth >= 500
+          ? iPadMain()
+          : deviceHeight > 900
+            ? iphoneMain()
+            : deviceHeight > 850 && deviceHeight < 900
+              ? display11PM()
+              : deviceHeight < 850
+                ? display8Plus()
+                : null
       }
     </>
   )
@@ -139,6 +181,14 @@ const styles = StyleSheet.create({
   screen: {
     width: '100%',
     marginTop: 58,
+  },
+  screenM: {
+    width: '100%',
+    marginTop: 40,
+  },
+  screenS: {
+    width: '100%',
+    marginTop: 16,
   },
   ipad: {
     width: deviceWidth,

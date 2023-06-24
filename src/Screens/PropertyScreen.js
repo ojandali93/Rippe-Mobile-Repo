@@ -63,11 +63,28 @@ const PropertyScreen = ({route}) => {
 
   const displayPropertyWithMetrics = () => {
     return(
-      <View style={styles.screen}>
+      <View style={
+        deviceHeight > 900 
+          ? styles.screen 
+          : deviceHeight > 800 && deviceHeight < 900 
+            ? styles.screenM 
+            : deviceHeight < 800
+              ? styles.screenS
+              : null
+      }>
+        <View style={styles.statusBar}></View>
         <View style={styles.investmentCOntainer}>
           <InvestmentMetricCompnent />
         </View>
-        <ScrollView style={styles.scroll}>
+        <ScrollView style={
+          deviceHeight > 900 
+          ? styles.scroll 
+          : deviceHeight > 800 && deviceHeight < 900 
+            ? styles.scrollM 
+            : deviceHeight < 800
+              ? styles.scrollS
+              : null
+        }>
           <MainImage />
           <ImageCarousel />
           <QuickSummaryComponent/>
@@ -138,11 +155,28 @@ const PropertyScreen = ({route}) => {
 
   const displayPropertyWithoutMetrics = () => {
     return(
-      <View style={styles.screenNoInvestment}>
+      <View style={
+          deviceHeight > 900 
+            ? styles.screen 
+            : deviceHeight > 800 && deviceHeight < 900 
+              ? styles.screenM 
+              : deviceHeight < 800
+                ? styles.screenS
+                : null
+        }>
+        <View style={styles.statusBar}></View>
         <View style={styles.investmentCOntainer}>
           <InvestmentMetricCompnent />
         </View>
-        <ScrollView style={styles.scroll}>
+        <ScrollView style={
+            deviceHeight > 900 
+            ? styles.scrollNoMetrics 
+            : deviceHeight > 800 && deviceHeight < 900 
+              ? styles.scrollNoMetricsM 
+              : deviceHeight < 800
+                ? styles.scrollNoMetricsS
+                : null
+          }>
           <MainImage />
           <ImageCarousel />
           <QuickSummaryComponent/>
@@ -427,6 +461,23 @@ const styles = StyleSheet.create({
   screen: {
     marginTop: 58
   },
+  screenM: {
+    marginTop: 40
+  },
+  screenS: {
+    marginTop: 22
+  },
+  statusBar: {
+    width: deviceWidth,
+    height: 58,
+    backgroundColor: 'whhite',
+    position: 'absolute',
+    top: 0,
+    left: 0
+  },
+  screenNoInvestment: {
+    height: deviceHeight - 118
+  },
   screenTablet: {
     marginTop: 16
   },
@@ -469,10 +520,22 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   scroll: {
-    height: 600
+    height: deviceHeight - 354
   },
-  screenNoInvestment: {
-    height: deviceHeight - 118
+  scrollM: {
+    height: deviceHeight - 332
+  },
+  scrollS: {
+    height: deviceHeight - 288
+  },
+  scrollNoMetrics: {
+    height: deviceHeight - 120
+  },
+  scrollNoMetricsM: {
+    height: deviceHeight - 150
+  },
+  scrollNoMetricsS: {
+    height: deviceHeight - 108
   },
   splitTablet: {
     width: deviceWidth,
@@ -485,9 +548,6 @@ const styles = StyleSheet.create({
     height: deviceHeight - 120,
     display: 'flex',
     flexDirection: 'row',
-  },
-  splitImages: {
-    width: deviceWidth - 425
   },
   splitImages: {
     width: deviceWidth - 425
