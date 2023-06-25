@@ -135,9 +135,7 @@ const InvestmentMetricCompnent = () => {
               <View style={styles.key}>
                 <Text style={styles.metricText}>Income (M):</Text>
                 <TouchableOpacity onPress={() => {setAccessGrossMonthlyIncome(!accessGrossMonthlyIncome)}} style={styles.infoCOntainer}>
-                  <Text style={styles.info}>
-                    i
-                  </Text>
+                  <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>
                 </TouchableOpacity>
               </View>
               <Text style={styles.metricText}>${convertToDollarAmount(totalRevenue)}</Text>
@@ -162,9 +160,7 @@ const InvestmentMetricCompnent = () => {
               <View style={styles.key}>
                 <Text style={styles.metricText}>Expenses (M):</Text>
                 <TouchableOpacity onPress={() => {setAccessGrossMonthyExpenses(!accessGrossMonthyExpenses)}} style={styles.infoCOntainer}>
-                  <Text style={styles.info}>
-                    i
-                  </Text>
+                  <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>
                 </TouchableOpacity>
               </View>
               <Text style={styles.metricText}>${convertToDollarAmount(expenses)}</Text>
@@ -189,9 +185,7 @@ const InvestmentMetricCompnent = () => {
               <View style={styles.key}>
                 <Text style={styles.metricText}>NOI (M):</Text>
                 <TouchableOpacity onPress={() => {setAccessMonthlyNOI(!accessMonthlyNOI)}} style={styles.infoCOntainer}>
-                  <Text style={styles.info}>
-                    i
-                  </Text>
+                  <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>
                 </TouchableOpacity>
               </View>
               <Text style={styles.metricText}>${convertToDollarAmount(monthlyNOI)}</Text>
@@ -216,9 +210,7 @@ const InvestmentMetricCompnent = () => {
               <View style={styles.key}>
                 <Text style={styles.metricText}>Cash Flow (M):</Text>
                 <TouchableOpacity onPress={() => {setAccessMonthlyCashFlow(!accessMonthlyCashFlow)}} style={styles.infoCOntainer}>
-                  <Text style={styles.info}>
-                    i
-                  </Text>
+                  <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>
                 </TouchableOpacity>
               </View>
               <Text style={styles.metricText}>${convertToDollarAmount(monthlyCF)}</Text>
@@ -243,9 +235,7 @@ const InvestmentMetricCompnent = () => {
               <View style={styles.key}>
                 <Text style={styles.metricText}>Cap Rate:</Text>
                 <TouchableOpacity onPress={() => {setAccessCapRate(!accessCapRate)}} style={styles.infoCOntainer}>
-                  <Text style={styles.info}>
-                    i
-                  </Text>
+                  <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>
                 </TouchableOpacity>
               </View>
               <Text style={styles.metricText}>{capRate}%</Text>
@@ -272,9 +262,7 @@ const InvestmentMetricCompnent = () => {
               <View style={styles.key}>
                 <Text style={styles.metricText}>Income (Y):</Text>
                 <TouchableOpacity onPress={() => {setAccessGrossearlyIncome(!accessGrossYearlyIncome)}} style={styles.infoCOntainer}>
-                  <Text style={styles.info}>
-                    i
-                  </Text>
+                 <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>
                 </TouchableOpacity>
               </View>
               <Text style={styles.metricText}>${convertToDollarAmount(totalRevenue * 12)}</Text>
@@ -299,9 +287,7 @@ const InvestmentMetricCompnent = () => {
               <View style={styles.key}>
                 <Text style={styles.metricText}>Expenses (Y):</Text>
                 <TouchableOpacity onPress={() => {setAccessGrossYearlyExpenses(!accessGrossYearlyExpenses)}} style={styles.infoCOntainer}>
-                  <Text style={styles.info}>
-                    i
-                  </Text>
+                  <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>
                 </TouchableOpacity>
               </View>
               <Text style={styles.metricText}>${convertToDollarAmount(expenses * 12)}</Text>
@@ -326,9 +312,7 @@ const InvestmentMetricCompnent = () => {
               <View style={styles.key}>
                 <Text style={styles.metricText}>NOI (Y):</Text>
                 <TouchableOpacity onPress={() => {setAccessYearlyNOI(!accessYearlyNOI)}} style={styles.infoCOntainer}>
-                  <Text style={styles.info}>
-                    i
-                  </Text>
+                  <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>
                 </TouchableOpacity>
               </View>
               <Text style={styles.metricText}>${convertToDollarAmount(yearlyNOI)}</Text>
@@ -353,9 +337,7 @@ const InvestmentMetricCompnent = () => {
               <View style={styles.key}>
                 <Text style={styles.metricText}>Cash Flow (Y):</Text>
                 <TouchableOpacity onPress={() => {setAccessYearlyCashFlow(!accessYearlyCashFlow)}} style={styles.infoCOntainer}>
-                  <Text style={styles.info}>
-                    i
-                  </Text>
+                  <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>
                 </TouchableOpacity>
               </View>
               <Text style={styles.metricText}>${convertToDollarAmount(yearlyCf)}</Text>
@@ -380,9 +362,7 @@ const InvestmentMetricCompnent = () => {
               <View style={styles.key}>
                 <Text style={styles.metricText}>CoC Return:</Text>
                 <TouchableOpacity onPress={() => {setAccessCashOnCashReturn(!accessCashOnCashReturn)}} style={styles.infoCOntainer}>
-                  <Text style={styles.info}>
-                    i
-                  </Text>
+                  <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>
                 </TouchableOpacity>
               </View>
               <Text style={styles.metricText}>{CashOnCashReturn}%</Text>
@@ -408,9 +388,7 @@ const InvestmentMetricCompnent = () => {
           <View style={styles.key}>
             <Text style={styles.metricTextRoi}>Return On Investment (1 Year):</Text>
             <TouchableOpacity onPress={() => {setAccessROI(!accessROI)}} style={styles.infoCOntainer}>
-              <Text style={styles.info}>
-                i
-              </Text>
+              <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>
             </TouchableOpacity>
             <Text style={styles.roiMetricText}>{roi}%</Text>
           </View>
@@ -447,7 +425,7 @@ const InvestmentMetricCompnent = () => {
   const displayTabletFull = () => {
     return(
       <View style={styles.investmentComponentTablet}>
-        <TouchableOpacity onPress={() => {setAccessInvestmentMetrics(!accessInvestmentMetrics)}} style={[styles.partialInvestmentComponentTablet, styles.centerHeader]}>
+        <TouchableOpacity onPress={() => {setAccessInvestmentMetrics(!accessInvestmentMetrics)}} style={[styles.centerHeader]}>
           <View>
             <Feather style={styles.icon} size={24} color={'black'} name={'chevrons-down'}/>
           </View>
@@ -464,9 +442,7 @@ const InvestmentMetricCompnent = () => {
               <View style={styles.key}>
                 <Text style={styles.metricText}>Income (M):</Text>
                 <TouchableOpacity onPress={() => {setAccessGrossMonthlyIncome(!accessGrossMonthlyIncome)}} style={styles.infoCOntainer}>
-                  <Text style={styles.info}>
-                    i
-                  </Text>
+                  <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>
                 </TouchableOpacity>
               </View>
               <Text style={styles.metricText}>${convertToDollarAmount(totalRevenue)}</Text>
@@ -491,9 +467,7 @@ const InvestmentMetricCompnent = () => {
               <View style={styles.key}>
                 <Text style={styles.metricText}>Expenses (M):</Text>
                 <TouchableOpacity onPress={() => {setAccessGrossMonthyExpenses(!accessGrossMonthyExpenses)}} style={styles.infoCOntainer}>
-                  <Text style={styles.info}>
-                    i
-                  </Text>
+                  <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>
                 </TouchableOpacity>
               </View>
               <Text style={styles.metricText}>${convertToDollarAmount(expenses)}</Text>
@@ -518,9 +492,7 @@ const InvestmentMetricCompnent = () => {
               <View style={styles.key}>
                 <Text style={styles.metricText}>NOI (M):</Text>
                 <TouchableOpacity onPress={() => {setAccessMonthlyNOI(!accessMonthlyNOI)}} style={styles.infoCOntainer}>
-                  <Text style={styles.info}>
-                    i
-                  </Text>
+                  <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>
                 </TouchableOpacity>
               </View>
               <Text style={styles.metricText}>${convertToDollarAmount(monthlyNOI)}</Text>
@@ -545,9 +517,7 @@ const InvestmentMetricCompnent = () => {
               <View style={styles.key}>
                 <Text style={styles.metricText}>Cash Flow (M):</Text>
                 <TouchableOpacity onPress={() => {setAccessMonthlyCashFlow(!accessMonthlyCashFlow)}} style={styles.infoCOntainer}>
-                  <Text style={styles.info}>
-                    i
-                  </Text>
+                  <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>
                 </TouchableOpacity>
               </View>
               <Text style={styles.metricText}>${convertToDollarAmount(monthlyCF)}</Text>
@@ -572,9 +542,7 @@ const InvestmentMetricCompnent = () => {
               <View style={styles.key}>
                 <Text style={styles.metricText}>Cap Rate:</Text>
                 <TouchableOpacity onPress={() => {setAccessCapRate(!accessCapRate)}} style={styles.infoCOntainer}>
-                  <Text style={styles.info}>
-                    i
-                  </Text>
+                 <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>
                 </TouchableOpacity>
               </View>
               <Text style={styles.metricText}>{capRate}%</Text>
@@ -601,9 +569,7 @@ const InvestmentMetricCompnent = () => {
               <View style={styles.key}>
                 <Text style={styles.metricText}>Income (Y):</Text>
                 <TouchableOpacity onPress={() => {setAccessGrossearlyIncome(!accessGrossYearlyIncome)}} style={styles.infoCOntainer}>
-                  <Text style={styles.info}>
-                    i
-                  </Text>
+                  <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/> 
                 </TouchableOpacity>
               </View>
               <Text style={styles.metricText}>${convertToDollarAmount(totalRevenue * 12)}</Text>
@@ -628,9 +594,7 @@ const InvestmentMetricCompnent = () => {
               <View style={styles.key}>
                 <Text style={styles.metricText}>Expenses (Y):</Text>
                 <TouchableOpacity onPress={() => {setAccessGrossYearlyExpenses(!accessGrossYearlyExpenses)}} style={styles.infoCOntainer}>
-                  <Text style={styles.info}>
-                    i
-                  </Text>
+                 <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>
                 </TouchableOpacity>
               </View>
               <Text style={styles.metricText}>${convertToDollarAmount(expenses * 12)}</Text>
@@ -655,9 +619,7 @@ const InvestmentMetricCompnent = () => {
               <View style={styles.key}>
                 <Text style={styles.metricText}>NOI (Y):</Text>
                 <TouchableOpacity onPress={() => {setAccessYearlyNOI(!accessYearlyNOI)}} style={styles.infoCOntainer}>
-                  <Text style={styles.info}>
-                    i
-                  </Text>
+                  <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>
                 </TouchableOpacity>
               </View>
               <Text style={styles.metricText}>${convertToDollarAmount(yearlyNOI)}</Text>
@@ -682,9 +644,7 @@ const InvestmentMetricCompnent = () => {
               <View style={styles.key}>
                 <Text style={styles.metricText}>Cash Flow (Y):</Text>
                 <TouchableOpacity onPress={() => {setAccessYearlyCashFlow(!accessYearlyCashFlow)}} style={styles.infoCOntainer}>
-                  <Text style={styles.info}>
-                    i
-                  </Text>
+                  <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>
                 </TouchableOpacity>
               </View>
               <Text style={styles.metricText}>${convertToDollarAmount(yearlyCf)}</Text>
@@ -709,9 +669,7 @@ const InvestmentMetricCompnent = () => {
               <View style={styles.key}>
                 <Text style={styles.metricText}>CoC Return:</Text>
                 <TouchableOpacity onPress={() => {setAccessCashOnCashReturn(!accessCashOnCashReturn)}} style={styles.infoCOntainer}>
-                  <Text style={styles.info}>
-                    i
-                  </Text>
+                  <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>
                 </TouchableOpacity>
               </View>
               <Text style={styles.metricText}>{CashOnCashReturn}%</Text>
@@ -737,9 +695,7 @@ const InvestmentMetricCompnent = () => {
           <View style={styles.key}>
             <Text style={styles.metricTextRoi}>Return On Investment (1 Year):</Text>
             <TouchableOpacity onPress={() => {setAccessROI(!accessROI)}} style={styles.infoCOntainer}>
-              <Text style={styles.info}>
-                i
-              </Text>
+              <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>
             </TouchableOpacity>
             <Text style={styles.roiMetricText}>{roi}%</Text>
           </View>
@@ -765,7 +721,7 @@ const InvestmentMetricCompnent = () => {
 
   const displayTabletPartial = () => {
     return(
-      <TouchableOpacity onPress={() => {setAccessInvestmentMetrics(!accessInvestmentMetrics)}} style={styles.partialInvestmentComponentPhone}>
+      <TouchableOpacity onPress={() => {setAccessInvestmentMetrics(!accessInvestmentMetrics)}} style={styles.partialInvestmentComponentTablet}>
         <View>
           <Feather style={styles.icon} size={24} color={'black'} name={'chevrons-up'}/>
         </View>
@@ -800,11 +756,11 @@ const InvestmentMetricCompnent = () => {
 
 const styles = StyleSheet.create({
   investmentComponent: {
-    height: 220,
+    height: 200,
     width: '100%',
     position: 'absolute',
     left: 0,
-    top: deviceheight - 354,
+    top: deviceheight - 334,
     backgroundColor: 'white',
     paddingHorizontal: 8,
     borderTopLeftRadius: 20,
@@ -844,7 +800,7 @@ const styles = StyleSheet.create({
     width: '100%',
     position: 'absolute',
     left: 0,
-    top: deviceheight - 120,
+    top: deviceheight - 174,
     backgroundColor: 'white',
     paddingHorizontal: 8,
     borderTopLeftRadius: 20,
@@ -875,6 +831,21 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     top: deviceheight - 108,
+    backgroundColor: 'white',
+    paddingHorizontal: 8,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  partialInvestmentComponentTablet: {
+    height: 40,
+    width: '100%',
+    position: 'absolute',
+    left: 0,
+    top: deviceheight - 120,
     backgroundColor: 'white',
     paddingHorizontal: 8,
     borderTopLeftRadius: 20,
@@ -930,15 +901,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   infoCOntainer: {
-    height: 15,
-    width: 15,
-    backgroundColor: 'grey',
-    borderRadius: 10,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 4
+    marginLeft: 8
   },
   info: {
     fontSize: 8,

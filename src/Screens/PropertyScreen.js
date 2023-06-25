@@ -78,7 +78,7 @@ const PropertyScreen = ({route}) => {
         </View>
         <ScrollView style={
           deviceHeight > 900 
-          ? styles.scroll 
+          ? styles.scrollMetricPhone 
           : deviceHeight > 800 && deviceHeight < 900 
             ? styles.scrollM 
             : deviceHeight < 800
@@ -97,6 +97,7 @@ const PropertyScreen = ({route}) => {
           {
             loadRevenue ? <RevenueComponent /> : null
           }
+          <View style={styles.splitLine}></View>
           <TouchableOpacity onPress={() => {setLoadExpenses(!loadExpenses)}}>
             <View style={styles.expenseContainer}>
               <Text style={styles.expensesText}>Total Expenses: ${convertNumberToFormattedNumber(expenses)}</Text>
@@ -170,11 +171,11 @@ const PropertyScreen = ({route}) => {
         </View>
         <ScrollView style={
             deviceHeight > 900 
-            ? styles.scrollNoMetrics 
+            ? styles.scrollNoMetricsPhone 
             : deviceHeight > 800 && deviceHeight < 900 
-              ? styles.scrollNoMetricsM 
+              ? styles.scrollNoMetricsPhoneM 
               : deviceHeight < 800
-                ? styles.scrollNoMetricsS
+                ? styles.scrollNoMetricsPhoneS
                 : null
           }>
           <MainImage />
@@ -515,6 +516,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     paddingHorizontal: 8
   },
+
   expensesText: {
     fontSize: 22,
     fontWeight: 'bold'
@@ -527,6 +529,18 @@ const styles = StyleSheet.create({
   },
   scrollS: {
     height: deviceHeight - 288
+  },
+  scrollNoMetricsPhone: {
+    height: deviceHeight - 170
+  },
+  scrollNoMetricsPhoneM: {
+    height: deviceHeight - 150
+  },
+  scrollNoMetricsPhoneS: {
+    height: deviceHeight - 108
+  },
+  scrollMetricPhone: {
+    height: deviceHeight - 308
   },
   scrollNoMetrics: {
     height: deviceHeight - 120
@@ -554,6 +568,11 @@ const styles = StyleSheet.create({
   },
   splitContent: {
     width: 425
+  },
+  splitLine: {
+    width: deviceWidth,
+    height: 1,
+    backgroundColor: 'lightgrey'
   }
 })
 

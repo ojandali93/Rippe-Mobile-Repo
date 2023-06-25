@@ -183,7 +183,9 @@ const FavoritesScreen = () => {
                         }
                       </View>
                       <View>
-                        <Text style={[styles.text, styles.price, styles.summaryInfo]}>${convertToDollarAmount(property.property.price)}</Text>
+                        <Text style={
+                          deviceHeight < 900 ? [styles.text, styles.price, styles.summaryInfoS] : [styles.text, styles.price, styles.summaryInfo]
+                        }>${convertToDollarAmount(property.property.price)}</Text>
                       </View>
                       <View>
                       <Text style={styles.address}>
@@ -346,7 +348,10 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   summaryInfo: {
-    marginTop: aspectHeightMain - 120
+    marginTop: aspectHeightMain - 128
+  },
+  summaryInfoS: {
+    marginTop: aspectHeightMain - 142
   },
   summaryInfoTablet: {
     marginTop: tabletImageHeight - 140

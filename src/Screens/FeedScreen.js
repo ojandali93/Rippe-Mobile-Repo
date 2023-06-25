@@ -226,7 +226,15 @@ const FeedScreen = () => {
           {
             currentFeed.map((item) => {
               return(
-                <View key={item.search.referenceNumber} style={styles.itemCOntainer}>
+                <View key={item.search.referenceNumber} style={
+                  deviceHeight > 900 
+                    ? styles.itemCOntainer 
+                    : deviceHeight > 800 && deviceHeight < 900 
+                      ? styles.itemCOntainerM 
+                      : deviceHeight < 800
+                        ? styles.itemCOntainerS
+                        : null
+                }>
                   <TouchableOpacity style={styles.cityContainer} onPress={() => {updateSelectedFeed(item)}}>
                     <Text style={styles.cityText}>{item.search.location} {item.search.beds_min} Bed/{item.search.baths_min} Bath</Text>
                     <TouchableOpacity onPress={() => {removeFromFeeds(item)}}>
@@ -339,10 +347,10 @@ const styles = StyleSheet.create({
     height: deviceHeight - 294,
   },
   scrollViewM: {
-    height: deviceHeight - 275,
+    height: deviceHeight - 284,
   },
   scrollViewS: {
-    height: deviceHeight - 220,
+    height: deviceHeight - 228,
   },
   scrollViewTablet: {
     height: tabletAspectHeight + 8,
@@ -389,6 +397,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   itemCOntainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center', 
+  },
+  itemCOntainerM: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center', 
+  },
+  itemCOntainerS: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center', 
@@ -521,7 +539,7 @@ const styles = StyleSheet.create({
   loadingScreenM: {
     width: deviceWidth - 16,
     marginLeft: 8,
-    height: deviceHeight - 275,
+    height: deviceHeight - 284,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -530,7 +548,7 @@ const styles = StyleSheet.create({
   loadingScreenS: {
     width: deviceWidth - 16,
     marginLeft: 8,
-    height: deviceHeight - 220,
+    height: deviceHeight - 228,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',

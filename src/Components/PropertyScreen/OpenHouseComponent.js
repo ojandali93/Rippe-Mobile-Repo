@@ -21,6 +21,31 @@ const OpenHouseComponent = () => {
   const [phone, setPhone] = useState('')
   const [contact, setContact] = useState('')
 
+
+  const formatDateTime = (dateTimeString) => {
+    const dateTime = new Date(dateTimeString);
+  
+    const month = String(dateTime.getMonth() + 1).padStart(2, '0');
+    const day = String(dateTime.getDate()).padStart(2, '0');
+    const year = dateTime.getFullYear();
+    
+    let hours = dateTime.getHours();
+    const minutes = String(dateTime.getMinutes()).padStart(2, '0');
+    let ampm = 'am';
+    
+    if (hours >= 12) {
+      ampm = 'pm';
+      hours -= 12;
+    }
+    
+    if (hours === 0) {
+      hours = 12;
+    }
+    
+    const formattedDateTime = `${month}/${day}/${year} ${hours}:${minutes}${ampm}`;
+    return formattedDateTime;
+  }
+
   const hasOpenHouse = () => {
     return(
       <View>
@@ -29,8 +54,8 @@ const OpenHouseComponent = () => {
             property.openHouseSchedule.map((event, index) => {
               return(
                 <View key={index}>
-                  <Text style={styles.text}>Starts: {event.startTime}</Text>
-                  <Text style={styles.text}>Ends: {event.endTime}</Text>
+                  <Text style={styles.text}>Starts: {formatDateTime(event.startTime)}</Text>
+                  <Text style={styles.text}>Ends: {formatDateTime(event.endTime)}</Text>
                 </View>
               )
             })

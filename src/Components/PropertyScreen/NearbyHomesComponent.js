@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions, ScrollView } from 'react-native'
 import { PropertyContext } from '../../Context/PropertyContext'
 import { convertNumberToFormattedNumber, convertToDollarAmount } from '../../../utilities'
+import { useNavigation } from '@react-navigation/native'
 
 const deviceWidth = Dimensions.get('window').width
 const deviceheight = Dimensions.get('window').height
@@ -13,6 +14,7 @@ const aspectWidthImageTablet = deviceWidthTablet - 80
 const aspectHeightTablet = (aspectWidthTablet / 1.78) + 1
 
 const NearbyHomesComponent = () => {
+  const navigation = useNavigation()
 
   const {property} = useContext(PropertyContext)
 
@@ -32,7 +34,7 @@ const NearbyHomesComponent = () => {
           {
             property.nearbyHomes.map((item) => {
               return(
-                <View style={styles.propertyTablet} key={item.zpid}>
+                <TouchableOpacity style={styles.propertyTablet} key={item.zpid} onPress={() => {navigation.navigate('PropertyScreen', {zpid: property.zpid})}}>
                   <Image style={{height: aspectHeight, width: aspectWidth}} source={{uri: item.miniCardPhotos[0].url}}/>
                   <View style={styles.summary}>
                     <View style={styles.background}></View>
@@ -51,12 +53,9 @@ const NearbyHomesComponent = () => {
                       <Text style={styles.address}>
                         {property.bedrooms} Beds | {property.bathrooms} Bath | {convertNumberToFormattedNumber(property.livingArea)} Sqft.
                       </Text>
-                      <Text style={styles.address}>
-                        {formatStatus(property.homeStatus)}
-                      </Text>
                     </View>
                   </View>
-                </View>
+                </TouchableOpacity>
               )
             })
           }
@@ -72,7 +71,7 @@ const NearbyHomesComponent = () => {
           {
             property.nearbyHomes.map((item) => {
               return(
-                <View style={styles.propertyTablet} key={item.zpid}>
+                <TouchableOpacity style={styles.propertyTablet} key={item.zpid} onPress={() => {navigation.navigate('PropertyScreen', {zpid: property.zpid})}}>
                   <Image style={{height: aspectHeightTablet, width: aspectWidthImageTablet}} source={{uri: item.miniCardPhotos[0].url}}/>
                   <View style={styles.summary}>
                     <View style={styles.backgroundTablet}></View>
@@ -91,12 +90,9 @@ const NearbyHomesComponent = () => {
                       <Text style={styles.address}>
                         {property.bedrooms} Beds | {property.bathrooms} Bath | {convertNumberToFormattedNumber(property.livingArea)} Sqft.
                       </Text>
-                      <Text style={styles.address}>
-                        {formatStatus(property.homeStatus)}
-                      </Text>
                     </View>
                   </View>
-                </View>
+                </TouchableOpacity>
               )
             })
           }

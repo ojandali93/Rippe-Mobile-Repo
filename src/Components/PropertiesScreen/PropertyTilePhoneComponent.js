@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 
 import { Entypo, Feather } from 'react-native-vector-icons'
 
-import { metricInfo } from '../../../metricInfo'
+import { metricInfo, propertyTaxPercentages } from '../../../metricInfo'
 import { FavoritesContext } from '../../Context/FavoritesContext'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { db, auth } from '../../Api/firebaseTesting'
@@ -61,62 +61,45 @@ const PropertyTilePhoneComponent = (props) => {
   const [cocReturn, setCocReturn] = useState(false)
   const [returnOnInvestment, setReturnOnInvestment] = useState(false)
 
+  const taxRate = propertyTaxPercentages[property.state]
+
   useEffect(() => {
     calcInvestmentMetrics()
   }, [])
 
   const calcInvestmentMetrics = () => {
-    let propertyAddress = property.streetAddress + ", " +
-                              property.city + ', ' +
-                              property.state + ' ' + property.zipcode
-    axios.get('https://api.precisely.com/property/v2/attributes/byaddress', {
-      params: {
-        address: propertyAddress ,
-        attributes: 'taxAmount, assessedValue'
-      },
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + accessToken
-      }
-    })
-    .then((response) => {
-      taxRate = ((parseInt(response.data.propertyAttributes.taxAmount) / parseInt(response.data.propertyAttributes.assessedValue)) * 100).toFixed(2)
-      let downPaymentAmount = calculateDownPaymentAmount(property.price, 20)
-      let downPaymentPercent = calculateDownPaymentPercent(property.price, downPaymentAmount)
-      let loanAmount = calculateLoanAmount(property.price, downPaymentAmount)
-      setMortgageAmount(calculateMortgageAmount(loanAmount, 30, 6.485))
-      let mortgageAmount = calculateMortgageAmount(loanAmount, 30, 6.485)
-      let monthlyTaxAmount = Math.round((calculatePropertyTaxAnnual(taxRate, property.price)) / 12)
-      let homeInsurance = calculateHomeInsuranceAmount(property.price)
-      setMonthlyRevenueAmount(property.rentZestimate)
-      let monthlyRevenue = property.rentZestimate
-      let expenses = 0
-      let hoaFee = property.hoaFee
-      hoaFee === null 
-        ? expenses = mortgageAmount + hoaFee + monthlyTaxAmount + homeInsurance 
-        : expenses = mortgageAmount + monthlyTaxAmount + homeInsurance
-      let monthlyExpenses = 0
-      let monthlyExpensesWithoutMortgage = 0
-      hoaFee === null
-        ? monthlyExpensesWithoutMortgage = hoaFee + monthlyTaxAmount + homeInsurance
-        : monthlyExpensesWithoutMortgage = monthlyTaxAmount + homeInsurance
-      hoaFee === null
-        ? setMonthlyExpenses(mortgageAmount + hoaFee + monthlyTaxAmount + homeInsurance)
-        : setMonthlyExpenses(mortgageAmount + monthlyTaxAmount + homeInsurance)
-      setNetOperatingIncome(Math.round(monthlyRevenue - monthlyExpensesWithoutMortgage))
-      let netOperatingIncome = Math.round(monthlyRevenue - monthlyExpensesWithoutMortgage)
-      let yearlyNetOperatingIncome = netOperatingIncome * 12
-      setCashFlow(Math.round(netOperatingIncome - mortgageAmount))
-      let monthlyCashFLowAmount = Math.round(netOperatingIncome - mortgageAmount)
-      let yearlyCashFlow = monthlyCashFLowAmount * 12
-      setCapRate(((yearlyNetOperatingIncome / property.price) * 100).toFixed(2))
-      setCocReturn(((yearlyCashFlow / downPaymentAmount) * 100).toFixed(2))
-      setReturnOnInvestment(((yearlyNetOperatingIncome / downPaymentAmount) * 100).toFixed(2))
-      setMetricLoading(false)
-    })
-    .catch((error) => {
-      console.log('metric error: ', error)
-    })
+    let downPaymentAmount = calculateDownPaymentAmount(property.price, 20)
+    let downPaymentPercent = calculateDownPaymentPercent(property.price, downPaymentAmount)
+    let loanAmount = calculateLoanAmount(property.price, downPaymentAmount)
+    setMortgageAmount(calculateMortgageAmount(loanAmount, 30, 6.485))
+    let mortgageAmount = calculateMortgageAmount(loanAmount, 30, 6.485)
+    let monthlyTaxAmount = Math.round((calculatePropertyTaxAnnual(taxRate, property.price)) / 12)
+    let homeInsurance = calculateHomeInsuranceAmount(property.price)
+    setMonthlyRevenueAmount(property.rentZestimate)
+    let monthlyRevenue = property.rentZestimate
+    let expenses = 0
+    let hoaFee = property.hoaFee
+    hoaFee === null 
+      ? expenses = mortgageAmount + hoaFee + monthlyTaxAmount + homeInsurance 
+      : expenses = mortgageAmount + monthlyTaxAmount + homeInsurance
+    let monthlyExpenses = 0
+    let monthlyExpensesWithoutMortgage = 0
+    hoaFee === null
+      ? monthlyExpensesWithoutMortgage = hoaFee + monthlyTaxAmount + homeInsurance
+      : monthlyExpensesWithoutMortgage = monthlyTaxAmount + homeInsurance
+    hoaFee === null
+      ? setMonthlyExpenses(mortgageAmount + hoaFee + monthlyTaxAmount + homeInsurance)
+      : setMonthlyExpenses(mortgageAmount + monthlyTaxAmount + homeInsurance)
+    setNetOperatingIncome(Math.round(monthlyRevenue - monthlyExpensesWithoutMortgage))
+    let netOperatingIncome = Math.round(monthlyRevenue - monthlyExpensesWithoutMortgage)
+    let yearlyNetOperatingIncome = netOperatingIncome * 12
+    setCashFlow(Math.round(netOperatingIncome - mortgageAmount))
+    let monthlyCashFLowAmount = Math.round(netOperatingIncome - mortgageAmount)
+    let yearlyCashFlow = monthlyCashFLowAmount * 12
+    setCapRate(((yearlyNetOperatingIncome / property.price) * 100).toFixed(2))
+    setCocReturn(((yearlyCashFlow / downPaymentAmount) * 100).toFixed(2))
+    setReturnOnInvestment(((yearlyNetOperatingIncome / downPaymentAmount) * 100).toFixed(2))
+    setMetricLoading(false)
   }
 
   const formatStatus = (status) => {
@@ -216,12 +199,14 @@ const PropertyTilePhoneComponent = (props) => {
         <View style={styles.column}> 
           <View style={styles.metric}>
             <View style={styles.key}>
-              <Text style={styles.metricText}>Monthly Rev.:</Text>
+              <Text style={deviceWidth < 800 ? styles.metricTextS : styles.metricText}>Monthly Rev.:</Text>
               <TouchableOpacity style={{marginLeft: 8}} onPress={() => {setAccessMonthlyRevenue(!accessMonthlyRevenue)}}>
-                <Feather size={20} name={'info'}/>
+                <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>
               </TouchableOpacity>
             </View>
-            <Text style={styles.metricText}>${convertToDollarAmount(monthlyRevenueAmount)}</Text>
+            <Text style={deviceWidth < 800 ? styles.metricTextS : styles.metricText}>
+              ${convertToDollarAmount(monthlyRevenueAmount)}
+            </Text>
           </View>
 
           <Modal
@@ -240,12 +225,14 @@ const PropertyTilePhoneComponent = (props) => {
           </Modal>
           <View style={styles.metric}>
             <View style={styles.key}>
-              <Text style={styles.metricText}>Monthly Exp.:</Text>
+              <Text style={deviceWidth < 800 ? styles.metricTextS : styles.metricText}>Monthly Exp.:</Text>
               <TouchableOpacity onPress={() => {setAccessMonthlyExpenses(!accessMonthlyExpenses)}} style={{marginLeft: 8}}>
-                <Feather size={20} name={'info'}/>
+                <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>
               </TouchableOpacity>
             </View>
-            <Text style={styles.metricText}>${convertToDollarAmount(monthlyExpenses)}</Text>
+            <Text style={deviceWidth < 800 ? styles.metricTextS : styles.metricText}>
+              ${convertToDollarAmount(monthlyExpenses)}
+            </Text>
           </View>
           <Modal
             visible={accessMonthlyExpenses}
@@ -263,12 +250,14 @@ const PropertyTilePhoneComponent = (props) => {
           </Modal>
           <View style={styles.metric}>
             <View style={styles.key}>
-              <Text style={styles.metricText}>Mortgage:</Text>
+              <Text style={deviceWidth < 800 ? styles.metricTextS : styles.metricText}>Mortgage:</Text>
               <TouchableOpacity  onPress={() => {setAccessMortgage(!accessMortgage)}} style={{marginLeft: 8}}>
-                <Feather size={20} name={'info'}/>
+                <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>
               </TouchableOpacity>
             </View>
-            <Text style={styles.metricText}>${convertToDollarAmount(mortgageAmount)}</Text>
+            <Text style={deviceWidth < 800 ? styles.metricTextS : styles.metricText}>
+              ${convertToDollarAmount(mortgageAmount)}
+            </Text>
           </View>
           <Modal
             visible={accessMortgage}
@@ -286,12 +275,14 @@ const PropertyTilePhoneComponent = (props) => {
           </Modal>
           <View style={styles.metric}>
             <View style={styles.key}>
-              <Text style={styles.metricText}>Cash Flow:</Text>
+              <Text style={deviceWidth < 800 ? styles.metricTextS : styles.metricText}>Cash Flow:</Text>
               <TouchableOpacity onPress={() => {setAccessCashFlow(!accessCashFlow)}} style={{marginLeft: 8}}>
-                <Feather size={20} name={'info'}/>
+                <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>
               </TouchableOpacity>
             </View>
-            <Text style={styles.metricText}>${convertToDollarAmount(cashFlow)}</Text>
+            <Text style={deviceWidth < 800 ? styles.metricTextS : styles.metricText}>
+              ${convertToDollarAmount(cashFlow)}
+            </Text>
           </View>
 
           <Modal
@@ -310,12 +301,14 @@ const PropertyTilePhoneComponent = (props) => {
           </Modal>
           <View style={styles.metric}>
             <View style={styles.key}>
-              <Text style={styles.metricText}>Net Operating Income:</Text>
+              <Text style={deviceWidth < 800 ? styles.metricTextS : styles.metricText}>Net Operating Income:</Text>
               <TouchableOpacity onPress={() => {setAccessNOI(!accessNOI)}} style={{marginLeft: 8}}>
-                <Feather size={20} name={'info'}/>  
+                <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>  
               </TouchableOpacity>
             </View>
-            <Text style={styles.metricText}>${convertToDollarAmount(NetOperatingIncome)}</Text>
+            <Text style={deviceWidth < 800 ? styles.metricTextS : styles.metricText}>
+              ${convertToDollarAmount(NetOperatingIncome)}
+            </Text>
           </View>
           <Modal
             visible={accessNOI}
@@ -333,12 +326,12 @@ const PropertyTilePhoneComponent = (props) => {
           </Modal>
           <View style={styles.metric}>
             <View style={styles.key}>
-              <Text style={styles.metricText}>Cap Rate:</Text>
+              <Text style={deviceWidth < 800 ? styles.metricTextS : styles.metricText}>Cap Rate:</Text>
               <TouchableOpacity onPress={() => {setAccessCapRate(!accessCapRate)}} style={{marginLeft: 8}}>
-                <Feather size={20} name={'info'}/>
+                <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>
               </TouchableOpacity>
             </View>
-            <Text style={styles.metricText}>{capRate}%</Text>
+            <Text style={deviceWidth < 800 ? styles.metricTextS : styles.metricText}>{capRate}%</Text>
           </View>
           <Modal
             visible={accessCapRate}
@@ -356,12 +349,12 @@ const PropertyTilePhoneComponent = (props) => {
           </Modal>
           <View style={styles.metric}>
             <View style={styles.key}>
-              <Text style={styles.metricText}>CoC Return:</Text>
+              <Text style={deviceWidth < 800 ? styles.metricTextS : styles.metricText}>CoC Return:</Text>
               <TouchableOpacity onPress={() => {setAccessCashOnCashFlow(!accessCashOnCashFlow)}} style={{marginLeft: 8}}>
-                <Feather size={20} name={'info'}/>
+                <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>
               </TouchableOpacity>
             </View>
-            <Text style={styles.metricText}>{cocReturn}%</Text>
+            <Text style={deviceWidth < 800 ? styles.metricTextS : styles.metricText}>{cocReturn}%</Text>
           </View>
 
           <Modal
@@ -380,12 +373,12 @@ const PropertyTilePhoneComponent = (props) => {
           </Modal>
           <View style={styles.metric}>
             <View style={styles.key}>
-              <Text style={styles.metricText}>Return On Invesetment:</Text>
+              <Text style={deviceWidth < 800 ? styles.metricTextS : styles.metricText}>Return On Invesetment:</Text>
               <TouchableOpacity onPress={() => {setAccessROI(!accessROI)}} style={{marginLeft: 8}}>
-                <Feather size={20} name={'info'}/>
+                <Feather size={deviceWidth < 800 ? 18 : 20} name={'info'}/>
               </TouchableOpacity>
             </View>
-            <Text style={styles.metricText}>{returnOnInvestment}%</Text>
+            <Text style={deviceWidth < 800 ? styles.metricTextS : styles.metricText}>{returnOnInvestment}%</Text>
           </View>
 
           <Modal
@@ -446,6 +439,12 @@ const PropertyTilePhoneComponent = (props) => {
         <View style={styles.hSplit}></View>
         <View style={styles.disclaimerContainer}>
           <Text style={styles.disclaimer}>Metrics based on 20% down / 30 years / 6.485% IR</Text>
+        </View>
+        <View style={styles.disclaimerContainer}>
+          <Text style={styles.tabletDisclaimer}>Property tax: {taxRate}% - Based on state avg.</Text>
+        </View>
+        <View style={[styles.disclaimerContainer, {marginBottom: 8}]}>
+          <Text style={styles.tabletDisclaimer}>VIEW PROPERTY FOR EXACT NUMBERS</Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -573,7 +572,7 @@ const styles = StyleSheet.create({
   disclaimerContainer: {
     width: '96%',
     marginLeft: '2%',
-    paddingVertical: 8,
+    paddingTop: 4,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center'
@@ -587,6 +586,10 @@ const styles = StyleSheet.create({
   },
   metricText: {
     fontSize: 20,
+    fontWeight: '500'
+  },
+  metricTextS: {
+    fontSize: 16,
     fontWeight: '500'
   },
   tabletMetricText: {

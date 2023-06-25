@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 
 import { Entypo, Feather } from 'react-native-vector-icons'
 
-import { metricInfo } from '../../../metricInfo'
+import { metricInfo, propertyTaxPercentages } from '../../../metricInfo'
 import { FavoritesContext } from '../../Context/FavoritesContext'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { db, auth } from '../../Api/firebaseTesting'
@@ -61,62 +61,46 @@ const PropertyTileTabletComponent = (props) => {
   const [cocReturn, setCocReturn] = useState(false)
   const [returnOnInvestment, setReturnOnInvestment] = useState(false)
 
+  const taxRate = propertyTaxPercentages[property.state]
+
   useEffect(() => {
     calcInvestmentMetrics()
   }, [])
 
   const calcInvestmentMetrics = () => {
-    let propertyAddress = property.streetAddress + ", " +
-                              property.city + ', ' +
-                              property.state + ' ' + property.zipcode
-    axios.get('https://api.precisely.com/property/v2/attributes/byaddress', {
-      params: {
-        address: propertyAddress ,
-        attributes: 'taxAmount, assessedValue'
-      },
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + accessToken
-      }
-    })
-    .then((response) => {
-      taxRate = ((parseInt(response.data.propertyAttributes.taxAmount) / parseInt(response.data.propertyAttributes.assessedValue)) * 100).toFixed(2)
-      let downPaymentAmount = calculateDownPaymentAmount(property.price, 20)
-      let downPaymentPercent = calculateDownPaymentPercent(property.price, downPaymentAmount)
-      let loanAmount = calculateLoanAmount(property.price, downPaymentAmount)
-      setMortgageAmount(calculateMortgageAmount(loanAmount, 30, 6.485))
-      let mortgageAmount = calculateMortgageAmount(loanAmount, 30, 6.485)
-      let monthlyTaxAmount = Math.round((calculatePropertyTaxAnnual(taxRate, property.price)) / 12)
-      let homeInsurance = calculateHomeInsuranceAmount(property.price)
-      setMonthlyRevenueAmount(property.rentZestimate)
-      let monthlyRevenue = property.rentZestimate
-      let expenses = 0
-      let hoaFee = property.hoaFee
-      hoaFee === null 
-        ? expenses = mortgageAmount + hoaFee + monthlyTaxAmount + homeInsurance 
-        : expenses = mortgageAmount + monthlyTaxAmount + homeInsurance
-      let monthlyExpenses = 0
-      let monthlyExpensesWithoutMortgage = 0
-      hoaFee === null
-        ? monthlyExpensesWithoutMortgage = hoaFee + monthlyTaxAmount + homeInsurance
-        : monthlyExpensesWithoutMortgage = monthlyTaxAmount + homeInsurance
-      hoaFee === null
-        ? setMonthlyExpenses(mortgageAmount + hoaFee + monthlyTaxAmount + homeInsurance)
-        : setMonthlyExpenses(mortgageAmount + monthlyTaxAmount + homeInsurance)
-      setNetOperatingIncome(Math.round(monthlyRevenue - monthlyExpensesWithoutMortgage))
-      let netOperatingIncome = Math.round(monthlyRevenue - monthlyExpensesWithoutMortgage)
-      let yearlyNetOperatingIncome = netOperatingIncome * 12
-      setCashFlow(Math.round(netOperatingIncome - mortgageAmount))
-      let monthlyCashFLowAmount = Math.round(netOperatingIncome - mortgageAmount)
-      let yearlyCashFlow = monthlyCashFLowAmount * 12
-      setCapRate(((yearlyNetOperatingIncome / property.price) * 100).toFixed(2))
-      setCocReturn(((yearlyCashFlow / downPaymentAmount) * 100).toFixed(2))
-      setReturnOnInvestment(((yearlyNetOperatingIncome / downPaymentAmount) * 100).toFixed(2))
-      setMetricLoading(false)
-    })
-    .catch((error) => {
-      console.log('metric error: ', error)
-    })
+    setMetricLoading(true)
+    let downPaymentAmount = calculateDownPaymentAmount(property.price, 20)
+    let downPaymentPercent = calculateDownPaymentPercent(property.price, downPaymentAmount)
+    let loanAmount = calculateLoanAmount(property.price, downPaymentAmount)
+    setMortgageAmount(calculateMortgageAmount(loanAmount, 30, 6.485))
+    let mortgageAmount = calculateMortgageAmount(loanAmount, 30, 6.485)
+    let monthlyTaxAmount = Math.round((calculatePropertyTaxAnnual(taxRate, property.price)) / 12)
+    let homeInsurance = calculateHomeInsuranceAmount(property.price)
+    setMonthlyRevenueAmount(property.rentZestimate)
+    let monthlyRevenue = property.rentZestimate
+    let expenses = 0
+    let hoaFee = property.hoaFee
+    hoaFee === null 
+      ? expenses = mortgageAmount + hoaFee + monthlyTaxAmount + homeInsurance 
+      : expenses = mortgageAmount + monthlyTaxAmount + homeInsurance
+    let monthlyExpenses = 0
+    let monthlyExpensesWithoutMortgage = 0
+    hoaFee === null
+      ? monthlyExpensesWithoutMortgage = hoaFee + monthlyTaxAmount + homeInsurance
+      : monthlyExpensesWithoutMortgage = monthlyTaxAmount + homeInsurance
+    hoaFee === null
+      ? setMonthlyExpenses(mortgageAmount + hoaFee + monthlyTaxAmount + homeInsurance)
+      : setMonthlyExpenses(mortgageAmount + monthlyTaxAmount + homeInsurance)
+    setNetOperatingIncome(Math.round(monthlyRevenue - monthlyExpensesWithoutMortgage))
+    let netOperatingIncome = Math.round(monthlyRevenue - monthlyExpensesWithoutMortgage)
+    let yearlyNetOperatingIncome = netOperatingIncome * 12
+    setCashFlow(Math.round(netOperatingIncome - mortgageAmount))
+    let monthlyCashFLowAmount = Math.round(netOperatingIncome - mortgageAmount)
+    let yearlyCashFlow = monthlyCashFLowAmount * 12
+    setCapRate(((yearlyNetOperatingIncome / property.price) * 100).toFixed(2))
+    setCocReturn(((yearlyCashFlow / downPaymentAmount) * 100).toFixed(2))
+    setReturnOnInvestment(((yearlyNetOperatingIncome / downPaymentAmount) * 100).toFixed(2))
+    setMetricLoading(false)
   }
 
   const formatStatus = (status) => {
@@ -447,6 +431,12 @@ const PropertyTileTabletComponent = (props) => {
         <View style={styles.disclaimerContainer}>
           <Text style={styles.tabletDisclaimer}>Metrics based on 20% down / 30 years / 6.485% IR</Text>
         </View>
+        <View style={styles.disclaimerContainer}>
+          <Text style={styles.tabletDisclaimer}>Property tax: {taxRate}% - Based on {property.state} avg.</Text>
+        </View>
+        <View style={styles.disclaimerContainer}>
+          <Text style={styles.tabletDisclaimer}>VIEW PROPERTY THE EXACT NUMBERS</Text>
+        </View>
       </TouchableOpacity>
     </View>
   )
@@ -573,7 +563,7 @@ const styles = StyleSheet.create({
   disclaimerContainer: {
     width: '96%',
     marginLeft: '2%',
-    paddingVertical: 8,
+    marginTop: 6,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center'
