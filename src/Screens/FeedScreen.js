@@ -457,7 +457,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   summaryInfo: {
-    marginTop: aspectHeightMain - 120
+    marginTop: aspectHeightMain - 140
   },
   text: {
     color: 'white'

@@ -9,12 +9,17 @@ import { PropertiesContext } from '../../Context/PropertiesContext'
 const SearchComponent = () => {
   const [search, setSearch] = useState('')
 
-  const {currentSearch, setCurrentSearch} = useContext(PropertiesContext)
-  const {setResults, getProperties} = useContext(PropertiesContext)
+  const {currentSearch, setCurrentSearch, results} = useContext(PropertiesContext)
+  const {setResults, getProperties, setLoading} = useContext(PropertiesContext)
 
   const SubmitSearch = () => {
+    setLoading(true)
     setCurrentSearch(search)
     setResults([])
+    resetSearch()
+  }
+
+  const resetSearch = () => {
     getProperties()
   }
 
@@ -26,7 +31,7 @@ const SearchComponent = () => {
           style={styles.input}
           onChangeText={(value) => setCurrentSearch(value)}
           value={currentSearch}
-          placeholder='Los Angeles, CA'
+          placeholder='Enter City, State...'
         />
       </View>
       <TouchableOpacity onPress={() => {SubmitSearch()}}>

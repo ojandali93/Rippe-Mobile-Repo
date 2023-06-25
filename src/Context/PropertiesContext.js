@@ -48,6 +48,8 @@ export const PropertiesContextProvider = ({children}) => {
   const [favoritesZpid, setFavoritesZpid] = useState([])
   const [refreshMap, setRefreshMap] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
+  const [accessToken, setAccessToken] = useState('')
+  const [invalidLocation, setInvalidLocation] = useState(false)
   
   const {sort, setSort} = useContext(SearchFilterContext)
   const {isSingleFamily} = useContext(SearchFilterContext)
@@ -76,7 +78,9 @@ export const PropertiesContextProvider = ({children}) => {
   const {waterFront} = useContext(SearchFilterContext)
 
   const getProperties = () => {
+    setInvalidLocation(false)
     setLoading(true)
+    getAccessToken()
     currentSearch === '' ? null : activeSearch === currentSearch ? null : setActiveSearch(currentSearch)
     currentSearch === ''
       ? activeSearch === '' 
@@ -138,15 +142,20 @@ export const PropertiesContextProvider = ({children}) => {
     properties.params.sortSelection = sort
     axios.request(properties)
     .then(function (response) {
+      response.data.error
+        ? getInvalidLocaiton()
+        : null
+      response.data.abbreviatedAddress
+        ? navigation.navigate('PropertyScreen', {zpid: response.data.zpid})
+        : null
       setTotalPages(response.data.totalPages)
       setRefreshMap(true)
       setCityLat(response.data.results[0].latitude)
       setCityLong(response.data.results[0].longitude)
       setRefreshMap(false)
       grabFavorites()
-      response.data.abbreviatedAddress != null
-        ? null 
-        : grabMoreDetails(response.data)
+      setResults(response.data.results)
+      setLoading(false)
     }).catch(function (error) {
         error[0] === 'AxiosError: Request failed with status code 500'
           ? setErrorMessage('There was an issue retreiving properties')
@@ -154,7 +163,7 @@ export const PropertiesContextProvider = ({children}) => {
     });
   }
 
-  const grabMoreDetails = (generalResponse) => {
+  const getAccessToken = () => {
     axios.post('https://api.precisely.com/oauth/token', 'grant_type=client_credentials', {
       headers: {
         'Authorization': 'Basic RGdIYnVyRjNPdlllVEdKYWxtUUdveUd3NTR6VzNjUVk6N3lhQlRsT01CQTdqcXJrbQ==',
@@ -162,86 +171,15 @@ export const PropertiesContextProvider = ({children}) => {
       }
     })
     .then((response) => {
-      setPropertyDetails(response.data.access_token, generalResponse)
+      setAccessToken(response.data.access_token)
     })
     .catch((error) => {
       console.log('token error: ', error)
     })
   }
 
-  const setPropertyDetails = (token, generalResponse) => {
-    let limit = 31
-    generalResponse.results.map((property, index) => {
-      if(index < limit){
-        let taxRate
-        let propertyAddress = property.streetAddress + ", " +
-                              property.city + ', ' +
-                              property.state + ' ' + property.zipcode
-        axios.get('https://api.precisely.com/property/v2/attributes/byaddress', {
-          params: {
-            address: propertyAddress,
-            attributes: 'taxAmount, assessedValue'
-          },
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-          }
-        })
-        .then((response) => {
-          taxRate = ((parseInt(response.data.propertyAttributes.taxAmount) / parseInt(response.data.propertyAttributes.assessedValue)) * 100).toFixed(2)
-          let downPaymentAmount = calculateDownPaymentAmount(property.price, 20)
-          let downPaymentPercent = calculateDownPaymentPercent(property.price, downPaymentAmount)
-          let loanAmount = calculateLoanAmount(property.price, downPaymentAmount)
-          let mortgageAmount = calculateMortgageAmount(loanAmount, 30, 6.485)
-          let monthlyTaxAmount = Math.round((calculatePropertyTaxAnnual(taxRate, property.price)) / 12)
-          let homeInsurance = calculateHomeInsuranceAmount(property.price)
-          let monthlyRevenue = property.rentZestimate
-          let expenses = 0
-          let hoaFee = property.hoaFee
-          hoaFee === null 
-            ? expenses = mortgageAmount + hoaFee + monthlyTaxAmount + homeInsurance 
-            : expenses = mortgageAmount + monthlyTaxAmount + homeInsurance
-          let monthlyExpenses = 0
-          let monthlyExpensesWithoutMortgage = 0
-          hoaFee === null
-            ? monthlyExpensesWithoutMortgage = hoaFee + monthlyTaxAmount + homeInsurance
-            : monthlyExpensesWithoutMortgage = monthlyTaxAmount + homeInsurance
-          hoaFee === null
-            ? monthlyExpenses = mortgageAmount + hoaFee + monthlyTaxAmount + homeInsurance
-            : monthlyExpenses = mortgageAmount + monthlyTaxAmount + homeInsurance
-          let netOperatingIncome = Math.round(monthlyRevenue - monthlyExpensesWithoutMortgage)
-          let yearlyNetOperatingIncome = netOperatingIncome * 12
-          let monthlyCashFLow = Math.round(netOperatingIncome - mortgageAmount)
-          let yearlyCashFlow = monthlyCashFLow * 12
-          let currentCapRate = ((yearlyNetOperatingIncome / property.price) * 100).toFixed(2)
-          let currentCashOnCashReturn = ((yearlyCashFlow / downPaymentAmount) * 100).toFixed(2)
-          let year1ReturnOnInvestment = ((yearlyNetOperatingIncome / downPaymentAmount) * 100).toFixed(2)
-  
-          property.investment = {
-            downPaymentAmount: downPaymentAmount,
-            downPaymentPercent: downPaymentPercent,
-            loanAmount: loanAmount,
-            mortgageAmount: mortgageAmount,
-            monthlyTaxAmount: monthlyTaxAmount,
-            homeInsurance: homeInsurance,
-            monthlyRevenue: monthlyRevenue,
-            expenses: expenses,
-            netOperatingIncome: netOperatingIncome,
-            yearlyNetOperatingIncome: yearlyNetOperatingIncome,
-            monthlyCashFLow: monthlyCashFLow,
-            yearlyCashFlow: yearlyCashFlow,
-            currentCapRate: currentCapRate,
-            currentCashOnCashReturn: currentCashOnCashReturn,
-            year1ReturnOnInvestment: year1ReturnOnInvestment,
-            monthlyExpensesWithoutMortgage: monthlyExpensesWithoutMortgage,
-          }
-          setResults(results => [...results, property])
-        })
-        .catch((error) => {
-          console.log('property error: ', error)
-        })
-      }
-    })
+  const getInvalidLocaiton = () => {
+    setInvalidLocation(true)
     setLoading(false)
   }
 
@@ -260,7 +198,9 @@ export const PropertiesContextProvider = ({children}) => {
                                         activeSearch, 
                                         currentSearch,
                                         singlePropertyFound,
+                                        accessToken,
                                         refreshMap,
+                                        invalidLocation,
                                         errorMessage,
                                         setResults,
                                         setResultsPerPage,

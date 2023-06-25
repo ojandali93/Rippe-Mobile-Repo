@@ -545,7 +545,7 @@ const styles = StyleSheet.create({
   },
   splitTabletFull: {
     width: deviceWidth,
-    height: deviceHeight - 120,
+    height: deviceHeight - 104,
     display: 'flex',
     flexDirection: 'row',
   },

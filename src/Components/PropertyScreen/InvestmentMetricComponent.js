@@ -844,7 +844,7 @@ const styles = StyleSheet.create({
     width: '100%',
     position: 'absolute',
     left: 0,
-    top: deviceheight - 174,
+    top: deviceheight - 120,
     backgroundColor: 'white',
     paddingHorizontal: 8,
     borderTopLeftRadius: 20,

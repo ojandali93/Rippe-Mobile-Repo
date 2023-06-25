@@ -59,7 +59,6 @@ const LoginScreen = () => {
   }
 
   const resetCurrentUserEmail = () => {
-    console.log('hello')
     sendPasswordResetEmail(auth, resetEmail.toLowerCase())
       .then(() => {
         Alert.alert('Reset Password', 'Reset password email was sent.', [

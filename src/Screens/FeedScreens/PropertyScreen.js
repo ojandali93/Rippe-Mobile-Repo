@@ -44,7 +44,6 @@ const PropertyScreen = ({route}) => {
   const {expenses, totalRevenue} = useContext(FinancesContext)
 
   useEffect(() => {
-    console.log('newScreen')
     setLoading(true)
     setPropertyDetails(route.params.zpid)
 

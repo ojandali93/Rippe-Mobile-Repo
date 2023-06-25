@@ -111,7 +111,6 @@ const StaticComponents = () => {
   }
 
   const displayTablet = () => {
-    console.log(property.zpid)
     return(
       <View style={styles.containerTablet}>
         <TouchableOpacity onPress={() => {setAccessPropertyTax(!accessPropertyTax)}}>
