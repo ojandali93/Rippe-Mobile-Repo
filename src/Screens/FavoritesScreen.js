@@ -26,10 +26,11 @@ const tabletImageHeight = (tabletWidth / 1.78) + 1
 const tabletSplitWidth = Dimensions.get('window').width - 375
 const tabletContentWidth = Dimensions.get('window').width - 375
 
-
-
 const FavoritesScreen = () => {
   const navigation = useNavigation()
+
+  const [needToLogIn, setNeedToLogin] = useState(false)
+
   const {favoritesZpids, favorites, grabFavorites} = useContext(FavoritesContext)
 
   useEffect(() => {

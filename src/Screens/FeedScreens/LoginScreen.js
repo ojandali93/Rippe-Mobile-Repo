@@ -51,7 +51,7 @@ const LoginScreen = () => {
   }
   
   const goToProfile = () => {
-    navigation.navigate('ProfileScreen')
+    navigation.navigate('FeedScreen')
   }
 
   const goToSignup = () => {
