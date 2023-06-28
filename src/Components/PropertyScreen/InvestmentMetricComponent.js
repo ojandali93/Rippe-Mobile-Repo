@@ -756,11 +756,11 @@ const InvestmentMetricCompnent = () => {
 
 const styles = StyleSheet.create({
   investmentComponent: {
-    height: 200,
+    height: 220,
     width: '100%',
     position: 'absolute',
     left: 0,
-    top: deviceheight - 334,
+    top: deviceheight - 350,
     backgroundColor: 'white',
     paddingHorizontal: 8,
     borderTopLeftRadius: 20,

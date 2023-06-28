@@ -3,7 +3,7 @@ import React, { createContext, useState, useEffect } from 'react';
 import { properties } from '../Api/zillowApi';
 
 import { auth, db } from '../Api/firebaseTesting';
-import { collection, query, where, onSnapshot, addDoc, serverTimestamp, doc, deleteDoc } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, addDoc, serverTimestamp, doc, deleteDoc, limit } from 'firebase/firestore';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 
@@ -201,7 +201,7 @@ export const FeedContextProvider = ({children}) => {
   const grabFeed = () => {
     setLoading(true)
     const collectionRef = collection(db, 'Feed')
-    const q = query(collectionRef, where('userId', '==', auth.currentUser.uid))
+    const q = query(collectionRef, where('userId', '==', auth.currentUser.uid), limit(15))
     onSnapshot(q, (snapshot) => {
       let FeedList = []
       snapshot.docs.forEach((doc) => {

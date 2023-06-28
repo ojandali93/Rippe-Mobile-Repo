@@ -2,7 +2,7 @@
   "expo": {
     "name": "Rippe",
     "slug": "Rippe",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/Rippe-Adaptive-Icon.png",
     "userInterfaceStyle": "light",

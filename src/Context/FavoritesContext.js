@@ -49,7 +49,7 @@ export const FavoritesContextProvider = ({children}) => {
     favoriteProperty.homeType = property.homeType
     favoriteProperty.imgSrc = property.hugePhotos[0].url
     favoriteProperty.latitude = property.latitude
-    favoriteProperty.livingArea = property.livingArea + ' ' + property.livingAreaUnitsShort
+    favoriteProperty.livingArea = property.livingArea
     favoriteProperty.longitude = property.longitude
     favoriteProperty.lotAreaUnit = property.lotAreaUnits
     favoriteProperty.lotAreaValue = property.lotAreaValue

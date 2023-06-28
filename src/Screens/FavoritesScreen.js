@@ -2,16 +2,12 @@ import React, {useContext, useEffect, useState} from 'react'
 import {View, Text, TouchableOpacity, ScrollView, Image, Dimensions, StyleSheet} from 'react-native'
 import { auth, db } from '../Api/firebaseTesting'
 import { useNavigation } from '@react-navigation/native'
-import { ProfileContext } from '../Context/ProfileContext'
 import { doc, deleteDoc } from 'firebase/firestore';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { FavoritesContext } from '../Context/FavoritesContext'
 import { Entypo } from 'react-native-vector-icons'
 
-import MainMapsConponents from '../Components/PropertiesScreen/MainMapsConponents'
 import StaticMapsComponent from '../Components/PropertiesScreen/StaticMapsComponent'
 import { convertNumberToFormattedNumber, convertToDollarAmount } from '../../utilities'
-
 
 const deviceWidth = Dimensions.get('window').width
 const deviceHeight = Dimensions.get('window').height
@@ -248,10 +244,9 @@ const FavoritesScreen = () => {
           <Text style={styles.header}>Favorites</Text>
         </View>
         {
-          auth.currentUser === null 
-            ? displayEmpty() : favorites.length === 0 
-                                  ? displayNone()
-                                  : displayProperties()
+          favorites.length === 0 
+            ? displayNone()
+            : displayProperties()
         }
       </View>
     )
@@ -259,8 +254,10 @@ const FavoritesScreen = () => {
 
   return (
     <>
-      {
-        deviceWidth >= 700 ? tabletScreen() : phoneScreen()
+      { 
+        auth.currentUser === null 
+          ? displayEmpty()
+          : deviceWidth >= 700 ? tabletScreen() : phoneScreen()
       }
     </>
   )
@@ -349,7 +346,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   summaryInfo: {
-    marginTop: aspectHeightMain - 128
+    marginTop: aspectHeightMain - 138
   },
   summaryInfoS: {
     marginTop: aspectHeightMain - 142
@@ -404,7 +401,8 @@ const styles = StyleSheet.create({
   },
   nonDataScreen: {
     width: aspectWidth,
-    height: screenHeight - 32,
+    marginLeft: 8,
+    height: deviceHeight,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',

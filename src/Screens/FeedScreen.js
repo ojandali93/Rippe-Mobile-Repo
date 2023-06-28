@@ -248,15 +248,13 @@ const FeedScreen = () => {
           </ScrollView>
         </View>
         {
-          auth.currentUser === null 
-            ? displayEmpty()
-            : !loading 
-              ? selectedFeed.length === 0 
-                ? showNoValidProperties()
-                : showValidProperties()
-              : errorMessage != ''
-                ? displayError()
-                : showLoading()
+          !loading 
+            ? selectedFeed.length === 0 
+              ? showNoValidProperties()
+              : showValidProperties()
+            : errorMessage != ''
+              ? displayError()
+              : showLoading()
         }
         {
           auth.currentUser === null 
@@ -316,7 +314,9 @@ const FeedScreen = () => {
   return (
     <>
       {
-        deviceWidth >= 500 ? showTabletScreen() : showPhoneScreen()
+        auth.currentUser === null 
+          ? displayEmpty()
+          : deviceWidth >= 500 ? showTabletScreen() : showPhoneScreen()
       }
     </>
   )
@@ -373,7 +373,8 @@ const styles = StyleSheet.create({
   },
   nonDataScreen: {
     width: aspectWidth,
-    height: screenHeight - 40,
+    marginLeft: 8,
+    height: deviceHeight,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',

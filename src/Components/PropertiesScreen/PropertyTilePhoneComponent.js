@@ -150,7 +150,7 @@ const PropertyTilePhoneComponent = (props) => {
     }).then(() => {
       navigation.navigate('PropertyScreen', {zpid: property.zpid})
     }).catch((error) => {
-      console.log(error)
+           (error)
     })
   }
 
