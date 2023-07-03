@@ -1,9 +1,11 @@
 import React, { useContext, useState } from 'react'
 import { Text, TextInput, View, Switch, StyleSheet, TouchableOpacity, Dimensions, Image } from 'react-native'
-import RNPickerSelect from 'react-native-picker-select'
+import { Picker } from '@react-native-picker/picker';
 import { PropertyContext } from '../../Context/PropertyContext'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../Api/firebaseTesting'
+
+import { Feather } from 'react-native-vector-icons'
 
 const deviceWidth = Dimensions.get('window').width
 const deviceWidthTablet = 425
@@ -22,6 +24,9 @@ const ConnectWithAgentComponent = () => {
   const [message, setMessage] = useState('')
   const [viewed, setViewed] = useState('')
   const [schedule, setSchedule] = useState('')
+
+  const [accessInterest, setAccessInterest] = useState(false)
+  const [accessReson, setAccessReason] = useState(false)
 
   const validateConnection = () => {
     firstName === ''
@@ -154,73 +159,71 @@ const ConnectWithAgentComponent = () => {
           />
         </View>
         <View style={styles.newRowSelect}>
-          <Text style={styles.text}>Level of interest</Text>
-          <RNPickerSelect 
-            style={styles.input}
-            value={levelOfInterest}
-            onValueChange={(value) => setLevelOfInterest(value)}
-            items={[
+          <TouchableOpacity onPress={() => {setAccessInterest(!accessInterest)}} style={styles.pickerLabel}>
+            <Text style={styles.detailSection}>Level Of Interest: </Text>
+            <View style={styles.pickerLabelSection}>
+              <Text style={styles.detailSection}>{levelOfInterest}</Text>
               {
-                'label': 'Just looking',
-                'value': 'Just looking'
-              },
-              {
-                'label': 'More info',
-                'value': 'More info'
-              },
-              {
-                'label': 'Fairly interested',
-                'value': 'Fairly interested'
-              },
-              {
-                'label': 'Very interested',
-                'value': 'Very interested'
-              },
-              {
-                'label': 'Ready to purchase',
-                'value': 'Ready to purchase'
-              },
-            ]}
-          />
+                accessInterest
+                  ? <Feather size={22} color="#0039a6" name={'chevrons-up'}/>
+                  : <Feather size={22} color="#0039a6" name={'chevrons-down'}/>
+              }
+            </View>
+          </TouchableOpacity>
+          {
+            !accessInterest
+              ? null
+              : <Picker 
+                  style={{ height: 200, width: '100%'}}
+                  itemStyle={{ color: "black" }}
+                  selectedValue={levelOfInterest}
+                  onValueChange={(value) => setLevelOfInterest(value)}
+                >
+                  <Picker.Item label='Just looking' value='Just looking' />
+                  <Picker.Item label='More info' value='More info' />
+                  <Picker.Item label='Fairly interested' value='Fairly interested' />
+                  <Picker.Item label='Very interested' value='Very interested' />
+                  <Picker.Item label='Ready to purchase' value='Ready to purchase' />
+                </Picker>
+          }
         </View>
         <View style={styles.newRowSelect}>
-          <Text style={styles.text}>Reason of purchase</Text>
-          <RNPickerSelect 
-            style={styles.input}
-            value={reason}
-            onValueChange={(value) => setReason(value)}
-            items={[
+          <TouchableOpacity onPress={() => {setAccessReason(!accessReson)}} style={styles.pickerLabel}>
+            <Text style={styles.detailSection}>Reason: </Text>
+            <View style={styles.pickerLabelSection}>
+              <Text style={styles.detailSection}>{reason}</Text>
               {
-                'label': 'First investment property',
-                'value': 'First investment property'
-              },
-              {
-                'label': 'Expanding portfolio',
-                'value': 'Expanding portfolio'
-              },
-              {
-                'label': 'Interested in investing',
-                'value': 'Interested in investing'
-              },
-              {
-                'label': 'Invest in stable assets',
-                'value': 'Invest in stable assets'
-              },
-              {
-                'label': 'Purchase and flip',
-                'value': 'Purchase and flip'
-              },
-            ]}
-          />
+                accessReson
+                  ? <Feather size={22} color="#0039a6" name={'chevrons-up'}/>
+                  : <Feather size={22} color="#0039a6" name={'chevrons-down'}/>
+              }
+            </View>
+          </TouchableOpacity>
+          {
+            !accessReson
+              ? null
+              : <Picker 
+                  style={{ height: 200, width: '100%'}}
+                  itemStyle={{ color: "black" }}
+                  selectedValue={reason}
+                  onValueChange={(value) => setReason(value)}
+                >
+                  <Picker.Item label='First investment property' value='First investment property' />
+                  <Picker.Item label='Expanding portfolio' value='Expanding portfolio' />
+                  <Picker.Item label='Interested in investing' value='Interested in investing' />
+                  <Picker.Item label='Invest in stable assets' value='Invest in stable assets' />
+                  <Picker.Item label='Purchase and flip' value='Purchase and flip' />
+                </Picker>
+          }
         </View>
-        <View style={styles.newRowSelect}>
+        <View style={styles.newRowSelectNew}>
           <Text style={styles.text}>Viewed the property</Text>
           <Switch
             value={viewed}
             onValueChange={() => {setViewed(!viewed)}}
           />
         </View>
-        <View style={styles.newRowSelect}>
+        <View style={styles.newRowSelectNew}>
           <Text style={styles.text}>Schedule a tour</Text>
           <Switch
             value={schedule}
@@ -306,73 +309,71 @@ const ConnectWithAgentComponent = () => {
           />
         </View>
         <View style={styles.newRowSelect}>
-          <Text style={styles.text}>Level of interest</Text>
-          <RNPickerSelect 
-            style={styles.input}
-            value={levelOfInterest}
-            onValueChange={(value) => setLevelOfInterest(value)}
-            items={[
+          <TouchableOpacity onPress={() => {setAccessInterest(!accessInterest)}} style={styles.pickerLabel}>
+            <Text style={styles.detailSection}>Level Of Interest: </Text>
+            <View style={styles.pickerLabelSection}>
+              <Text style={styles.detailSection}>{levelOfInterest}</Text>
               {
-                'label': 'Just looking',
-                'value': 'Just looking'
-              },
-              {
-                'label': 'More info',
-                'value': 'More info'
-              },
-              {
-                'label': 'Fairly interested',
-                'value': 'Fairly interested'
-              },
-              {
-                'label': 'Very interested',
-                'value': 'Very interested'
-              },
-              {
-                'label': 'Ready to purchase',
-                'value': 'Ready to purchase'
-              },
-            ]}
-          />
+                accessInterest
+                  ? <Feather size={22} color="#0039a6" name={'chevrons-up'}/>
+                  : <Feather size={22} color="#0039a6" name={'chevrons-down'}/>
+              }
+            </View>
+          </TouchableOpacity>
+          {
+            !accessInterest
+              ? null
+              : <Picker 
+                  style={{ height: 200, width: '100%'}}
+                  itemStyle={{ color: "black" }}
+                  selectedValue={levelOfInterest}
+                  onValueChange={(value) => setLevelOfInterest(value)}
+                >
+                  <Picker.Item label='Just looking' value='Just looking' />
+                  <Picker.Item label='More info' value='More info' />
+                  <Picker.Item label='Fairly interested' value='Fairly interested' />
+                  <Picker.Item label='Very interested' value='Very interested' />
+                  <Picker.Item label='Ready to purchase' value='Ready to purchase' />
+                </Picker>
+          }
         </View>
         <View style={styles.newRowSelect}>
-          <Text style={styles.text}>Reason of purchase</Text>
-          <RNPickerSelect 
-            style={styles.input}
-            value={reason}
-            onValueChange={(value) => setReason(value)}
-            items={[
+          <TouchableOpacity onPress={() => {setAccessReason(!accessReson)}} style={styles.pickerLabel}>
+            <Text style={styles.detailSection}>Reason: </Text>
+            <View style={styles.pickerLabelSection}>
+              <Text style={styles.detailSection}>{reason}</Text>
               {
-                'label': 'First investment property',
-                'value': 'First investment property'
-              },
-              {
-                'label': 'Expanding portfolio',
-                'value': 'Expanding portfolio'
-              },
-              {
-                'label': 'Interested in investing',
-                'value': 'Interested in investing'
-              },
-              {
-                'label': 'Invest in stable assets',
-                'value': 'Invest in stable assets'
-              },
-              {
-                'label': 'Purchase and flip',
-                'value': 'Purchase and flip'
-              },
-            ]}
-          />
+                accessReson
+                  ? <Feather size={22} color="#0039a6" name={'chevrons-up'}/>
+                  : <Feather size={22} color="#0039a6" name={'chevrons-down'}/>
+              }
+            </View>
+          </TouchableOpacity>
+          {
+            !accessReson
+              ? null
+              : <Picker 
+                  style={{ height: 200, width: '100%'}}
+                  itemStyle={{ color: "black" }}
+                  selectedValue={reason}
+                  onValueChange={(value) => setReason(value)}
+                >
+                  <Picker.Item label='First investment property' value='First investment property' />
+                  <Picker.Item label='Expanding portfolio' value='Expanding portfolio' />
+                  <Picker.Item label='Interested in investing' value='Interested in investing' />
+                  <Picker.Item label='Invest in stable assets' value='Invest in stable assets' />
+                  <Picker.Item label='Purchase and flip' value='Purchase and flip' />
+                </Picker>
+          }
         </View>
-        <View style={styles.newRowSelect}>
+        <View style={styles.newRowSelectNew}>
           <Text style={styles.text}>Viewed the property</Text>
           <Switch
             value={viewed}
             onValueChange={() => {setViewed(!viewed)}}
           />
         </View>
-        <View style={styles.newRowSelect}>
+        <View style={styles.newRowSelectNew}>
           <Text style={styles.text}>Schedule a tour</Text>
           <Switch
             value={schedule}
@@ -441,6 +442,12 @@ const styles = StyleSheet.create({
   },
   newRowSelect: {
     display: 'flex',
+    justifyContent: 'space-between',
+    paddingVertical: 8,
+    alignItems: 'center'
+  },
+  newRowSelectNew: {
+    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: 8,
@@ -474,6 +481,31 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 8
   },
+  pickerLabel: {
+    width: '100%',
+    marginBottom: 8,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  pickerLabelSection: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  detailSection: {
+    fontSize: 18,
+    fontWeight: '500'
+  },
+  itemContainerStatus: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    paddingLeft: 8
+  }
 })
 
 export default ConnectWithAgentComponent

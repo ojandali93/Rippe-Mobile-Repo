@@ -1,7 +1,7 @@
-import { createStackNavigator } from '@react-navigation/stack'
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MarketAnalysisScreen from '../Screens/MarketAnalysisScreen';
 
-const StackNav = createStackNavigator();
+const StackNav = createNativeStackNavigator();
 
 const MarketAnalysisStackNavigation = () => {
   return (

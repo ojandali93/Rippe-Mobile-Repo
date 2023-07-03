@@ -43,22 +43,33 @@ export const FavoritesContextProvider = ({children}) => {
     favoriteProperty.bedrooms = property.bedrooms
     favoriteProperty.city = property.city
     favoriteProperty.country = property.country
-    favoriteProperty.datePriceChanged = property.datePriceChanged
+    property.datePriceChanged === undefined 
+      ? favoriteProperty.datePriceChanged = null
+      : favoriteProperty.datePriceChanged = property.datePriceChanged
     favoriteProperty.daysOnZillow = property.daysOnZillow
     favoriteProperty.homeStatus = property.homeStatus
     favoriteProperty.homeType = property.homeType
-    favoriteProperty.imgSrc = property.hugePhotos[0].url
+    property.hugePhotos === undefined 
+      ? favoriteProperty.imgSrc = property.imgSrc 
+      : favoriteProperty.imgSrc = property.hugePhotos[0].url
     favoriteProperty.latitude = property.latitude
     favoriteProperty.livingArea = property.livingArea
     favoriteProperty.longitude = property.longitude
-    favoriteProperty.lotAreaUnit = property.lotAreaUnits
-    favoriteProperty.lotAreaValue = property.lotAreaValue
+    property.lotAreaUnits === undefined 
+      ? favoriteProperty.lotAreaUnit = null
+      : favoriteProperty.lotAreaUnit = property.lotAreaUnits
+    property.lotAreaValue === undefined 
+      ? favoriteProperty.lotAreaValue = null
+      : favoriteProperty.lotAreaValue = property.lotAreaValue
     favoriteProperty.price = property.price
-    favoriteProperty.priceChange = property.priceChange
-    favoriteProperty.rentZestimate = property.rentZestimate
+    property.priceChange === undefined 
+      ? favoriteProperty.priceChange = null
+      : favoriteProperty.priceChange = property.priceChange
+    property.rentZestimate === undefined 
+      ? favoriteProperty.rentZestimate = 0
+      : favoriteProperty.rentZestimate = property.rentZestimate
     favoriteProperty.state = property.state
     favoriteProperty.streetAddress = property.streetAddress
-    favoriteProperty.zestimate = property.zestimate
     favoriteProperty.zipcode = property.zipcode
     favoriteProperty.zpid = property.zpid
     addDoc(collectionRef, {

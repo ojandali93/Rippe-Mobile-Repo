@@ -80,7 +80,7 @@ export const PropertiesContextProvider = ({children}) => {
   const getProperties = () => {
     setInvalidLocation(false)
     setLoading(true)
-    getAccessToken()
+    // getAccessToken()
     currentSearch === '' ? null : activeSearch === currentSearch ? null : setActiveSearch(currentSearch)
     currentSearch === ''
       ? activeSearch === '' 
@@ -149,17 +149,17 @@ export const PropertiesContextProvider = ({children}) => {
         ? navigation.navigate('PropertyScreen', {zpid: response.data.zpid})
         : null
       setTotalPages(response.data.totalPages)
-      setRefreshMap(true)
-      setCityLat(response.data.results[0].latitude)
-      setCityLong(response.data.results[0].longitude)
-      setRefreshMap(false)
+      // setRefreshMap(true)
+      // setCityLat(response.data.results[0].latitude)
+      // setCityLong(response.data.results[0].longitude)
+      // setRefreshMap(false)
       grabFavorites()
       setResults(response.data.results)
       setLoading(false)
     }).catch(function (error) {
         error[0] === 'AxiosError: Request failed with status code 500'
           ? setErrorMessage('There was an issue retreiving properties')
-          : null
+          : getProperties()
     });
   }
 

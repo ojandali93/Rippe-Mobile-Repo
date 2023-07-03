@@ -2,7 +2,7 @@
   "expo": {
     "name": "Rippe",
     "slug": "Rippe",
-    "version": "1.0.1",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/Rippe-Adaptive-Icon.png",
     "userInterfaceStyle": "light",
@@ -16,7 +16,8 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.rippeinc.Rippe"
+      "bundleIdentifier": "app.rippeapp.com",
+      "buildNumber": "5"
     },
     "android": {
       "adaptiveIcon": {
@@ -29,7 +30,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "d277eca3-b0d6-4903-9aa1-c31c5e067dfd"
+        "projectId": "918281bf-64ba-43f7-bb90-5ff471c0271d"
       }
     }
   }

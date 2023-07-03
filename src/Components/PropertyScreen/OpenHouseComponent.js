@@ -1,9 +1,10 @@
 import React, { useContext, useState } from 'react'
 import { Text, View, StyleSheet, Dimensions, TouchableOpacity, TextInput } from 'react-native'
 import { PropertyContext } from '../../Context/PropertyContext'
-import RNPickerSelect from 'react-native-picker-select'
+import { Picker } from '@react-native-picker/picker';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../Api/firebaseTesting'
+import { Feather } from 'react-native-vector-icons'
 
 const deviceWidth = Dimensions.get('window').width
 const deviceWidthTablet = 425
@@ -20,6 +21,8 @@ const OpenHouseComponent = () => {
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
   const [contact, setContact] = useState('')
+
+  const [accessTime, setAccessTime] = useState(false)
 
 
   const formatDateTime = (dateTimeString) => {
@@ -170,28 +173,31 @@ const OpenHouseComponent = () => {
           />
         </View>
         <View style={styles.row}>
-          <Text style={styles.text}>
-            Time Of Contact:
-          </Text>
-          <RNPickerSelect 
-            syle={styles.text}
-            value={contact}
-            onValueChange={(value) => setContact(value)}
-            items={[
+          <TouchableOpacity onPress={() => {setAccessTime(!accessTime)}} style={styles.pickerLabel}>
+            <Text style={styles.detailSection}>Time Of Contact: </Text>
+            <View style={styles.pickerLabelSection}>
+              <Text style={styles.detailSection}>{contact}</Text>
               {
-                'label':'Morning',
-                'value':'Morning'
-              },
-              {
-                'label':'Noon',
-                'value':'Noon'
-              },
-              {
-                'label':'Evening',
-                'value':'Evening'
+                accessTime
+                  ? <Feather size={22} color="#0039a6" name={'chevrons-up'}/>
+                  : <Feather size={22} color="#0039a6" name={'chevrons-down'}/>
               }
-            ]}
-          />
+            </View>
+          </TouchableOpacity>
+          {
+            !accessTime
+              ? null
+              : <Picker 
+                  style={{ height: 200, width: '100%'}}
+                  itemStyle={{ color: "black" }}
+                  selectedValue={contact}
+                  onValueChange={(value) => setContact(value)}
+                >
+                  <Picker.Item label='Morning' value='Morning' />
+                  <Picker.Item label='Noon' value='Noon' />
+                  <Picker.Item label='Evening' value='Evening' />
+                </Picker>
+          }
         </View>
         <TouchableOpacity style={[styles.closeContainer]} onPress={()  => {submitRequest()}}>
           <Text style={styles.close}>Schedule A Showing</Text>
@@ -263,28 +269,31 @@ const OpenHouseComponent = () => {
           />
         </View>
         <View style={styles.row}>
-          <Text style={styles.text}>
-            Time Of Contact:
-          </Text>
-          <RNPickerSelect 
-            syle={styles.text}
-            value={contact}
-            onValueChange={(value) => setContact(value)}
-            items={[
+          <TouchableOpacity onPress={() => {setAccessTime(!accessTime)}} style={styles.pickerLabel}>
+            <Text style={styles.detailSection}>Time Of Contact: </Text>
+            <View style={styles.pickerLabelSection}>
+              <Text style={styles.detailSection}>{contact}</Text>
               {
-                'label':'Morning',
-                'value':'Morning'
-              },
-              {
-                'label':'Noon',
-                'value':'Noon'
-              },
-              {
-                'label':'Evening',
-                'value':'Evening'
+                accessTime
+                  ? <Feather size={22} color="#0039a6" name={'chevrons-up'}/>
+                  : <Feather size={22} color="#0039a6" name={'chevrons-down'}/>
               }
-            ]}
-          />
+            </View>
+          </TouchableOpacity>
+          {
+            !accessTime
+              ? null
+              : <Picker 
+                  style={{ height: 200, width: '100%'}}
+                  itemStyle={{ color: "black" }}
+                  selectedValue={contact}
+                  onValueChange={(value) => setContact(value)}
+                >
+                  <Picker.Item label='Morning' value='Morning' />
+                  <Picker.Item label='Noon' value='Noon' />
+                  <Picker.Item label='Evening' value='Evening' />
+                </Picker>
+          }
         </View>
         <TouchableOpacity style={[styles.closeContainer]} onPress={()  => {submitRequest()}}>
           <Text style={styles.close}>Schedule A Showing</Text>
@@ -340,7 +349,6 @@ const styles = StyleSheet.create({
   },
   row: {
     display: 'flex',
-    flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 8
@@ -422,6 +430,31 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 8
   },
+  pickerLabel: {
+    width: '100%',
+    marginBottom: 8,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  pickerLabelSection: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  detailSection: {
+    fontSize: 18,
+    fontWeight: '500'
+  },
+  itemContainerStatus: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    paddingLeft: 8
+  }
 })
 
 export default OpenHouseComponent

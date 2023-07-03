@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {View, Text, TextInput, StyleSheet, Dimensions, TouchableOpacity} from 'react-native'
-import RNPickerSelect from 'react-native-picker-select'
+import { Picker } from '@react-native-picker/picker'
 import { Feather } from 'react-native-vector-icons'
 import { PropertyContext } from '../../../Context/PropertyContext'
 import { FinancesContext } from '../../../Context/FinancesContext'
@@ -14,7 +14,6 @@ const deviceWidth = Dimensions.get('window').width
 const deviceWidthTablet = 425
 const aspectWidth = deviceWidth - 48
 const aspectWidthTablet = deviceWidthTablet - 48
-
 
 const MortgageComponent = () => {
 
@@ -42,6 +41,7 @@ const MortgageComponent = () => {
   const [currentMortgage, setCurrentMortgage] = useState(calculateMortgageAmount(Math.round(property.price * .8), loanTerm, interestRate))
 
   const [accessMortgage, setAccessMortgage] = useState(false)
+  const [accessLoan, setAccessLoan] = useState(false)
 
   useEffect(() => {
     setMortgage(currentMortgage)
@@ -137,16 +137,35 @@ const MortgageComponent = () => {
             onChangeText={(value) => {updateDownPaymentPercent(value)}}
           />
         </View>
-        <View style={styles.itemContainer}>
-          <Text style={styles.itemText}>
-            Loan Program: 
-          </Text>
-          <RNPickerSelect 
-            style={styles.selector}
-            value={loanTerm}
-            onValueChange={(value) => updateLoanTerms(value)}
-            items={loanOptions}
-          />
+        <View style={styles.itemContainerStatus}>
+          <TouchableOpacity onPress={() => {setAccessLoan(!accessLoan)}} style={styles.pickerLabel}>
+            <Text style={styles.detailSection}>Loan Program: </Text>
+            <View style={styles.pickerLabelSection}>
+              {
+                loanTerm === 30 
+                  ? <Text style={styles.detailSection}>30 Year Fixed</Text>
+                  : <Text style={styles.detailSection}>15 Year Fixed</Text>
+              }
+              {
+                accessLoan
+                  ? <Feather size={22} color="#0039a6" name={'chevrons-up'}/>
+                  : <Feather size={22} color="#0039a6" name={'chevrons-down'}/>
+              }
+            </View>
+          </TouchableOpacity>
+          {
+            !accessLoan
+              ? null
+              : <Picker 
+                  style={{ height: 200, width: '100%'}}
+                  itemStyle={{ color: "black" }}
+                  selectedValue={loanTerm}
+                  onValueChange={(value) => setLoanTerm(value)}
+                >
+                  <Picker.Item label='30 Year Fixed' value={30} />
+                  <Picker.Item label='15 Year Fixed' value={15} />
+                </Picker>
+          }
         </View>
         <View style={styles.itemContainer}>
           <Text style={styles.itemText}>
@@ -243,6 +262,31 @@ const styles = StyleSheet.create({
   },
   selector: {
     fontSize: 18
+  },
+  pickerLabel: {
+    width: '100%',
+    marginBottom: 8,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  pickerLabelSection: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  detailSection: {
+    fontSize: 18,
+    fontWeight: '500'
+  },
+  itemContainerStatus: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    paddingLeft: 8
   }
 })
 

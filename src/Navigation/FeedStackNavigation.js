@@ -1,4 +1,4 @@
-import { createStackNavigator } from '@react-navigation/stack'
+import { createStackNavigator } from '@react-navigation/stack';
 import FeedScreen from '../Screens/FeedScreen'
 import NewFeedScreen from '../Screens/FeedScreens/NewFeedScreen'
 import LoginScreen from '../Screens/FeedScreens/LoginScreen';
@@ -9,7 +9,7 @@ const StackNav = createStackNavigator();
 
 const FeedStackNavigation = () => {
   return (
-    <StackNav.Navigator screenOptions={{headerShown: false}}>
+    <StackNav.Navigator initialRouteName='FeedScreen' screenOptions={{headerShown: false}}>
       <StackNav.Screen name="FeedScreen" component={FeedScreen}/>
       <StackNav.Screen name="NewFeedScreen" component={NewFeedScreen}/>
       <StackNav.Screen name="LoginFeedScreen" component={LoginScreen}/>

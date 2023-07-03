@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, Modal, Switch, ScrollView } from 'react-native'
 
 
 import { SearchFilterContext } from '../../Context/SearchFilterContext'
 import { PropertiesContext } from '../../Context/PropertiesContext'
-import RNPickerSelect from 'react-native-picker-select'
-
+import {Picker} from '@react-native-picker/picker';
 import {propertyPricing, hoaAmounts, sqftOptions} from '../../Assets/FilterObjects'
 
 const FilterModalComponent = () => {
@@ -195,51 +194,86 @@ const FilterModalComponent = () => {
             <View>
               <Text>Price Min - </Text>
             </View>
-            <RNPickerSelect 
-              value={priceMin}
+            <Picker 
+              selectedValue={priceMin}
               onValueChange={(value) => setPriceMin(value)}
-              items={propertyPricing}
-            />
+            >
+              {
+                propertyPricing.map((item) => {
+                  return(
+                    <Picker.Item label={item.label} value={item.value} />
+                  )
+                })
+              }
+            </Picker>
           </View>
           <View>
             <View>
               <Text>Price Max - </Text>
             </View>
-            <RNPickerSelect 
-              value={priceMax}
+            <Picker 
+              selectedValue={priceMax}
               onValueChange={(value) => setPriceMax(value)}
-              items={propertyPricing}
-            />
+            >
+              {
+                propertyPricing.map((item) => {
+                  return(
+                    <Picker.Item label={item.label} value={item.value} />
+                  )
+                })
+              }
+            </Picker>
           </View>
           <View>
             <View>
               <Text>Max Hoa - </Text>
             </View>
-            <RNPickerSelect 
-              value={maxHoa}
+            <Picker 
+              selectedValue={maxHoa}
               onValueChange={(value) => setMaxHoa(value)}
-              items={hoaAmounts}
-            />
+            >
+              {
+                hoaAmounts.map((item) => {
+                  return(
+                    <Picker.Item label={item.label} value={item.value} />
+                  )
+                })
+              }
+            </Picker>
           </View>
           <View>
             <View>
               <Text>Sqft Min - </Text>
             </View>
-            <RNPickerSelect 
-              value={sqftMin}
+            <Picker 
+              selectedValue={sqftMin}
               onValueChange={(value) => setSqftMin(value)}
-              items={sqftOptions}
-            />
+            >
+              {
+                sqftOptions.map((item) => {
+                  return(
+                    <Picker.Item label={item.label} value={item.value} />
+                  )
+                })
+              }
+            </Picker>
           </View>
           <View>
             <View>
               <Text>Sqft Max - </Text>
             </View>
-            <RNPickerSelect 
-              value={sqftMax}
+            <Picker 
+              selectedValue={sqftMax}
               onValueChange={(value) => setSqftMax(value)}
-              items={sqftOptions}
-            />
+            >
+              {
+                sqftOptions.map((item) => {
+                  return(
+                    <Picker.Item label={item.label} value={item.value} />
+                  )
+                })
+              }
+            </Picker>
           </View>
           <View>
             <View>

@@ -70,7 +70,7 @@ const SavedSearchScreen = () => {
     return(
       <View style={styles.screen}>
         <View style={styles.scroll}>
-          <Text >You have no recent views!</Text>
+          <Text >You have no saved searches!</Text>
         </View>
       </View>
     )

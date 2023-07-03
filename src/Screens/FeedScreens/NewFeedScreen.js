@@ -1,10 +1,11 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { View, Text, ScrollView, 
           TouchableOpacity, Switch, TextInput, 
           StyleSheet, Dimensions } from 'react-native'
 import { FeedContext } from '../../Context/FeedContext'
+import { Feather } from 'react-native-vector-icons'
 
-import RNPickerSelect from 'react-native-picker-select'
+import { Picker } from '@react-native-picker/picker'
 
 import { propertyPricing, hoaAmounts, sqftOptions, homeStatus } from '../../Assets/FilterObjects'
 import { useNavigation } from '@react-navigation/native'
@@ -43,6 +44,13 @@ const NewFeedScreen = () => {
 
   const {addNewSearch} = useContext(FeedContext)
 
+  const [accessHomeStatus, setAccessHomeStatus] = useState(false)
+  const [accessPriceMin, setAccessPriceMin] = useState(false)
+  const [accessPriceMax, setAccessPriceMax] = useState(false)
+  const [accessMaxHoa, setAccessMaxHoa] = useState(false)
+  const [accessSqftMin, setAccessSqftMin] = useState(false)
+  const [accessSqftMax, setAccessSqftMax] = useState(false)
+
   return (
     <View style={styles.screen}>
       <View style={styles.headerContainer}>
@@ -68,15 +76,36 @@ const NewFeedScreen = () => {
             onChangeText={(value) => {setLocation(value)}}
           />
         </View>
-        <View style={styles.itemContainer}>
-          <Text style={styles.itemText}>
-            Status: 
-          </Text>
-          <RNPickerSelect 
-            value={status}
-            onValueChange={(value) => setStatus(value)}
-            items={homeStatus}
-          />
+        <View style={styles.itemContainerStatus}>
+          <TouchableOpacity onPress={() => {setAccessHomeStatus(!accessHomeStatus)}} style={styles.pickerLabel}>
+            <Text style={styles.detailSection}>Home Status: </Text>
+            <View style={styles.pickerLabelSection}>
+              <Text style={styles.detailSection}>{status}</Text>
+              {
+                accessHomeStatus
+                  ? <Feather size={22} color="#0039a6" name={'chevrons-up'}/>
+                  : <Feather size={22} color="#0039a6" name={'chevrons-down'}/>
+              }
+            </View>
+          </TouchableOpacity>
+          {
+            !accessHomeStatus
+              ? null
+              : <Picker 
+                  style={{ height: 200, width: aspectWidth}}
+                  itemStyle={{ color: "black" }}
+                  selectedValue={sqftMax}
+                  onValueChange={(value) => setSqftMax(value)}
+                >
+                  {
+                    homeStatus.map((item) => {
+                      return(
+                        <Picker.Item label={item.label} value={item.value} />
+                      )
+                    })
+                  }
+                </Picker>
+          }
         </View>
         <View>
           <View style={styles.sectionHeader}>
@@ -202,61 +231,161 @@ const NewFeedScreen = () => {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.detailRow}>
-          <View>
-            <Text style={styles.detailSection}>Price Min: </Text>
+        <View style={styles.itemContainerStatus}>
+            <TouchableOpacity onPress={() => {setAccessPriceMin(!accessPriceMin)}} style={styles.pickerLabel}>
+              <Text style={styles.detailSection}>Price Min: </Text>
+              <View style={styles.pickerLabelSection}>
+                <Text style={styles.detailSection}>{priceMin}</Text>
+                {
+                  accessPriceMin
+                    ? <Feather size={22} color="#0039a6" name={'chevrons-up'}/>
+                    : <Feather size={22} color="#0039a6" name={'chevrons-down'}/>
+                }
+              </View>
+            </TouchableOpacity>
+            {
+              !accessPriceMin 
+                ? null
+                : <Picker 
+                    style={{ height: 200, width: aspectWidth}}
+                    itemStyle={{ color: "black" }}
+                    selectedValue={priceMin}
+                    onValueChange={(value) => setPriceMin(value)}
+                  >
+                    {
+                      propertyPricing.map((item) => {
+                        return(
+                          <Picker.Item label={item.label} value={item.value} />
+                        )
+                      })
+                    }
+                  </Picker>
+            }
           </View>
-          <RNPickerSelect 
-            value={priceMin}
-            onValueChange={(value) => setPriceMin(value)}
-            items={propertyPricing}
-            style={styles.detailInput}
-          />
-        </View>
-        <View style={styles.detailRow}>
-          <View>
-            <Text style={styles.detailSection}>Price Max: </Text>
+          <View style={styles.itemContainerStatus}>
+            <TouchableOpacity onPress={() => {setAccessPriceMax(!accessPriceMax)}} style={styles.pickerLabel}>
+              <Text style={styles.detailSection}>Price Max: </Text>
+              <View style={styles.pickerLabelSection}>
+                <Text style={styles.detailSection}>{priceMax}</Text>
+                {
+                  accessPriceMax
+                    ? <Feather size={22} color="#0039a6" name={'chevrons-up'}/>
+                    : <Feather size={22} color="#0039a6" name={'chevrons-down'}/>
+                }
+              </View>
+            </TouchableOpacity>
+            {
+              !accessPriceMax 
+                ? null
+                : <Picker 
+                    style={{ height: 200, width: aspectWidth}}
+                    itemStyle={{ color: "black" }}
+                    selectedValue={priceMax}
+                    onValueChange={(value) => setPriceMax(value)}
+                  >
+                    {
+                      propertyPricing.map((item) => {
+                        return(
+                          <Picker.Item label={item.label} value={item.value} />
+                        )
+                      })
+                    }
+                  </Picker>
+            }
           </View>
-          <RNPickerSelect 
-            value={priceMax}
-            onValueChange={(value) => setPriceMax(value)}
-            items={propertyPricing}
-            style={styles.detailInput}
-          />
-        </View>
-        <View style={styles.detailRow}>
-          <View>
-            <Text style={styles.detailSection}>Max Hoa: </Text>
+          <View style={styles.itemContainerStatus}>
+            <TouchableOpacity onPress={() => {setAccessMaxHoa(!accessMaxHoa)}} style={styles.pickerLabel}>
+              <Text style={styles.detailSection}>Max Hoa: </Text>
+              <View style={styles.pickerLabelSection}>
+                <Text style={styles.detailSection}>{maxHoa}</Text>
+                {
+                  accessPriceMax
+                    ? <Feather size={22} color="#0039a6" name={'chevrons-up'}/>
+                    : <Feather size={22} color="#0039a6" name={'chevrons-down'}/>
+                }
+              </View>
+            </TouchableOpacity>
+            {
+              !accessMaxHoa
+                ? null
+                : <Picker 
+                    style={{ height: 200, width: aspectWidth}}
+                    itemStyle={{ color: "black" }}
+                    selectedValue={maxHoa}
+                    onValueChange={(value) => setMaxHoa(value)}
+                  >
+                    {
+                      hoaAmounts.map((item) => {
+                        return(
+                          <Picker.Item label={item.label} value={item.value} />
+                        )
+                      })
+                    }
+                  </Picker>
+            }
           </View>
-          <RNPickerSelect 
-            value={maxHoa}
-            onValueChange={(value) => setMaxHoa(value)}
-            items={hoaAmounts}
-            style={styles.detailInput}
-          />
-        </View>
-        <View style={styles.detailRow}>
-          <View>
-            <Text style={styles.detailSection}>Sqft Min: </Text>
+          <View style={styles.itemContainerStatus}>
+            <TouchableOpacity onPress={() => {setAccessSqftMin(!accessSqftMin)}} style={styles.pickerLabel}>
+              <Text style={styles.detailSection}>Sqft Min: </Text>
+              <View style={styles.pickerLabelSection}>
+                <Text style={styles.detailSection}>{sqftMin}</Text>
+                {
+                  accessPriceMax
+                    ? <Feather size={22} color="#0039a6" name={'chevrons-up'}/>
+                    : <Feather size={22} color="#0039a6" name={'chevrons-down'}/>
+                }
+              </View>
+            </TouchableOpacity>
+            {
+              !accessSqftMin
+                ? null
+                : <Picker 
+                    style={{ height: 200, width: aspectWidth}}
+                    itemStyle={{ color: "black" }}
+                    selectedValue={sqftMin}
+                    onValueChange={(value) => setSqftMin(value)}
+                  >
+                    {
+                      sqftOptions.map((item) => {
+                        return(
+                          <Picker.Item label={item.label} value={item.value} />
+                        )
+                      })
+                    }
+                  </Picker>
+            }
           </View>
-          <RNPickerSelect 
-            value={sqftMin}
-            onValueChange={(value) => setSqftMin(value)}
-            items={sqftOptions}
-            style={styles.detailInput}
-          />
-        </View>
-        <View style={styles.detailRow}>
-          <View>
-            <Text style={styles.detailSection}>Sqft Max: </Text>
+          <View style={styles.itemContainerStatus}>
+          <TouchableOpacity onPress={() => {setAccessSqftMax(!accessSqftMax)}} style={styles.pickerLabel}>
+              <Text style={styles.detailSection}>Sqft Min: </Text>
+              <View style={styles.pickerLabelSection}>
+                <Text style={styles.detailSection}>{sqftMax}</Text>
+                {
+                  accessSqftMax
+                    ? <Feather size={22} color="#0039a6" name={'chevrons-up'}/>
+                    : <Feather size={22} color="#0039a6" name={'chevrons-down'}/>
+                }
+              </View>
+            </TouchableOpacity>
+            {
+              !accessSqftMax
+                ? null
+                : <Picker 
+                    style={{ height: 200, width: aspectWidth}}
+                    itemStyle={{ color: "black" }}
+                    selectedValue={sqftMax}
+                    onValueChange={(value) => setSqftMax(value)}
+                  >
+                    {
+                      sqftOptions.map((item) => {
+                        return(
+                          <Picker.Item label={item.label} value={item.value} />
+                        )
+                      })
+                    }
+                  </Picker>
+            }
           </View>
-          <RNPickerSelect 
-            value={sqftMax}
-            onValueChange={(value) => setSqftMax(value)}
-            items={sqftOptions}
-            style={styles.detailInput}
-          />
-        </View>
         <View style={styles.sectionHeader}>
           <Text style={styles.headerText}>Amenities:</Text>
         </View>
@@ -463,6 +592,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 8
   },
+  itemContainerStatus: {
+    marginVertical: 8,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start'
+  },
   itemText: {
     fontSize: 18,
     fontWeight: '500'
@@ -473,6 +608,20 @@ const styles = StyleSheet.create({
     borderBottomColor: 'grey',
     borderBottomWidth: 2
   },
+  pickerLabel: {
+    width: aspectWidth,
+    marginBottom: 8,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  pickerLabelSection: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  }
 })
 
 export default NewFeedScreen

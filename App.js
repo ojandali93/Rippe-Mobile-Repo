@@ -12,7 +12,9 @@ import { PropertyContextProvider } from './src/Context/PropertyContext';
 import { FinancesContextProvider } from './src/Context/FinancesContext';
 import { FavoritesContextProvider } from './src/Context/FavoritesContext';
 
-export default function App() {
+import * as Sentry from '@sentry/react-native';
+
+const App = () => {
   return (
     <NavigationContainer style={styles.container}>
     <StatusBar style="auto" />
@@ -43,3 +45,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+export default App;
